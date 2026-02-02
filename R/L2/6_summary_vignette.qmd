@@ -11,7 +11,7 @@ editor: visual
 ```{r, warnings=FALSE, message=FALSE}
 
 library(dplyr)
-
+set.seed(44)
 df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv"))
 spp <- read.csv(here::here("./data/L1/species_checklists/spp_joint_cac_colsubset.csv"))
 
@@ -127,12 +127,15 @@ phyloplot_species
 ### Interaction Network Figure
 
 ```{r, fig.width=14, fig.height=6, out.width="100%"}
-create_network(inter_NA_int, "Baeolophus inornatus", curve_edges = T, show_labels = F)
+create_network(inter_NA_int, "Baeolophus inornatus", curve_edges = T, show_labels = F, cats = T)
 
 
 ```
 
 ```{r, message=F, fig.width=20, fig.height=15, out.width="100%"}
-create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T)
+create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = F)
 
+```
+```{r, message=F, fig.width=20, fig.height=15, out.width="100%"}
+create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = T, legend_text_size = 35, legend_line_size = 5)
 ```

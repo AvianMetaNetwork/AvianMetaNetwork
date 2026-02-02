@@ -1142,10 +1142,10 @@ int.raw.names.unresolved<- mutate(int.raw.names.unresolved,
 Optional: Save CSV of our current unresolved species
 
 ```{r}
-today_date_string <- format(Sys.Date(),"%Y-%m-%d")
-temp_file_name <- paste0("unresolved_L1", today_date_string, ".csv")
-write.csv(int.raw.names.unresolved, file=file.path(file_paths$L1,temp_file_name ), row.names = FALSE)
-print(paste("saved ", file.path(file_paths$L1,temp_file_name )))
+# today_date_string <- format(Sys.Date(),"%Y-%m-%d")
+# temp_file_name <- paste0("unresolved_L1", today_date_string, ".csv")
+# write.csv(int.raw.names.unresolved, file=file.path(file_paths$L1,temp_file_name ), row.names = FALSE)
+# print(paste("saved ", file.path(file_paths$L1,temp_file_name )))
 ```
 
 

@@ -171,6 +171,43 @@ splist<-splist %>%
              scientific_name_bbs2024, AOU_bbs2024, in_bbs2024)
 
 ```
+
+### Flip all non-CAC spp1 and CAC spp2 combos so that spp1 is always a CAC spp 
+
+```{r}
+cac_spp1 <- intxns.db.subset[intxns.db.subset$species1_scientific %in% unique(splist$scientific_name_clements2024),]
+nocac_spp1 <- intxns.db.subset[!(intxns.db.subset$species1_scientific %in% unique(splist$scientific_name_clements2024)),]
+
+nocac_spp1_flipped <- nocac_spp1 %>% 
+  rename(
+    species2_common = species1_common, 
+    species1_common = species2_common, 
+    species2_scientific = species1_scientific, 
+    species1_scientific = species2_scientific, 
+    effect_sp1_on_sp2 = effect_sp2_on_sp1, 
+    effect_sp2_on_sp1 = effect_sp1_on_sp2
+  ) %>% 
+  relocate(colnames(nocac_spp1))
+
+# Check to make sure all spp1 are now CAC species (value should be 0) 
+length(nocac_spp1_flipped$species1_scientific[!(nocac_spp1_flipped$species1_scientific %in% unique(splist$scientific_name_clements2024))])
+
+# Recombine 
+intxns.db.subset.new <- rbind(cac_spp1, nocac_spp1_flipped)
+
+network_spp <- unique(c(intxns.db.subset.new$species1_scientific, intxns.db.subset.new$species2_scientific))
+
+# Check to make sure network contains all CAC species 
+missing_spp <- setdiff(
+  unique(splist$scientific_name_clements2024),
+  network_spp
+)
+
+all(unique(splist$scientific_name_clements2024) %in% network_spp)
+
+```
+
+
 Adjust nonbreeding season column @billspat note to move this to the L0 cleaning
 
 ```{r}

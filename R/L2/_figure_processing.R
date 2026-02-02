@@ -85,6 +85,24 @@ interaction_categories <- data.frame(
     # N/A (Grays)
     "#808080", "#696880", "#373737", "#7C6E7F", "#333333", "#9897A9", "#787276"
   ),
+  category_color = c(
+    # Trophic
+    rep("#800000", 2),
+    # Mobbing
+    "#E0115F",
+    # Competition
+    rep("#00008B", 4),
+    # Facilitation
+    rep("#006400", 9),
+    # Commensalism
+    rep("#4B0082", 5),
+    # Parasitism
+    rep("#D2691E", 6),
+    # Amenalism
+    "#000000",
+    # N/A
+    rep("#808080", 7)
+  ),
   stringsAsFactors = FALSE
 )
 
@@ -307,41 +325,68 @@ plot_phylo_combined <- function(tree, #tree produced earlier, should be NA_tree
   families_to_label <- families_to_label %>%
     pull(.data[["family"]])
 
-  #Get the central (median position) species per labeled family for labeling
   #Use tree tip order to find true phylogenetic center
   tree_tips <- tree$tip.label
 
+  #Calculate family positions
+  family_positions <- plot_data %>%
+    filter(!is.na(.data[["family"]]),
+           .data[["family"]] %in% families_to_label) %>%
+    mutate(tree_order = match(label, tree_tips)) %>%
+    group_by(.data[["family"]]) %>%
+    summarise(
+      median_pos = median(tree_order, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(median_pos)
+
+  #Get the central (median position) species per labeled family for labeling
   rep_df <- plot_data %>%
     filter(!is.na(.data[["family"]]),
            .data[["family"]] %in% families_to_label) %>%
-    #Add tree order
     mutate(tree_order = match(label, tree_tips)) %>%
+    left_join(family_positions, by = "family") %>%
     group_by(.data[["family"]]) %>%
-    #Use median tree position to find center
-    mutate(median_pos = median(tree_order, na.rm = TRUE)) %>%
     arrange(abs(tree_order - median_pos)) %>%
-    slice(1) %>%  #Select species closest to median position
+    slice(1) %>%
     ungroup() %>%
     select(label, family = .data[["family"]])
 
-  #Set breaks
-  val_range <- range(plot_data[[value_col]], na.rm = TRUE)
-  breaks <- c(val_range[1], 5, 25, 100, val_range[2])
 
-  #Create color palette only for labeled families (excluding grey tones)
-  n_labeled <- length(families_to_label)
-  family_palette <- c(brewer.pal(8, "Dark2"),
-                      brewer.pal(9, "Set1"),
-                      brewer.pal(min(n_labeled - 17, 8), "Set2"))
+  #Get family order
+  family_order <- family_positions %>%
+    pull(.data[["family"]])
 
-  #Create named vector with colors only for labeled families
-  family_colors <- setNames(family_palette[1:n_labeled], families_to_label)
+  n_labeled <- length(family_order)
+
+  #Build a custom palette
+  all_colors <- c(
+    "#FF7F00", "#112222", "#7570B3", "#E7298A", "#66A61E", "#E6AB02",
+    "#A6761D", "#666666", "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
+    "#1B9E77", "#A65628", "#F781BF", "#999999", "#8DD3C7", "#FB8072",
+    "#80B1D3", "#FDB462", "#BC80BD"
+  )
+
+  #Assign colors sequentially in phylogenetic order
+  if (n_labeled <= length(all_colors)) {
+    family_palette <- all_colors[1:n_labeled]
+  } else {
+    #If more families than colors, repeat the palette
+    family_palette <- rep(all_colors, length.out = n_labeled)
+  }
+
+  #Create named vector with colors assigned by phylogenetic order
+  family_colors <- setNames(family_palette, family_order)
 
   #Filter plot_data to only include labeled families for tip coloring
   plot_data_tips <- plot_data %>%
     mutate(family_filtered = ifelse(.data[["family"]] %in% families_to_label,
                                     .data[["family"]],
                                     NA_character_))
+
+  #Set breaks for the legend
+  val_range <- range(plot_data[[value_col]], na.rm = TRUE)
+  breaks <- c(val_range[1], 5, 25, 100, val_range[2])
 
   #Create base tree plot
   p <- ggtree(tree, layout = "circular") %<+% plot_data +
@@ -414,7 +459,8 @@ create_network <- function(data, #input dataset, should be inter_NA_int
                            label_size = 4, #interacting species text size (if show_labels = T)
                            legend_text_size = 23, #interaction type text size
                            legend_title_size = 25, #legend title text size
-                           curve_edges = FALSE) { #set true for visualizing multiple int. between two species
+                           curve_edges = FALSE, #set true for visualizing multiple int. between two species
+                           cats = FALSE) { #set true to color by category instead of interaction type
 
   #Filter interactions involving focal species
   focal_interactions <- data %>%
@@ -438,29 +484,56 @@ create_network <- function(data, #input dataset, should be inter_NA_int
   V(network_graph)$is_focal <- V(network_graph)$name == focal_species
   E(network_graph)$interaction <- network_data$interaction
 
+  #Add category attribute if using category colors
+  if (cats) {
+    E(network_graph)$category <- network_data$category
+  }
+
   #Get bird information
   bird_info <- get_avicommons_image(focal_species, size = image_size)
 
   #Build network plot
   network_plot <- ggraph(network_graph, layout = layout)
 
-  #Add edges
+  #Add edges - color by category or interaction type
   if (curve_edges) {
-    network_plot <- network_plot +
-      geom_edge_fan(aes(color = interaction),
-                    strength = 0.75,
-                    width = edge_width,
-                    alpha = edge_alpha)
+    if (cats) {
+      network_plot <- network_plot +
+        geom_edge_fan(aes(color = category),
+                      strength = 0.75,
+                      width = edge_width,
+                      alpha = edge_alpha)
+    } else {
+      network_plot <- network_plot +
+        geom_edge_fan(aes(color = interaction),
+                      strength = 0.75,
+                      width = edge_width,
+                      alpha = edge_alpha)
+    }
   } else {
-    network_plot <- network_plot +
-      geom_edge_link(aes(color = interaction),
-                     width = edge_width,
-                     alpha = edge_alpha)
+    if (cats) {
+      network_plot <- network_plot +
+        geom_edge_link(aes(color = category),
+                       width = edge_width,
+                       alpha = edge_alpha)
+    } else {
+      network_plot <- network_plot +
+        geom_edge_link(aes(color = interaction),
+                       width = edge_width,
+                       alpha = edge_alpha)
+    }
   }
 
-  network_plot <- network_plot +
-    scale_edge_color_manual(values = setNames(interaction_categories$color,
-                                              interaction_categories$interaction))
+  #Apply color scale based on cats parameter
+  if (cats) {
+    network_plot <- network_plot +
+      scale_edge_color_manual(values = setNames(interaction_categories$category_color,
+                                                interaction_categories$category))
+  } else {
+    network_plot <- network_plot +
+      scale_edge_color_manual(values = setNames(interaction_categories$color,
+                                                interaction_categories$interaction))
+  }
 
   #Add nodes
   network_plot <- network_plot +
@@ -540,8 +613,9 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
                                     node_stroke = 1.2, #node outline width
                                     focal_node_stroke = 1.5, #focal species outline width
                                     legend_text_size = 23, #interaction type text size
-                                    legend_title_size = 25, #legend title text size
-                                    curve_edges = FALSE) { #set true for visualizing multiple int. between two species
+                                    legend_line_size = 2, #size of lines in legend
+                                    curve_edges = FALSE, #set true for visualizing multiple int. between two species
+                                    cats = FALSE) { #set true to color by category instead of interaction type
 
   #Assign styles to each focal species
   species_styles <- data.frame(
@@ -555,6 +629,7 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
   bird_plots <- list()
   network_plots <- list()
   all_interactions <- c()  #Track all interaction types, used later in mutual legend
+  all_categories <- c()  #Track all categories when cats = TRUE
 
   #Loop through each focal species
   for (i in seq_along(focal_species_vector)) {
@@ -574,8 +649,11 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
              species2_scientific %in% network_species) %>%
       left_join(interaction_categories, by = "interaction")
 
-    #Track unique interactions across all networks
+    #Track unique interactions/categories across all networks
     all_interactions <- c(all_interactions, network_data$interaction)
+    if (cats) {
+      all_categories <- c(all_categories, as.character(network_data$category))
+    }
 
     #Create graph with vertex and edge attributes
     network_graph <- graph_from_data_frame(
@@ -609,29 +687,63 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 
     E(network_graph)$interaction <- network_data$interaction
 
+    #Add category attribute if using category colors
+    if (cats) {
+      E(network_graph)$category <- as.character(network_data$category)
+    }
+
     #Get bird information
     bird_info <- get_avicommons_image(focal_species, size = image_size)
 
     #Build network plot
     network_plot <- ggraph(network_graph, layout = layout)
 
-    #Add edges
+    #Add edges - color by category or interaction type
     if (curve_edges) {
-      network_plot <- network_plot +
-        geom_edge_fan(aes(color = interaction),
-                      strength = 0.75,
-                      width = edge_width,
-                      alpha = edge_alpha)
+      if (cats) {
+        network_plot <- network_plot +
+          geom_edge_fan(aes(color = category),
+                        strength = 0.75,
+                        width = edge_width,
+                        alpha = edge_alpha)
+      } else {
+        network_plot <- network_plot +
+          geom_edge_fan(aes(color = interaction),
+                        strength = 0.75,
+                        width = edge_width,
+                        alpha = edge_alpha)
+      }
     } else {
-      network_plot <- network_plot +
-        geom_edge_link(aes(color = interaction),
-                       width = edge_width,
-                       alpha = edge_alpha)
+      if (cats) {
+        network_plot <- network_plot +
+          geom_edge_link(aes(color = category),
+                         width = edge_width,
+                         alpha = edge_alpha)
+      } else {
+        network_plot <- network_plot +
+          geom_edge_link(aes(color = interaction),
+                         width = edge_width,
+                         alpha = edge_alpha)
+      }
     }
 
-    network_plot <- network_plot +
-      scale_edge_color_manual(values = setNames(interaction_categories$color,
-                                                interaction_categories$interaction))
+    #Apply color scale based on cats parameter
+    if (cats) {
+      # Get unique category-color pairs from the actual network data
+      category_colors <- network_data %>%
+        filter(!is.na(category)) %>%
+        mutate(category = as.character(category)) %>%
+        select(category, category_color) %>%
+        distinct()
+
+      network_plot <- network_plot +
+        scale_edge_color_manual(values = setNames(category_colors$category_color,
+                                                  category_colors$category))
+    } else {
+      network_plot <- network_plot +
+        scale_edge_color_manual(values = setNames(interaction_categories$color,
+                                                  interaction_categories$interaction))
+    }
 
     #Add nodes - current focal species
     network_plot <- network_plot +
@@ -697,27 +809,56 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
     network_plots[[i]] <- network_plot
   }
 
-  #Get unique interactions present across all three networks
-  unique_interactions <- unique(all_interactions)
+  #Create legend based on cats parameter
+  if (cats) {
+    #Get unique categories present across all three networks
+    unique_categories <- unique(all_categories)
 
-  #Filter interaction_categories to only include present interactions
-  legend_data <- interaction_categories %>%
-    filter(interaction %in% unique_interactions)
+    #Filter interaction_categories to only include present categories
+    legend_data <- interaction_categories %>%
+      select(category, category_color) %>%
+      distinct() %>%
+      mutate(category = as.character(category)) %>%
+      filter(category %in% unique_categories)
 
-  legend_data$interaction <- factor(legend_data$interaction,
-                                    levels = legend_data$interaction)
+    legend_data$category <- factor(legend_data$category,
+                                   levels = legend_data$category)
 
-  #Create a standalone legend plot with LINES instead of points
-  legend_plot <- ggplot(legend_data, aes(x = interaction, y = 1, color = interaction)) +
-    geom_line(size = 2) +
-    scale_color_manual(values = setNames(legend_data$color, legend_data$interaction),
-                       name = "Interaction Type") +
-    theme_void() +
-    theme(legend.position = "bottom",
-          legend.text = element_text(size = legend_text_size),
-          legend.box.margin = margin(t = 10, b = 5),
-          legend.title = element_blank()) +
-    guides(color = guide_legend(nrow = 4, byrow = TRUE, override.aes = list(size = 2)))
+    #Create a standalone legend plot with LINES
+    legend_plot <- ggplot(legend_data, aes(x = category, y = 1, color = category)) +
+      geom_line(size = legend_line_size) +
+      scale_color_manual(values = setNames(legend_data$category_color, legend_data$category),
+                         name = "Interaction Category") +
+      theme_void() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = legend_text_size),
+            legend.box.margin = margin(t = 10, b = 5),
+            legend.title = element_blank()) +
+      guides(color = guide_legend(nrow = 2, byrow = TRUE, override.aes = list(size = 2)))
+
+  } else {
+    #Get unique interactions present across all three networks
+    unique_interactions <- unique(all_interactions)
+
+    #Filter interaction_categories to only include present interactions
+    legend_data <- interaction_categories %>%
+      filter(interaction %in% unique_interactions)
+
+    legend_data$interaction <- factor(legend_data$interaction,
+                                      levels = legend_data$interaction)
+
+    #Create a standalone legend plot with LINES
+    legend_plot <- ggplot(legend_data, aes(x = interaction, y = 1, color = interaction)) +
+      geom_line(size = legend_line_size) +
+      scale_color_manual(values = setNames(legend_data$color, legend_data$interaction),
+                         name = "Interaction Type") +
+      theme_void() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = legend_text_size),
+            legend.box.margin = margin(t = 10, b = 5),
+            legend.title = element_blank()) +
+      guides(color = guide_legend(nrow = 4, byrow = TRUE, override.aes = list(size = 2)))
+  }
 
   #Extract just the legend
   legend_grob <- cowplot::get_legend(legend_plot)
