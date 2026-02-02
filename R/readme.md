@@ -1,6 +1,15 @@
 # Avian Interaction Database: Instructions for R Programming
 
 `R/readme.md`
+## Authors (R code)
+
+* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
+* Patrick Bills, staff data scientist 2023-2025 [Institute for Cyber-enabled Research (ICER)](https://icer.msu.edu)
+* Emily Parker, staff data manager 2022-24
+* Kelly Kapsar, Post-doctoral Faculty 2025-2026
+* Lucas Mansfield, PhD candidat 2025-
+
+## Overview
 
 These are instructions for using the R code to check data files and build
 the database.  
@@ -91,7 +100,7 @@ system does not accommodate for that**
 
    
 
-Example `filepaths.R` contents
+Example `filepaths.R` contents (see also the content osf )
 
 ```
 DATA_FOLDER =  "/Users/USERID/Avian-Interaction-Database-Working"
@@ -102,40 +111,6 @@ CHECKLIST_FOLDER = file.path(DATA_FOLDER, "L1", "species_checklists")
 This project uses the widely used ['here' package](https://here.r-lib.org) to 
 automatically identify the top folder for scripts to be able to find each other 
 regardless of where they are run. Install this package.
-
-### Google Drive
-
-We use Google Sheets to facilitate data entry for each species (see protocol in
-[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working/L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, you'd like to view and access the intermediate files in Google Drive, you must have Google Drive installed on your computer. If you are not reviewing those files, this is not necessary. 
-
-To use Google Drive on MacOS15, you may have to grant 'full file access' to 
-Rstudio in the the MacOS System Settings - Privacy & Security - Full Disk Access - 
-select Rstudio and/or Positron.  
-
-To use Google Drive on Windows (...to be written)
-
-Older installations of Google Drive may have it in different locations and these
-locations are not documented well. You may be able to find this by dragging a 
-file from an open Google Drive window into the terminal window.
-
-Note that you then must add the location of your Google Drive folder to the 
-`filepaths.R` file described above. The folder location of Google Drive on MacOS
-for most recent installations is in the `filepaths_example.R` file. 
-
-A technique for finding the location of your Google Drive folder on Mac is:
-
-1. open the Mac Finder and find the parent folder of where you sync your data
-2. open the terminal.app utility application (the Rstudio terminal doesn't work for this)
-3. drag the folder where your data is into the terminal.app window
-   this will then show the full path to the Google Drive folder.  
-4. highlight this folder and copy it (Command+c or rightclick and copy)
-5. paste this folder into `filepaths.R`
-
-For those who have an older install of Google Drive, it is in the `/Volumes..` 
-path but in newer installs the path is something like
-
-`/Users/YOURUSERID/Library/CloudStorage/GoogleDrive-youremail@someplace.com/`
- 
 
 ### Installing Packages
 
@@ -247,10 +222,50 @@ Institute (to P.L. Zarnetske), Erasmus Mundus Fellowship (to S. Zonneveld).
 
 Please see main readme for additional acknlowedgmens
 
-## Authors (R code)
 
-* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
-* Patrick Bills, staff data scientist [Institute for Cyber-enabled Research (ICER)](https://icer.msu.edu)
-* Emily Parker, staff data manager 2022-24
+### OPTIONAL Google Drive Setup
 
+We use Google Sheets to facilitate data entry for each species (see protocol in
+[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working/L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, you'd like to view and access the intermediate files in Google Drive, you must have Google Drive installed on your computer. If you are not reviewing those files, this is not necessary. 
 
+From Google Sheets, the raw data is saved as CSV in the working repository once the work
+(typically for a species) is finished.   See our main readme for the workflow.  
+
+However you may want to check and read the google sheets before they have been saved to CSV. 
+If you want to so this, you must first have access to the Avian Interaction Database working
+Google drive (collaborator only), set up Google drive to sync that folder to your computer, and
+possibly make changes to your google Drive setup on your computer.   There is no code here to
+read directly from the Google Sheets files directly via the Google Cloud API due to restrictions
+and complexity of setting that up.  
+
+These steps are not necessary and only to check on work-in-progress that has not been 
+exported to CSV. 
+
+Use Google Drive on Windows:  section to be written
+
+To use Google Drive on MacOS15, you may have to grant 'full file access' to 
+Rstudio in the the MacOS System Settings - Privacy & Security - Full Disk Access - 
+select Rstudio and/or Positron.  
+
+Older installations of Google Drive may have it in different locations and these
+locations are not documented well. You may be able to find this by dragging a 
+file from an open Google Drive window into the terminal window.
+
+Note that you then must add the location of your Google Drive folder to the 
+`filepaths.R` file described above. The folder location of Google Drive on MacOS
+for most recent installations is in the `filepaths_example.R` file. 
+
+A technique for finding the location of your Google Drive folder on Mac is:
+
+1. open the Mac Finder and find the parent folder of where you sync your data
+2. open the terminal.app utility application (the Rstudio terminal doesn't work for this)
+3. drag the folder where your data is into the terminal.app window
+   this will then show the full path to the Google Drive folder.  
+4. highlight this folder and copy it (Command+c or rightclick and copy)
+5. paste this folder into `filepaths.R`
+
+For those who have an older install of Google Drive, it is in the `/Volumes..` 
+path but in newer installs the path is something like
+
+`/Users/YOURUSERID/Library/CloudStorage/GoogleDrive-youremail@someplace.com/`
+ 
