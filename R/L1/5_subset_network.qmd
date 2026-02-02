@@ -193,12 +193,17 @@ nocac_spp1_flipped <- nocac_spp1 %>%
 length(nocac_spp1_flipped$species1_scientific[!(nocac_spp1_flipped$species1_scientific %in% unique(splist$scientific_name_clements2024))])
 
 # Recombine 
-intxns.db.subset <- rbind(cac_spp1, nocac_spp1_flipped)
+intxns.db.subset.new <- rbind(cac_spp1, nocac_spp1_flipped)
+
+network_spp <- unique(c(intxns.db.subset.new$species1_scientific, intxns.db.subset.new$species2_scientific))
 
 # Check to make sure network contains all CAC species 
-splist$scientific_name_clements2024.combo[!(unique(splist$scientific_name_clements2024.combo) %in% c(intxns.db.subset$species1_scientific, intxns.db.subset$species2_scientific))]
+missing_spp <- setdiff(
+  unique(splist$scientific_name_clements2024),
+  network_spp
+)
 
-splist$scientific_name_clements2024[!(unique(splist$scientific_name_clements2024) %in% c(intxns.db.subset$species1_scientific, intxns.db.subset$species2_scientific))]
+all(unique(splist$scientific_name_clements2024) %in% network_spp)
 
 ```
 
