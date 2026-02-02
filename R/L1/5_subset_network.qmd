@@ -272,6 +272,15 @@ intxns.db.subset$interaction <- ifelse(intxns.db.subset$interaction %in% old_fac
                                        intxns.db.subset$interaction)
 
 
+# List of characters to re-assign
+old_facil_sub<- c("facilitation-feeding")
+new_facil_sub <- "facilitation-foraging"
+# Re-assign values 
+intxns.db.subset$interaction <- ifelse(intxns.db.subset$interaction %in% old_faci_sub, 
+                                       new_facil_sub, 
+                                       intxns.db.subset$interaction)
+
+
 
 ## PREDATION
 
