@@ -185,11 +185,11 @@ updating to current taxonomy (a step that occurs within a L1 step).
   - Data submitted for review can be checked using reviewing scripts  
   - Outcome: CSV files in the "species" folder with mostly cleaned and corrected data but with potentially outdated taxonomic designations.
   - Scripts/Notebooks:
-    - L0/L0_functions.R = contains most cleaning/data processing code
-    - L0/L0_repo_status.qmd = count numbers of files in various states
-    - L0/L0_corrections_discovery.qmd = point out issues in files to be corrected
-    - L0/L0_ammendments.qmd = work in progress fix issues and ...
-  
+    - `lib/config.R` = functions for checking and setting the file paths in `file_paths.R`
+    - `lib/shared_functions.R` = contains functions for many  cleaning/data processing code
+    - `auxilliary_scripts/L0_repo_status.qmd` = count numbers of files in various states from sources
+    - `auxilliary_scripts/L0_corrections_discovery.qmd` = point out issues in files to be corrected
+=  
 2) **clean and combine**
 
    - Outcome: single file with all interactions that are even more cleaned and made 
@@ -226,7 +226,7 @@ updating to current taxonomy (a step that occurs within a L1 step).
 
 ## Additional scripts
 
-**R/config.R** sourced by all scripts to set file paths, should not need editing or
+**R/lib/config.R** sourced by all scripts to set file paths, should not need editing or
 sourcing.
 
 

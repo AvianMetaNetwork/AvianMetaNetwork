@@ -4,6 +4,7 @@ author:
   - Phoebe L. Zarnetske
   - Patrick Bills
   - Emily Parker
+  - Kelly Kapsar
 format:
   html:
     toc: true
@@ -17,7 +18,7 @@ date-format: iso
 ## About
 
 -   PROJECT: Avian Interaction Database & Avian Meta-Network
--   AUTHORS: Phoebe Zarnetske, Pat Bills, Emily Parker
+-   AUTHORS: Phoebe Zarnetske, Pat Bills, Emily Parker, Kelly Kapsar
 -   COLLABORATORS: Vincent Miele, Stephane Dray
 -   DATA INPUT: Data entry CSV files in L0 folder
 -   DATA OUTPUT: L0 data: AvianInteractionData_L0.csv
@@ -50,7 +51,6 @@ The code here saves the file in the Data folder in L0 in the configuration of `f
 stitched_L0_file <- "ain_all_raw.csv" 
 ```
 
-
 *Then, setup the folders and files from configuration and check them*
 
 ```{r}
@@ -59,9 +59,9 @@ stitched_L0_file <- "ain_all_raw.csv"
 #| warnings: false
 
 
-source(here::here('R/L0/X_functions.R'))
+source(here::here('R/lib/shared_functions.R'))
 
-# This uses functions in R/L0/X_functions_files which also imports R/config.R
+# This uses functions in R/lib/shared_functions.R which also imports R/lib/config.R
 # which sets the locations of the data folders. 
 
 file_paths <- get_file_paths() 
@@ -117,19 +117,18 @@ nrow(intxnsL0sp$intxns)
 ```
 
 Transform 'long' format along sources from entered wide format.\
-See documentation for this function in X_functions.R
+See documentation for this function in shared_functions.R
 
 N Rows after transform:
 
 ```{r}
 intxnsL0sp$intxns <- sources_wide_to_long(intxnsL0sp$intxns)
 # intxnsL0sp is a list with several items to track counts of things and files
-# see X_functions.R for details
+# see shared_functions.R for details
 
 nrow(intxnsL0sp$intxns)
 
 ```
-
 
 *Optionally examine the full stitched data frame:*
 
@@ -154,24 +153,22 @@ print_binding_report(intxnsL0sp)
 
 Optional. Uncomment to run the unchecked species
 
-```
+```         
 # csv_file_group_name='species_temp'
 # csv_file_path = file.path(file_paths$L0, "species_temp")
 # # filter or add in google drive files here
 # temp_file_list <- list.files(path = csv_file_path , pattern = ".*\\.csv", full.names = TRUE)
 # 
 # paste(csv_file_path, ":", csv_file_group_name, "files to process",  length(temp_file_list)) 
-
 ```
 
-```
+```         
 
 # intxnsL0sptemp <- L0_stitch(
 #                     csv_file_list = temp_file_list, 
 #                     csv_file_group_name=csv_file_group_name
 #                     )
 # paste("Count of species after binding",intxnsL0sptemp$count)
-
 ```
 
 ```{r,echo=FALSE}
@@ -180,11 +177,11 @@ Optional. Uncomment to run the unchecked species
 
 ### 3 Data files (species) to be reviewed or in the process of being reviewed
 
-Optional 
+Optional
 
 (variable named intxnsL0spir )
 
-```
+```         
 # csv_file_group_name='species_in_review'
 # csv_file_path = file.path(file_paths$L0, "species_in_review")
 # # filter or add in google drive files here
@@ -194,13 +191,12 @@ Optional
 # paste(csv_file_path, ":", csv_file_group_name, "files to process", length(in_review_file_list))
 ```
 
-```
+```         
 
 # intxnsL0spir <- L0_stitch(
 #                   csv_file_list = in_review_file_list, 
 #                   csv_file_group_name=csv_file_group_name
 #                   ) 
-
 ```
 
 *Count of species after binding:*
