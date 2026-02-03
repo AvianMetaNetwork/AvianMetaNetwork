@@ -104,19 +104,18 @@ if("SYNC_DATA_FOLDER" %in% names(file_paths)){
   # Find common names (intersection) and unique names (differences)
   common_main_names <- intersect(google_drive_main_names, git_repo_main_names)
 
+  print("Number of Google Only Main Names:")  
+  print( length(google_only_main_names))
+
+  tibble(google_only_main_names)
+
+  print(paste("Git only", length(git_only_main_names),  "files "))
+
+  tibble(git_only_main_names)
+
+  print("Files with matching main names in both Google Drive and Git repository:")
+  print(common_main_names)
 }
-
-print("Number of Google Only Main Names:")  
-print( length(google_only_main_names))
-
-tibble(google_only_main_names)
-
-print(paste("Git only", length(git_only_main_names),  "files "))
-
-tibble(git_only_main_names)
-
-print("Files with matching main names in both Google Drive and Git repository:")
-print(common_main_names)
 ```
 
 In Winter 2025, those only in G-drive appear to be files that do not have initials for entry and review in the suffix, and maybe files that pre-dated using this google drive folder.   
