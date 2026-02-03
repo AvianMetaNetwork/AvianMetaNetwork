@@ -18,39 +18,57 @@ spp <- read.csv(here::here("./data/L1/species_checklists/spp_joint_cac_colsubset
 num_intxns <- nrow(df)
 
 unique_intxns <- df %>% 
-  dplyr::select(species1_scientific, 
-                species2_scientific, 
-                effect_sp1_on_sp2, 
-                effect_sp2_on_sp1, 
+  dplyr::select(taxa1_scientific, 
+                taxa2_scientific, 
+                effect_tx1_on_tx2, 
+                effect_tx2_on_tx1, 
                 interaction) %>% 
   filter(!duplicated(.)) 
 
-num_unique_intxns <- nrow(unique_intxns)
 
-num_focal_spp <- length(unique(df$species1_scientific))
 
-unique_spp_list <- unique(c(df$species1_scientific, df$species2_scientific))
-num_total_spp <- length(unique_spp_list)
+unique_pairs <- unique_intxns %>%
+  mutate(
+    # Labels taxa pairs by alphabetical order 
+    taxa_lo = pmin(taxa1_scientific, taxa2_scientific),
+    taxa_hi = pmax(taxa1_scientific, taxa2_scientific),
 
-num_new_spp2 <- length(setdiff(unique_spp_list, df$species1_scientific))
+    # Checks whether order is swapped (non-alphabetical) 
+    swapped = taxa1_scientific > taxa2_scientific,
+
+    # normalize effects so they always mean:
+    # eff_lo_on_hi = effect of taxa_lo on taxa_hi
+    # eff_hi_on_lo = effect of taxa_hi on taxa_lo
+    eff_lo_on_hi = if_else(swapped, effect_tx2_on_tx1, effect_tx1_on_tx2),
+    eff_hi_on_lo = if_else(swapped, effect_tx1_on_tx2, effect_tx2_on_tx1)
+  )  %>%
+  distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
+
+unique_taxa_list <- unique(c(df$taxa1_scientific, df$taxa2_scientific))
+num_total_taxa <- length(unique_taxa_list)
+
+total_cac_taxa1 <- unique(df$taxa1_scientific[df$taxa1_scientific %in% spp$scientific_name_clements2024])
+total_cac_taxa2 <- unique(df$taxa2_scientific[df$taxa2_scientific %in% spp$scientific_name_clements2024])
+total_cac_taxa <- unique(c(total_cac_taxa1, total_cac_taxa2))
+
+num_non_cac_taxa <-num_total_taxa - length(total_cac_taxa)
 
 unique_spp_list_names <- unique(spp$scientific_name_clements2024)
-unique_spp1_ain_names <- unique(df$species1_scientific)
+unique_spp1_ain_names <- unique(df$taxa1_scientific)
 ```
 
+-   Number of documented pairwise interactions: `r num_intxns`
+-   Number of unique pairwise interactions: `r nrow(unique_pairs)`
+-   Number of focal taxa: `r total_cac_spp`
+-   Number of additional non-focal spp: `r num_non_cac_taxa`
+-   Number of species (total): `r num_total_taxa`
+-   Percent of world's bird spp (out of 11,1145 spp): **NEED TO GO TO SPP LEVEL**`r round(num_total_taxa/11145*100, 2)`
+-   Total number of migratory species: \[Not sure how to calculate this\]
+-   Total number of interaction types: `r length(unique(df$interaction))`
 
-* Number of documented pairwise interactions: `r num_intxns`
-* Number of unique pairwise interactions: `r num_unique_intxns`
-* Number of focal species: `r num_focal_spp`
-* Number of additional non-focal spp: `r num_new_spp2`
-* Number of species (total): `r num_total_spp`
-* Percent of world's bird spp (out of 11,1145 spp): `r round(num_total_spp/11145*100, 2)`
-* Total number of migratory species: [Not sure how to calculate this]
-* Total number of interaction types: `r length(unique(df$interaction))`
+### Species list summary
 
-### Species list summary 
-* Total number of species in the North American Avian Interaction Species List: `r length(unique(spp$scientific_name_clements2024))`
-
+-   Total number of species in the North American Avian Interaction Species List: `r length(unique(spp$scientific_name_clements2024))`
 
 ```{r}
 
@@ -65,7 +83,6 @@ Source `_figure_processing.R` which contains the data processing and plotting fu
 source(here::here("../Avian-Interaction-Database/R/L2/_figure_processing.R"))
 
 ```
-
 
 ### Interaction Distribution Figure
 
@@ -105,7 +122,6 @@ ggplot(type_summ_slim, aes(x = interaction, y = n, fill = interaction)) +
     coord_flip()
 ```
 
-
 ### Interaction Phylogeny Figure
 
 ```{r, fig.width=16, fig.height=8, out.width="100%"}
@@ -136,6 +152,7 @@ create_network(inter_NA_int, "Baeolophus inornatus", curve_edges = T, show_label
 create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = F)
 
 ```
+
 ```{r, message=F, fig.width=20, fig.height=15, out.width="100%"}
 create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = T, legend_text_size = 35, legend_line_size = 5)
 ```
