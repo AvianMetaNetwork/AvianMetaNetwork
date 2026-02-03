@@ -293,6 +293,15 @@ intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in%
                                        intxns.db.subset.new$interaction)
 
 
+## BROOD PARASITISM
+
+# List of characters to re-assign
+old_para<- c("nest parasitism")
+new_para <- "brood parasitism"
+# Re-assign values 
+intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in% old_para, 
+                                       new_para, 
+                                       intxns.db.subset.new$interaction)
 
 ## MOBBING
 
