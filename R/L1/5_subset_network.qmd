@@ -276,7 +276,7 @@ intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in%
 old_facil_sub<- c("facilitation-feeding")
 new_facil_sub <- "facilitation-foraging"
 # Re-assign values 
-intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in% old_faci_sub, 
+intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in% old_facil_sub, 
                                        new_facil_sub, 
                                        intxns.db.subset.new$interaction)
 
@@ -309,6 +309,21 @@ intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in%
 num_intxn_types <- intxns.db.subset.new %>% group_by(interaction) %>% summarize(n=n()) %>% arrange(-n) 
 knitr::kable(num_intxn_types)
 ```
+
+Change species name column so that it reflects the broad range of taxonomic resolutions of the data
+```{r}
+intxns.db.subset.new <- intxns.db.subset.new %>% 
+  rename(
+    taxa1_scientific = species1_scientific, 
+    taxa2_scientific = species2_scientific, 
+    taxa1_common = species1_common,
+    taxa2_common = species2_common,
+    effect_tx1_on_tx2 = effect_sp1_on_sp2,
+    effect_tx2_on_tx1 = effect_sp2_on_sp1
+  )
+```
+
+
 
 Create summary information in a table
 ```{r}
