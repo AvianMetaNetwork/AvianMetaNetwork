@@ -12,7 +12,9 @@
 ## Overview
 
 These are instructions for using the R code to check data files and build
-the database.  
+the database from a collection of CSV files entered over time by contributors to the database, 
+primarily workers in the [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
+These scripts are for use by project collaborators only and provided as a reference. 
 
 For an overview of the project, details about the database, its structure, and a protocol 
 for how the data are pulled from primary sources, see the [Project Readme file](../readme.md) 
@@ -20,39 +22,40 @@ in the root directory.
 
 ---
 
-This repository contains code and workflows for the The Avian Interaction Database project. 
-
-This is a guide for using the R code to assist with validation, correction, 
-aggregation, normalizing the taxonomy and connecting to other databases.  
-
-
 ## Location of data
 
-See the main readme for the project. The data that are in preparation 
-are stored in files in the L0 and L1 folders (see below).  Currently these are
-only accessible by collaborators. Once published, the North American Avian 
-Interaction Database will be made open access and linked here. 
+See the [main documentation for the project](../readme.md) for a link to the finished 
+database (the output of this process). 
 
+The R folders in this project does have some data used to harmonized and update the
+taxonomic designations for species to match current species lists.  See 
+the "*reconcile taxonomy*" step blow
 
 ## Quick-start 
 
-Assumes the use of Rstudio 2025 version or above.
+Summary of the steps to be able to run these scripts and build the database. This 
+assumes the use of Rstudio 2025 version or above.
 
-1. copy file `R/filepaths_example.R` to `R/filepaths.R` and set files paths 
+1. clone the private git repository with the in-progress (aka 'raw') data  
+   from https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working.git
+   to a folder on your computer.  Note the location of this folder for steps later. 
+   If you are a collaborator and you don't have access, please contact the project
+   director. 
+2. copy file `R/filepaths_example.R` to `R/filepaths.R` and set files paths 
    pointing to data on your computer (details below). 
-1. install packages as needed (details below)
-2. clear R environment (scripts do not do this automatically)
-3. check file paths/repository state
+3. install packages as needed (details below)
+4. clear R environment (scripts do not do this automatically)
+5. check file paths/repository state
    - open R/L0/L0_repo_status.qmd
    - in Rstudio, in the upper-right "run" button, select
      "restart R and run all chunks"
    - if there are errors, check if `dir.exists(DATA_FOLDER)` 
-4. stitch raw data
+6. stitch raw data
    - open R/L0/L0_stitch.qmd
    - in the upper-right "run" button, select
      "restart R and run all chunks"
    - this will report the file that is saved
-5. build taxonomy edits, running one chunk at time
+7. build taxonomy edits, running one chunk at time
    - open R/L1/AvianInteractionData_L1.qmd
    - edit the value for stitched_L0_file to match the L0 step above (near the top of file)
    - check the value for the main checklists 
@@ -70,14 +73,17 @@ int.raw.names <- add_name_edits(int.raw.names,
   ```
    - save the edit list as a file (Work in Progress)
 
-6. update names in interaction database (*Work in progress*)
+8. update names in interaction database (*Work in progress*)
    - open "AvianInteractionData_L1_final_merge.qmd" 
    - update input and output file names
    - run to merge and create final CSV database
 
-## Set-up and Configuration for R code
+## Detailed Set-up and Configuration for R code
 
-For those using the R scripts to build the database, you must set up the 
+These are the steps for collaborators to get this R code working to be able to 
+build the database and generate summary reports and figures. 
+
+To use these R scripts to build the database, you must set up the 
 configuration for where to find the data, as each computer/execution environment 
 has its own folder paths.  
 To allow for collaboration, this project uses a simple R script that only sets 
@@ -100,25 +106,30 @@ system does not accommodate for that**
 
    
 
-Example `filepaths.R` contents (see also the content osf )
+Example `filepaths.R` contents (see also the content of the file `filepaths_example.R`)
 
 ```
+# path the clone of the in-progress data repository
 DATA_FOLDER =  "/Users/USERID/Avian-Interaction-Database-Working"
-# no need to edit this to match your computer if the folder above is correct
-CHECKLIST_FOLDER = file.path(DATA_FOLDER, "L1", "species_checklists")
+# Path for for L0 and L1 checklists (Clements etc):
+CHECKLIST_L0 = "./data/L0/species_checklists"
+CHECKLIST_L1 = "./data/L1/species_checklists"
 ```
+
+### Installing Packages
 
 This project uses the widely used ['here' package](https://here.r-lib.org) to 
 automatically identify the top folder for scripts to be able to find each other 
 regardless of where they are run. Install this package.
 
-### Installing Packages
+To install all of the packages required for this project we use the [renv](https://rstudio.github.io/renv/articles/renv.html)
+package manager from Rstudio/Posit as follows from the R console
 
-To install all of the packages used here quickly, try the `renv` package
-from Rstudio/Posit as follows:
 
 ```
+# if you don't have renv installed, first install it
 install.packages("renv")
+# this installs all the packages listed in the "renv.lock" file 
 renv::init()
 ```
 
