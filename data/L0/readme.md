@@ -1,11 +1,13 @@
-### L0 : Avian Interaction Database Level 0: code & metadata files.
+## Avian Interaction Database Project
+
+### Level 0 metadata files.
 
 Interaction metadata and species checklists.  
 
-Very brief description of folders and files. See main project [README](../README.md) file, and the data entry instructions in this folder for details: 
+See the data file [README file](../README.md) file for description of these files
+and links to the data entry instructions 
 
-- Details and instructions for data entry : [AvianInteractionData_ENTRY_INSTRUCTIONS.md](AvianInteractionData_ENTRY_INSTRUCTIONS.md)
-
+See [main project readme](../../readme.md) for full documentation. 
 
 
 
