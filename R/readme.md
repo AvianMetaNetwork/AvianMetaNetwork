@@ -1,82 +1,93 @@
 # Avian Interaction Database: Instructions for R Programming
 
 `R/readme.md`
-## Authors (R code)
-
-* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
-* Patrick Bills, staff data scientist 2023-2025 [Institute for Cyber-enabled Research (ICER)](https://icer.msu.edu)
-* Emily Parker, staff data manager 2022-24
-* Kelly Kapsar, Post-doctoral Faculty 2025-2026
-* Lucas Mansfield, PhD candidat 2025-
 
 ## Overview
-
-These are instructions for using the R code to check data files and build
-the database from a collection of CSV files entered over time by contributors to the database, 
-primarily workers in the [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
-These scripts are for use by project collaborators only and provided as a reference. 
 
 For an overview of the project, details about the database, its structure, and a protocol 
 for how the data are pulled from primary sources, see the [Project Readme file](../readme.md) 
 in the root directory. 
 
----
+This documents the process and R code for cleaning and building
+the Avian Interaction Database from a collection of data entry tables entered over time
+by contributors to the database, primarily workers in the 
+[Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
+
+The build process and scripts in this section are for use by project collaborators only
+and provided as a reference.  For details about our workflow, see [Project Readme file](../readme.md) 
+
+## Code Authors 
+
+* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
+* Patrick Bills, staff data scientist 2023-2025 [Institute for Cyber-enabled Research (ICER)](https://icer.msu.edu)
+* Emily Parker, staff data manager 2022-24
+* Kelly Kapsar, Post-doctoral Faculty 2025-2026
+* Lucas Mansfield, PhD candidate 2025-
+
 
 ## Location of data
 
 See the [main documentation for the project](../readme.md) for a link to the finished 
 database (the output of this process). 
 
-The R folders in this project does have some data used to harmonized and update the
+The R folders in this project do have some support data used to harmonize and update the
 taxonomic designations for species to match current species lists.  See 
-the "*reconcile taxonomy*" step blow
+the "*reconcile taxonomy*" step below, in the data folder of this repository. 
 
-## Quick-start 
+## Main database build scripts
+
+* R/L0/1_generate_species_lists.R = Generates species lists used for taxonomic harmonization and regional subsetting
+* R/L0/2_stitch_species.qmd = stitches together all individual csvs in /L0/species
+* R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Coninental United States (CONUS)
+* R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepencies based on current and past Clements names.  
+* R/L1/5_subset_network.qmd = subsets interaction network to only include focal species in the subset species list generated in script 3. 
+* R/L2/6_summary_vignette.qmd = 
+
+## Getting Started
 
 Summary of the steps to be able to run these scripts and build the database. This 
 assumes the use of Rstudio 2025 version or above.
 
-1. clone the private git repository with the in-progress (aka 'raw') data  
-   from https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working.git
-   to a folder on your computer.  Note the location of this folder for steps later. 
-   If you are a collaborator and you don't have access, please contact the project
-   director. 
-2. copy file `R/filepaths_example.R` to `R/filepaths.R` and set files paths 
-   pointing to data on your computer (details below). 
-3. install packages as needed (details below)
-4. clear R environment (scripts do not do this automatically)
-5. check file paths/repository state
-   - open R/L0/L0_repo_status.qmd
+1. setup 
+   - clone the private git repository with the in-progress (aka 'raw') data  
+     from https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working.git
+     to a folder on your computer.  Note the location of this folder for steps later. 
+     If you are a collaborator and you don't have access, please contact the project
+     director. 
+   - copy file `R/filepaths_example.R` to `R/filepaths.R` and set files paths 
+     pointing to data on your computer (details below). 
+   - install packages as needed (details below)
+   - clear R environment (scripts do not do this automatically)
+1. optional: check file paths/repository state
+   - open `R/auxilliary_script/L0_repo_status.qmd` Quarto file
    - in Rstudio, in the upper-right "run" button, select
      "restart R and run all chunks"
+   - if there are no errors, the data is available and you may proceed.
    - if there are errors, check if `dir.exists(DATA_FOLDER)` 
-6. stitch raw data
-   - open R/L0/L0_stitch.qmd
+1. optional/occasional: rebuild species lists
+   * R/L0/1_generate_species_lists.R = Generates species lists used for taxonomic harmonization and regional subsetting
+   Recent species lists are in the [data folder](../data) of this repository and only need to be
+   recreated if new lists are available from our primary sources
+1. aggregate (stitch) raw data into single file
+   - `R/L0/2_stitch_species.qmd` = stitches together all individual csvs in /L0/species
    - in the upper-right "run" button, select
      "restart R and run all chunks"
    - this will report the file that is saved
-7. build taxonomy edits, running one chunk at time
-   - open R/L1/AvianInteractionData_L1.qmd
+1. build species checklist for current region of study 
+   -  `R/L1/3_subset_species_lists.R` = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Coninental United States (CONUS)
+
+1. build taxonomy edits, running one chunk at time
+   - open `R/L1/4_clean_network_data.qmd` = harmonizes species names, interaction codes, checks species name discrepencies based on current and past Clements names.  
    - edit the value for stitched_L0_file to match the L0 step above (near the top of file)
    - check the value for the main checklists 
    - position the cursor in the first block of code and run it
    - easily run all subsequent blocks, one a time, using key short cut Option+Command+N
      (see the "->Run" button at the top for more options)
-   - edit or add new taxonomic fixes to the edit list by adding code chunks like:
-   
-```
-int.raw.names <- add_name_edits(int.raw.names,
-  scientific_name.raw = "Corvus caurinus",
-  edit_notes = "CHANGE TO CLOSEST MATCH: checklist Northwestern Crow Corvus brachyrhynchos caurinus",
-  scientific_name.edit = "Corvus brachyrhynchos caurinus"
-  )
-  ```
-   - save the edit list as a file (Work in Progress)
+   - edit or add new taxonomic fixes to the edit list
 
-8. update names in interaction database (*Work in progress*)
-   - open "AvianInteractionData_L1_final_merge.qmd" 
-   - update input and output file names
-   - run to merge and create final CSV database
+8. Subset for specific analysis
+  * Some analyses only include focal species in the subset species list generated in script 3. 
+  * R/L1/5_subset_network.qmd = subsets interaction network to 
 
 ## Detailed Set-up and Configuration for R code
 
@@ -116,7 +127,7 @@ CHECKLIST_L0 = "./data/L0/species_checklists"
 CHECKLIST_L1 = "./data/L1/species_checklists"
 ```
 
-### Installing Packages
+### Installing Packages Details
 
 This project uses the widely used ['here' package](https://here.r-lib.org) to 
 automatically identify the top folder for scripts to be able to find each other 
@@ -171,11 +182,11 @@ updating to current taxonomy (a step that occurs within a L1 step).
   - Data submitted for review can be checked using reviewing scripts  
   - Outcome: CSV files in the "species" folder with mostly cleaned and corrected data but with potentially outdated taxonomic designations.
   - Scripts/Notebooks:
-    - `lib/config.R` = functions for checking and setting the file paths in `file_paths.R`
-    - `lib/shared_functions.R` = contains functions for many  cleaning/data processing code
-    - `auxilliary_scripts/L0_repo_status.qmd` = count numbers of files in various states from sources
-    - `auxilliary_scripts/L0_corrections_discovery.qmd` = point out issues in files to be corrected
-=  
+    - `lib/config.R` : functions for checking and setting the file paths in `file_paths.R`
+    - `lib/shared_functions.R` : contains functions for many  cleaning/data processing code
+    - `auxilliary_scripts/L0_repo_status.qmd` : count numbers of files in various states from sources
+    - `auxilliary_scripts/L0_corrections_discovery.qmd` : point out issues in files to be corrected
+
 2) **clean and combine**
 
    - Outcome: single file with all interactions that are even more cleaned and made 
@@ -212,16 +223,18 @@ updating to current taxonomy (a step that occurs within a L1 step).
 
 ## Additional scripts
 
-**R/lib/config.R** sourced by all scripts to set file paths, should not need editing or
+These are used by collaborators for building and cleaning the database
+
+- **R/lib/config.R** sourced by all scripts to set file paths, should not need editing or
 sourcing.
-
-
-
-**Previous BBS scripts (see working repository)**
-
-- /R/bbs/bbs_specieslist_L0.R = reads in current BBS species list and adds any species that was split
-- /R/bbs/bbs_specieslist_L1.R = cleans the BBS species list, e.g., combining subspecies into species
-
+- **R/lib/shared_functions.R** sources by most scripts, common functions for cleaning and opening the DB
+  Using a script for functions helps to keep the quarto notebook files succinct. 
+- **R/lib/taxonomy_functions.R** functions used by `R/L1/4_clean_network_data.qmd` for taxonomic harmonization, 
+  to keep that quarto notebook readable. 
+- **R/lib/compare_outputs.R** internal script specifically for comparing versions of databases created
+  during a transition in late 2024. 
+- **R/auxilliary_scripts** current or draft script fragements used by the database team
+- **R/archive** These are from previous iterations used by the database team and can ignored.  
 
 
 ## Acknowledgements 
