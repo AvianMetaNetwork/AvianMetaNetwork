@@ -1,4 +1,4 @@
-# config.R  read in configuration specifically for file paths, used by all scripts
+# lib/config.R  read in configuration specifically for file paths, used by all scripts
 # TITLE:          Avian Interaction Database Workflow Configuration
 # AUTHORS:        Phoebe Zarnetske, Pat Bills, Kelly Kapsar
 # COLLABORATORS:  Vincent Miele, Stephane Dray
@@ -97,7 +97,7 @@ get_file_paths <- function(config_file = NULL){
                     "must set the variable DATA_FOLDER See README.md for how to set-up")
     warning(message)
     stop()
-  } else if(!dir.exists(DATA_FOLDER)){
+  } else if(!dir.exists(here::here(DATA_FOLDER))){
       message = paste("the DATA_FOLDER '", DATA_FOLDER, " in the config file ", config_file, "can't be found")
       warning(message)
       stop()

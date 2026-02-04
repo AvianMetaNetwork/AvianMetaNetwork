@@ -162,10 +162,10 @@ File paths used for this run:
 #| echo: false
 
 # functions used by all 
-source(here::here('R/L0/X_functions.R'))
+source(here::here('R/lib/shared_functions.R'))
 # functions for this process to reduce this script size
 # and load libraries used here
-source(here::here('R/L1/X_taxonomy_functions.R'))
+source(here::here('R/lib/taxonomy_functions.R'))
 
 file_paths <- get_file_paths()
 
@@ -558,7 +558,7 @@ print(dim(unique.sp.raw)) #3913 # May 29, 2025: 3889; Sept. 29, 2025: 3879; Oct 
 
 Create list of unique scientific_name.raw and common_name.raw pairs with 
 formatting adjustments, stacking and collecting anything in sp1 and sp2. 
-See documentation in `X_taxonomy_functions.R` script for details
+See documentation in `taxonomy_functions.R` script for details
 
 *note:  since adjustments/corrections to species were added to L0 cleaning 
 process, there should be very few differences between 'raw' and 'edited' 
@@ -743,7 +743,7 @@ October 6, 2025: 404
 
 ## Fuzzy Matching of Scientific Name to checklist
 
-Use fuzzy logic function ( see X_taxonomy_functions.R ) to find closest match from the CHECKLIST reference list
+Use fuzzy logic function ( see taxonomy_functions.R ) to find closest match from the CHECKLIST reference list
 Function to find the closest match with a similarity score, try and determine what misspellings exist 
 
 

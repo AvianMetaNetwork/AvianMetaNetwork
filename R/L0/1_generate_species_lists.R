@@ -40,7 +40,7 @@ library(readr)
 library(purrr)
 
 # Get file paths
-source("R/config.R")
+source("R/lib/config.R")
 file_paths <- get_file_paths()
 
 
