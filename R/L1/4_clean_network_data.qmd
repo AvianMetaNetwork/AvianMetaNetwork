@@ -1737,7 +1737,7 @@ remaining_mismatch <- unique(c(int.raw$species1_scientific[is.na(int.raw$taxa1_c
 # Save list of new mismatches if relevant (if not, then delete the previous list)
 # These will be copied into the clements_mismatches csv and manually rectified
 if(length(remaining_mismatch) > 0){
-  write.csv(remainin_mismatch, here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv"))
+  write.csv(remaining_mismatch, here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv"), row.names=FALSE)
 }else(file.remove(here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv")))
 
 
