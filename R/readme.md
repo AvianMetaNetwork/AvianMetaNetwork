@@ -1,6 +1,10 @@
-# Avian Interaction Database: Instructions for R Programming
+# Avian Interaction Database: 
+## Workflow for cleaning and building database
 
-`R/readme.md`
+###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
+
+https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database
+
 
 ## Overview
 
@@ -15,14 +19,6 @@ by contributors to the database, primarily workers in the
 
 The build process and scripts in this section are for use by project collaborators only
 and provided as a reference.  For details about our workflow, see [Project Readme file](../readme.md) 
-
-## Code Authors 
-
-* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
-* Patrick Bills, staff data scientist 2023-2025 [Institute for Cyber-enabled Research (ICER)](https://icer.msu.edu)
-* Emily Parker, staff data manager 2022-24
-* Kelly Kapsar, Post-doctoral Faculty 2025-2026
-* Lucas Mansfield, PhD candidate 2025-
 
 
 ## Location of data
@@ -41,7 +37,17 @@ the "*reconcile taxonomy*" step below, in the data folder of this repository.
 * R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Coninental United States (CONUS)
 * R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepencies based on current and past Clements names.  
 * R/L1/5_subset_network.qmd = subsets interaction network to only include focal species in the subset species list generated in script 3. 
-* R/L2/6_summary_vignette.qmd = 
+* R/L2/6_summary_vignette.qmd = counts of records by categories of final database 
+
+## Folders
+
+- R/L0: code to examine, clean, and aggregate the version-controlled data entry files
+- R/L1: code to clean and harmonize taxonomic entries for the final database, 
+  and to create subsets for specific analyses
+- R/L2: code for creating simple summaries and visualizations of the data in the database
+- R/lib: scripts with shared functions used by main database build scripts
+- R/archive: code from previous versions saved for reference
+- R/auxilliary scripts: 
 
 ## Getting Started
 
@@ -85,9 +91,13 @@ assumes the use of Rstudio 2025 version or above.
      (see the "->Run" button at the top for more options)
    - edit or add new taxonomic fixes to the edit list
 
-8. Subset for specific analysis
-  * Some analyses only include focal species in the subset species list generated in script 3. 
-  * R/L1/5_subset_network.qmd = subsets interaction network to 
+1. Subset for specific analysis
+   -  Some analyses only include focal species in the subset species list generated in script 3. 
+   -  R/L1/5_subset_network.qmd = subsets interaction network to 
+
+1. Summarize and visualize results
+
+
 
 ## Detailed Set-up and Configuration for R code
 
@@ -198,8 +208,7 @@ updating to current taxonomy (a step that occurs within a L1 step).
 3) **build checklist**
    download latest checklists if necessary and build comprehensive checklist 
    with 
-   - see working repository!
-     R/L1/AvianInteractionData_specieslists_Canada_CONUS_L1.R 
+     
    - 
    
 4) **build taxonomic reconciliation table**
@@ -209,7 +218,7 @@ updating to current taxonomy (a step that occurs within a L1 step).
    to match the current checklist (typically Clements).
    
    - Outcome:  L1_taxonomonic_edits.csv
-   - Notebook: L1/L1_
+
 
    
 5) **reconcile taxonomy**
@@ -218,8 +227,6 @@ updating to current taxonomy (a step that occurs within a L1 step).
   - apply various methods matches the final 
   - database with the taxonomic 
   
-  - TBD
-
 
 ## Additional scripts
 
@@ -246,11 +253,17 @@ Institute (to P.L. Zarnetske), Erasmus Mundus Fellowship (to S. Zonneveld).
 
 Please see main readme for additional acknlowedgmens
 
+---
 
 ### OPTIONAL Google Drive Setup
 
 We use Google Sheets to facilitate data entry for each species (see protocol in
-[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working/L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, you'd like to view and access the intermediate files in Google Drive, you must have Google Drive installed on your computer. If you are not reviewing those files, this is not necessary. 
+[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working/L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, 
+you'd like to view and access the intermediate files in Google Drive, you must 
+ave Google Drive installed on your computer.  
+
+**This step is not necessary to build the database.** Use only if you are a data
+manager reviewing those in-process google drive sheets. 
 
 From Google Sheets, the raw data is saved as CSV in the working repository once the work
 (typically for a species) is finished.   See our main readme for the workflow.  

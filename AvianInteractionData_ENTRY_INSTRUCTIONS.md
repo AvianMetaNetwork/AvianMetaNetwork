@@ -1,31 +1,41 @@
-# Instructions for Data Entry in Avian Interaction Database in L0 subdirectory
+# Avian Interaction Database: 
+## Instructions for Data Entry in Avian Interaction Database in L0 subdirectory
 
-- NOTES:
-  - Refer to the main [**README.md**](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database) file in the parent directory of this repository for information about the Workflow and subdirectory naming conventions.
+From the [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
-  - Only use GitHub or Google Sheets for data entry and editing of files. *Do not use Microsoft Excel* for data entry or any editing of files; it has text encoding that differs from GitHub and Google Sheets.
+https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database
 
-## OVERVIEW: Data entry & checking on bird-bird interactions occurs within this L0 portion of the [Avian-Interaction-Data-Working](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working). The Working repository L0 folder contains the following files:
 
-### [**ain_all_raw.csv**] = Entry of all records stitched together with [/R/2_stitch_species.qmd](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database/blob/main/R/L0/2_stitch_species.qmd). Each record in this csv file is a unique interaction between 2 species. Note that 2 species can interact in more than one way (equating to multiple rows), and there may be duplicate entries of interactions, each from different species accounts.
+Refer to the main [documentation (readme)](readme.md) file in the parent directory of this repository for information about the Workflow and subdirectory naming conventions.
+
+
+## OVERVIEW
+Data entry & checking on bird-bird interactions occurs within this 
+L0 portion of our private, in-progress data repository : [Avian-Interaction-Data-Working](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working). 
+
+Only use GitHub or Google Sheets for data entry and editing of files.
+*Do not use Microsoft Excel* for data entry or any editing of files; 
+it has text encoding that differs from GitHub and Google Sheets.
+
+### The Working repository L0 folder contains the following files:
 
 ### [**ain_metadata_colnames_v0.csv**](ain_metadata_v0.csv) 
-= Metadata for columns in original version of interaction data sheet. 
+Metadata for columns in original version of interaction data sheet. 
 
 ### [**ain_metadata_colnames_v1.csv**](ain_metadata_v1.csv) 
-= Metadata for columns in modified version of interaction data sheet. 
+Metadata for columns in modified version of interaction data sheet. 
 
 ### [**AvianInteractionData_SpeciesList**](https://docs.google.com/spreadsheets/d/1gT4ljF1yH1_WweINnAW4JfQ1Ytr6OFoXUu24a__qCqM/edit?usp=sharing) 
-= Species look-up table and assignments for data entry. Contains the live updates and assignments of species entry progress.(Note: This is a Google Sheet only accessible to those involved directly in the project.)
+Species look-up table and assignments for data entry. Contains the live updates and assignments of species entry progress.(Note: This is a Google Sheet only accessible to those involved directly in the project.)
 
 ### [**aux_interaction_defs.csv**](aux_interaction_defs.csv)
-= Metadata for interaction types.
+Metadata for interaction types.
 
 ### [**aux_metadata_uncertain**](/aux_metadata_uncertain.csv)
-= Metadata for uncertain interaction keywords.
-
+Metadata for uncertain interaction keywords.
 
 ## Step 1: Get started in GitHub
+
 The first time you use GitHub, do the following: 
 
 - Sign into GitHub and navigate to: https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database. 
