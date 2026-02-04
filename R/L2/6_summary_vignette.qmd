@@ -88,7 +88,7 @@ na_gen_list <- unique(str_replace(na_spp_list, "^([A-Za-z]+).*$", "\\1"))
 
 ### Species list summary
 
--   Total number of species in the North American Avian Interaction Species List: `r length(unique(spp$scientific_name_clements2024))`
+-   Total number of species in the North American Avian Interaction Taxa List: `r length(unique(spp$scientific_name_clements2024))`
 
 ```{r}
 unique_intxns %>% group_by(interaction) %>% summarize(n=n()) %>% arrange(-n)

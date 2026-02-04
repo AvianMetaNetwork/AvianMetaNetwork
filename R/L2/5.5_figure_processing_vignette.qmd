@@ -17,11 +17,12 @@ rm(list=ls())
 library(tidyverse)
 library(stringr)
 library(clootl)
-library(ape)
 library(ggtree)
 library(ggplot2)
 library(ggnewscale)
-library(RColorBrewer)
+library(igraph)
+library(ggraph)
+library(cowplot)
 
 inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv")) #NA avian interaction data
 ```
