@@ -63,6 +63,8 @@ as entered to match the current checklist.  Update the code below
 #| echo: false
 
 manual_taxonomic_resolutions_file_name<- here::here('R/L1', "aux_taxonomy_resolutions_202510.csv")
+
+clements_mismatches <- read_csv(here::here("./data/L1/aux_mismatches_with_clements_best_match.csv"))
 ```
 
 
@@ -1683,6 +1685,64 @@ int.raw.resolved$species2_common[int.raw.resolved$species2_scientific == "Corvus
 int.raw <- int.raw.resolved
 
 ```
+
+## Create new column for the Clements string for the scientific name 
+### This should mostly be the same as the taxa1_scientific and taxa2_scientific, except for a few unid. where our level of taxonomic resolution is higher than any option in the Clements species list
+
+```{r}
+# Combine both scientific name columns from the interaction data
+# (taxa1 = species A, taxa2 = species B), then keep only unique names
+unique_taxa_list <- unique(c(int.raw$species1_scientific, int.raw$species2_scientific))
+
+# Extract and store only the names that do NOT match Clements taxonomy
+# These are the mismatches that need correction/review
+mismatch <- unique_taxa_list[!(unique_taxa_list %in% checklist$scientific_name)]
+
+# For taxa already labeled according to Clements, copy taxa1_scientific into taxa1_clements
+# For taxa not labeled according to Clements, put NA
+int.raw$taxa1_clements <- ifelse(
+  int.raw$species1_scientific %in% mismatch, 
+  NA, 
+  int.raw$species1_scientific
+)
+
+int.raw$taxa2_clements <- ifelse(
+  int.raw$species2_scientific %in% mismatch, 
+  NA, 
+  int.raw$species2_scientific
+)
+
+# make a clean lookup
+lookup <- clements_mismatches %>%
+  select(old_name, new_name)
+
+# Join in new Clements names where needed
+int.raw <- int.raw %>%
+  left_join(lookup, by = c("species1_scientific" = "old_name")) %>%
+  rename(new1 = new_name) %>%
+  left_join(lookup, by = c("species2_scientific" = "old_name")) %>%
+  rename(new2 = new_name) %>%
+  mutate(
+    taxa1_clements = if_else(!is.na(new1), new1, taxa1_clements),
+    taxa2_clements = if_else(!is.na(new2), new2, taxa2_clements)
+  ) %>%
+  select(-new1, -new2)
+
+# Identify any remaining mismatches 
+remaining_mismatch <- unique(c(int.raw$species1_scientific[is.na(int.raw$taxa1_clements)], 
+                               int.raw$species2_scientific[is.na(int.raw$taxa2_clements)]))
+
+
+# Save list of new mismatches if relevant (if not, then delete the previous list)
+# These will be copied into the clements_mismatches csv and manually rectified
+if(length(remaining_mismatch) > 0){
+  write.csv(remainin_mismatch, here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv"))
+}else(file.remove(here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv")))
+
+
+```
+
+
 ## Database Summary
 
 ```{r}
