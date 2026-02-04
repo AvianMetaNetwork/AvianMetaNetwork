@@ -1,90 +1,55 @@
-# Avian Interaction Database 
-This repository contains code and workflows for the The Avian Interaction Database project, initially focusing on North America. Starting in 2019, a new protocol was established and the previous records were updated and further bird-bird interactions were added in by Zarnetske and MSU SpaCE Lab undergraduates (2019-present). The database is in preparation for publication as an open access data paper. From 2012-2014, Zarnetske and Zonneveld compiled bird-bird interactions among cavity nesting birds and their interacting bird species, based on species accounts in the Birds of North America (now Birds of the World). This led to an analysis of the influence of biotic interactions on North American cavity nesting bird species distributions ([Belmaker and Zarnetske et al. 2015 GEB](https://onlinelibrary.wiley.com/doi/full/10.1111/geb.12311)). 
+# Avian Interaction Database Data folder
 
-MSU Undergraduates led the presentations of research posters at the [MSU Undergraduate University Research and Arts Forum](https://urca.msu.edu/uuraf):
+`/data/README.md`
 
-Joseph, A., C. Roche, G. DePasquale, M. Andreatta, P. Bills, E. Parker, P.L. Zarnetske. April 2025. HOW DOES HUMAN FOOTPRINT IMPACT NORTH AMERICAN AVIAN SPECIES INTERACTIONS? Michigan State University Undergraduate Research and Arts Forum (UURAF). East Lansing, MI. Poster Presentation.
+These data are support files used for cleaning and building the database
 
-Hirschowitz, I., P. Bills, P.L. Zarnetske. April 2025. NORTH AMERICAN AVIAN RESPONSES TO GLOBAL CHANGE: EFFECTS OF NEGATIVE INTERSPECIES INTERACTIONS ON POPULATION TRENDS. Michigan State University Undergraduate Research and Arts Forum (UURAF). East Lansing, MI. Poster Presentation.
+**L0/aux_metadata_colnames_v0.csv**
+ 
+ List of column names and descriptions of data entry CSVs, previous version used from 2024-9/2025
+ 
+**L0/aux_metadata_colnames_v1.csv**
+ 
+ List of column names and descriptions of data entry CSVs, current version used from 10/2025-current (2026)
+ 
+**L0/aux_interactions_defs.csv**
 
-DePasquale, G., I. Hirschowitz, C. Roche, E.G. Parker, P. Bills, P.L. Zarnetske. April 2024. The North American Avian Interaction Database. Michigan State University Undergraduate Research and Arts Forum (UURAF). East Lansing, MI. Poster Presentation.
+list of interaction types and codes with descriptions with the following columns
 
-## Location of data
+ - type_of_interaction: short name of interaction
+ - asymmetric: yes/no, is the interaction directional rather than the same 
+ - species 1 or 2: possible values for either interaction code
+ - species 2 or 1: possible values for either interaction code
+ - definition: long description of the interaction
 
-To ensure that only the clean and quality controlled data are accessed, only the code and the species lists are stored in this repository. Once published, the North American Avian Interaction Database will be made open access.
+ **[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](AvianInteractionData_ENTRY_INSTRUCTIONS.md)**
+ 
+ Detailed protocol for data entry, version control and validation, includes process flowchart
+ avian-intxn-db-data-entry-flowchart.png
+ 
+**L0/species_checklists**
 
-## Workflow
+This folder holds checklists downloaded and used by L0 scripts to build L1 checklists lists based on the 
+[Clements/eBird checklist of birds of the world](https://www.birds.cornell.edu/clementschecklist/) and 
+[Avibase World Bird database](https://avibase.bsc-eoc.org/)
 
-The workflow for this repository follows the guidelines set out by the [Environmental Data Initiative (EDI)]((https://edirepository.org/)). Briefly, this involves aligning with FAIR data practices, and employing a workflow that uses different levels for harmonization and derived data products. The overall workflow aligns with this EDI diagram: 
+**~L1/aux_taxonomy_resolutions.csv**
 
-<img src="https://edirepository.org/static/images/thematic-standardization-workflow.png" class="inline"/>
+List of changes to be applied to harmonize the taxonomic names from data entry files to ensure
+the database is compatible with current taxonomy based on Clements checklist of birds of the world.  
 
-Order & description of scripts:
+See the [documentation for the database workflow](../R/readme.md) for how this is applied. 
 
-### For entire database: 
-* R/L0/1_generate_species_lists.R = Generates species lists used for taxonomic harmonization and regional subsetting
-* R/L0/2_stitch_species.qmd = stitches together all individual csvs in /L0/species
-* R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Coninental United States (CONUS)
-* R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepencies based on current and past Clements names.  
-* R/L1/5_subset_network.qmd = subsets interaction network to only include focal species in the subset species list generated in script 3. 
+**L1/species_checklists**
 
-## Description of subdirectories 
+This folder holds files are the checklists built from code used in final taxonomic harmonizations
 
-- **data**: Directory containing instructions for interaction data entry, metadata, and species checklists (raw in L0, synthesized in L1). Note that species interaction data files are not directly available in this repository, but will be available for dowload from the Environmental Data Initiative upon publication. 
-- **R**: Code to create L0 and L1 data.
+- **L1/species_checklists/spp_joint_cac.csv**
+- **L1/species_checklists/spp_joint_cac_colsubset.csv**
 
-### docs
-- documents supporting the data and analysis.
+## Note
 
-## Funding 
-Funding is provided by Michigan State University (to P.L. Zarnetske), and by a MSU Ecology Evolution, and Behavior SEED Grant (to P.L. Zarnetske). Original work on a subset of species was funded by the Yale Climate and Energy Institute (to P.L. Zarnetske), Erasmus Mundus Fellowship (to S. Zonneveld). 
+any folder labeled archive has files no longer used in our workflow but preserved for reference
+and comparison
 
-## Authors of this repository
-
-* Phoebe L. Zarnetske, PI, [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
-
-## Collaborators
-* Emily Parker
-* Pat Bills
-* Kelly Kapsar
-* Sara Zonneveld
-
-## Student Research Assistants
-* 2025-
-  - Caroline Roche
-  - Liz Bauer
-  - Vivian Smith
-  - Olive Graves
-  - Sarah Pecis
-  - Addison Hoddinott
-  - Elliot Palmer
-  - Jamie Soehl
-* 2024
-  - India Hirschowitz
-  - Giovanni DePasquale
-  - Caroline Roche
-  - Ava Fountain
-  - Ann Joseph
-  - Maddie Andreatta   
-* 2023
-  - India Hirschowitz
-  - Giovanni DePasquale
-  - Caroline Roche
-* 2022
-  - India Hirschowitz
-  - Jordan Zapata
-  - Elaine Hammond
-* 2021-2024
-  - Emily Parker
-* 2018-2020
-  - Erik Ralston
-  - Minali Bhatt
-
-## References
-
-Belmaker, J., P. Zarnetske, M.-N. Tuanmu, S. Zonneveld, S. Record, A. Strecker, and L. Beaudrot. 2015. Empirical evidence for the scale dependence of biotic interactions. Global Ecology and Biogeography 24:750–761. https://doi.org/10.1111/geb.12311
-
-Birds of the World - Comprehensive life histories for all bird species and families. (Accessed January 13, 2022). http://birdsoftheworld.org/bow/home.
-
-Hurlbert, A. H., A. M. Olsen, M. M. Sawyer, and P. M. Winner. 2021. The Avian Diet Database as a source of quantitative information on bird diets. Scientific Data 8:260. https://www.nature.com/articles/s41597-021-01049-9
 
