@@ -28,80 +28,77 @@ inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_ca
 interaction_categories <- data.frame(
   interaction = c(
     # Trophic (Dark Red)
-    "predation", "nest predation",
+    "predation",
     # Mobbing (Pink)
     "mobbing",
     # Competition (Dark Blues)
-    "competition", "competition-foraging", "competition-nest site", "competition-territory",
+    "competition",
     # Facilitation (Greens)
     "facilitation", "facilitation-mixed flocking", "facilitation-comigration",
-    "facilitation-feeding", "facilitation-foraging", "facilitation-creching",
-    "facilitation-distress calls", "communal nesting", "communal roosting",
+    "facilitation-foraging", "communal nesting", "communal roosting",
     # Commensalism (Purples)
-    "commensalism", "commensalism-scavenge", "commesalism-scavenge",
-    "commensalism-chick adoption", "commensalism-call mimicry",
+    "commensalism", "commensalism-scavenge", "commensalism-chick adoption",
+    "commensalism-call mimicry",
     # Parasitism (Oranges/Browns)
-    "kleptoparasitism", "kleptoparasitism-nest material", "kleptoparasitism-food",
-    "brood parasitism", "nest parasitism", "nest takeover",
+    "kleptoparasitism", "brood parasitism", "nest takeover",
     # Amenalism (Black)
     "amensalism",
-    # N/A (Grays)
-    "co-occur", "hybridization", "copulation", "courtship", "play", "shared scolding", "accidental killing"
+    # Other (Grays)
+    "co-occur", "hybridization", "copulation", "courtship", "play", "accidental killing"
   ),
   category = c(
     # Trophic
-    rep("Trophic", 2),
+    "Trophic",
     # Mobbing
     "Mobbing",
     # Competition
-    rep("Competition", 4),
+    "Competition",
     # Facilitation
-    rep("Facilitation", 9),
+    rep("Facilitation", 6),
     # Commensalism
-    rep("Commensalism", 5),
+    rep("Commensalism", 4),
     # Parasitism
-    rep("Parasitism", 6),
+    rep("Parasitism", 3),
     # Amenalism
     "Amenalism",
     # N/A
-    rep("N/A", 7)
+    rep("Other", 6)
   ),
   color = c(
     # Trophic (Reds/Oranges)
-    "#800000", "#CD5C5C",
+    "#800000",
     # Mobbing (Teal)
     "#E0115F",
     # Competition (Dark Blues)
-    "#00008B", "#1E3A8A", "#2563EB", "#3B82F6",
+    "#00008B",
     # Facilitation (Greens)
-    "#006400", "#228B22", "#32CD32", "#00A86B", "#50C878",
-    "#ADFF2F", "#7CFC00", "#66CDAA", "#3CB371",
+    "#006400", "#228B22", "#32CD32", "#00A86B", "#50C878", "#3CB371",
     # Commensalism (Purples)
-    "#4B0082", "#6A5ACD", "#6A5ACD", "#9370DB", "#BA55D3",
+    "#4B0082", "#6A5ACD", "#9370DB", "#BA55D3",
     # Parasitism (Oranges/Browns)
-    "#D2691E", "#CD853F", "#DAA520", "#B8860B", "#DEB887", "#F4A460",
+    "#D2691E", "#DEB887", "#F4A460",
     # Amenalism (Black)
     "#000000",
     # N/A (Grays)
-    "#808080", "#696880", "#373737", "#7C6E7F", "#333333", "#9897A9", "#787276"
+    "#808080", "#696880", "#373737", "#7C6E7F", "#9897A9", "#787276"
   ),
   category_color = c(
     # Trophic
-    rep("#800000", 2),
+    "#800000",
     # Mobbing
     "#E0115F",
     # Competition
-    rep("#00008B", 4),
+    "#00008B",
     # Facilitation
-    rep("#006400", 9),
+    rep("#006400", 6),
     # Commensalism
-    rep("#4B0082", 5),
+    rep("#4B0082", 4),
     # Parasitism
-    rep("#D2691E", 6),
+    rep("#D2691E", 3),
     # Amenalism
     "#000000",
-    # N/A
-    rep("#808080", 7)
+    # Other
+    rep("#808080", 6)
   ),
   stringsAsFactors = FALSE
 )
@@ -109,7 +106,7 @@ interaction_categories <- data.frame(
 # Define category order for plotting
 category_order <- c("Trophic", "Mobbing", "Competition", "Facilitation",
                     "Commensalism", "Parasitism", "Amenalism",
-                    "N/A")
+                    "Other")
 
 interaction_categories$category <- factor(interaction_categories$category,
                                           levels = category_order)
@@ -121,8 +118,8 @@ interaction_categories$category <- factor(interaction_categories$category,
 inter_NA_slim <- inter_NA %>%
   rowwise() %>% #This removes duplicate interactions (same sp pair and int type)
   mutate(       #by creating columns of the species pairs in alphabetical order
-    sp_min = min(species1_scientific, species2_scientific),
-    sp_max = max(species1_scientific, species2_scientific)
+    sp_min = min(taxa1_scientific, taxa2_scientific),
+    sp_max = max(taxa1_scientific, taxa2_scientific)
   ) %>%
   ungroup() %>%
   distinct(sp_min, sp_max, interaction, .keep_all = TRUE) %>% #removing duplicates
@@ -135,47 +132,46 @@ inter_NA_slim <- inter_NA %>%
 
 type_summ <- inter_NA %>%
   group_by(interaction) %>%
-  summarize(n = n()) %>%
+  summarize(total = n()) %>%
   left_join(interaction_categories, by = "interaction") %>%
-  arrange(category, desc(n))
-
-#Create factor for ordered plotting
-type_summ$interaction <- factor(type_summ$interaction,
-                                levels = rev(type_summ$interaction))
+  arrange(category, desc(total))
 
 #Repeat for slim dataset
 type_summ_slim <- inter_NA_slim %>%
   group_by(interaction) %>%
-  summarize(n = n()) %>%
+  summarize(unique = n()) %>%
   left_join(interaction_categories, by = "interaction") %>%
-  arrange(category, desc(n))
-type_summ_slim$interaction <- factor(type_summ_slim$interaction,
-                                     levels = rev(type_summ_slim$interaction))
+  arrange(category, desc(unique))
 
+
+#Join to have total and unique for each type
+type_summ_total <- merge(type_summ, type_summ_slim, sort = FALSE)
+type_summ_total$interaction <- factor(type_summ_total$interaction,
+                                     levels = rev(type_summ_total$interaction))
 # --------------------------------------------------------------------
 # Phylogeny figure data processing, tree generation, and plot function
 # --------------------------------------------------------------------
 
 inter_NA_trim <- inter_NA_slim %>%
   filter(
-    !str_detect(.data[["species1_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE)),
-    !str_detect(.data[["species2_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE))
+    !str_detect(.data[["taxa1_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE)),
+    !str_detect(.data[["taxa2_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE))
   ) %>%
   #Collapse subspecies to species
   mutate(
-    "species1_scientific" = str_replace(.data[["species1_scientific"]],
+    "taxa1_scientific" = str_replace(.data[["taxa1_scientific"]],
                                         "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1"),
-    "species2_scientific" = str_replace(.data[["species2_scientific"]],
+    "taxa2_scientific" = str_replace(.data[["taxa2_scientific"]],
                                         "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1")
   ) %>%
   #Remove self interactions
-  filter(.data[["species1_scientific"]] != .data[["species2_scientific"]])
+  filter(.data[["taxa1_scientific"]] != .data[["taxa2_scientific"]])
 
 inter_NA_clean <- inter_NA_trim %>%
   rowwise() %>% #This removes duplicate interactions (same sp pair and int type)
   mutate(       #by creating columns of the species pairs in alphabetical order
-    sp_min = min(species1_scientific, species2_scientific),
-    sp_max = max(species1_scientific, species2_scientific)
+    sp_min = min(taxa1_scientific, taxa2_scientific),
+    sp_max = max(taxa1_scientific, taxa2_scientific)
   ) %>%
   ungroup() %>%
   distinct(sp_min, sp_max, interaction, .keep_all = TRUE) %>% #removing duplicates
@@ -183,25 +179,25 @@ inter_NA_clean <- inter_NA_trim %>%
 
 inter_NA_flip <- inter_NA_clean %>%
   rename(
-    temp_sp1_com = .data[["species2_common"]],
-    temp_sp2_com = .data[["species1_common"]],
-    temp_sp1_sci = .data[["species2_scientific"]],
-    temp_sp2_sci = .data[["species1_scientific"]]
+    temp_sp1_com = .data[["taxa2_common"]],
+    temp_sp2_com = .data[["taxa1_common"]],
+    temp_sp1_sci = .data[["taxa2_scientific"]],
+    temp_sp2_sci = .data[["taxa1_scientific"]]
   ) %>%
   rename(
-    species1_common = temp_sp1_com,
-    species2_common = temp_sp2_com,
-    species1_scientific = temp_sp1_sci,
-    species2_scientific = temp_sp2_sci
+    taxa1_common = temp_sp1_com,
+    taxa2_common = temp_sp2_com,
+    taxa1_scientific = temp_sp1_sci,
+    taxa2_scientific = temp_sp2_sci
   )
 
 inter_NA_full <- dplyr::union(inter_NA_clean, inter_NA_flip)
 
 inter_NA_working <- inter_NA_full %>%
-  group_by(.data[["species1_scientific"]]) %>%
+  group_by(.data[["taxa1_scientific"]]) %>%
   #Replace spaces with underscores to match tree tips
-  mutate(species1_scientific = str_replace_all(.data[["species1_scientific"]], " ", "_")) %>%
-  rename(species = species1_scientific) %>%
+  mutate(taxa1_scientific = str_replace_all(.data[["taxa1_scientific"]], " ", "_")) %>%
+  rename(species = taxa1_scientific) %>%
   summarize(
     n_int = n(),
     n_type = n_distinct(.data[["interaction"]]),
@@ -464,21 +460,21 @@ create_network <- function(data, #input dataset, should be inter_NA_int
 
   #Filter interactions involving focal species
   focal_interactions <- data %>%
-    filter(species1_scientific == focal_species |
-             species2_scientific == focal_species)
+    filter(taxa1_scientific == focal_species |
+             taxa2_scientific == focal_species)
 
   #Get network species and their interactions
-  network_species <- unique(c(focal_interactions$species1_scientific,
-                              focal_interactions$species2_scientific))
+  network_species <- unique(c(focal_interactions$taxa1_scientific,
+                              focal_interactions$taxa2_scientific))
 
   network_data <- data %>%
-    filter(species1_scientific %in% network_species,
-           species2_scientific %in% network_species) %>%
+    filter(taxa1_scientific %in% network_species,
+           taxa2_scientific %in% network_species) %>%
     left_join(interaction_categories, by = "interaction")
 
   #Create graph with vertex and edge attributes
   network_graph <- graph_from_data_frame(
-    d = network_data[, c("species1_scientific", "species2_scientific")],
+    d = network_data[, c("taxa1_scientific", "taxa2_scientific")],
     vertices = NULL)
 
   V(network_graph)$is_focal <- V(network_graph)$name == focal_species
@@ -637,16 +633,16 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 
     #Filter interactions involving focal species
     focal_interactions <- data %>%
-      filter(species1_scientific == focal_species |
-               species2_scientific == focal_species)
+      filter(taxa1_scientific == focal_species |
+               taxa2_scientific == focal_species)
 
     #Get network species and their interactions
-    network_species <- unique(c(focal_interactions$species1_scientific,
-                                focal_interactions$species2_scientific))
+    network_species <- unique(c(focal_interactions$taxa1_scientific,
+                                focal_interactions$taxa2_scientific))
 
     network_data <- data %>%
-      filter(species1_scientific %in% network_species,
-             species2_scientific %in% network_species) %>%
+      filter(taxa1_scientific %in% network_species,
+             taxa2_scientific %in% network_species) %>%
       left_join(interaction_categories, by = "interaction")
 
     #Track unique interactions/categories across all networks
@@ -657,7 +653,7 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 
     #Create graph with vertex and edge attributes
     network_graph <- graph_from_data_frame(
-      d = network_data[, c("species1_scientific", "species2_scientific")],
+      d = network_data[, c("taxa1_scientific", "taxa2_scientific")],
       vertices = NULL
     )
 
