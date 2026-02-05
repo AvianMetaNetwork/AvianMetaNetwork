@@ -39,10 +39,7 @@ You must have access to the google drive folder, that is, the google drive softw
 ```{r}
 #| echo: false
 #| warnings: false
-
-L0_functions_file <- here::here('R/L0/L0_functions.R')
-
-source(L0_functions_file)
+source(here::here('R/lib/shared_functions.R'))
 
 suppressMessages({
 library(magrittr)
@@ -72,9 +69,8 @@ see https://apple.stackexchange.com/questions/439714/access-google-drive-drive-f
 file_paths <- get_file_paths() 
 
 # renaming/assigning vars for consistency with previous code
-google_drive_folder <- file.path(file_paths$SYNC_DATA_FOLDER, "species_completed")
-L0_dir <- file_paths$L0
 
+L0_dir <- file_paths$L0
 species_dir<- file.path(file_paths$L0, "species")
 git_repo_folder <- species_dir
 species_temp_dir<-file.path(file_paths$L0, "species_temp")
@@ -97,43 +93,45 @@ don't want to miss any in /species/ that are only in gsheet form.*
 ```{r}
 
 # List all filenames in both folders
-google_drive_files <- list.files(google_drive_folder, full.names = FALSE)
+
+# this requires the google drive folder to be set
+if("SYNC_DATA_FOLDER" %in% names(file_paths)){
+  google_drive_folder <- file.path(file_paths$SYNC_DATA_FOLDER, "species_completed")
+  google_drive_files <- list.files(google_drive_folder, full.names = FALSE)
+  google_drive_main_names <- sapply(google_drive_files, get_main_name)
+  google_only_main_names <- setdiff(google_drive_main_names, git_repo_main_names)
+  git_only_main_names <- setdiff(git_repo_main_names, google_drive_main_names)
+  # Find common names (intersection) and unique names (differences)
+  common_main_names <- intersect(google_drive_main_names, git_repo_main_names)
+
+  print("Number of Google Only Main Names:")  
+  print( length(google_only_main_names))
+
+  tibble(google_only_main_names)
+
+  print(paste("Git only", length(git_only_main_names),  "files "))
+
+  tibble(git_only_main_names)
+
+  print("Files with matching main names in both Google Drive and Git repository:")
+  print(common_main_names)
+}
+```
+
+In Winter 2025, those only in G-drive appear to be files that do not have initials for entry and review in the suffix, and maybe files that pre-dated using this google drive folder.   
+
+
+```{r}
 git_repo_files <- list.files(git_repo_folder, full.names = FALSE)
 species_in_review_files <- list.files(species_in_review_dir, full.names = FALSE)
 
 # Extract main names from filenames
-google_drive_main_names <- sapply(google_drive_files, get_main_name)
 git_repo_main_names <- sapply(git_repo_files, get_main_name)
 species_to_review_main_names <- sapply(species_in_review_files, get_main_name)
 
-# Find common names (intersection) and unique names (differences)
-common_main_names <- intersect(google_drive_main_names, git_repo_main_names)
-google_only_main_names <- setdiff(google_drive_main_names, git_repo_main_names)
-git_only_main_names <- setdiff(git_repo_main_names, google_drive_main_names)
-
 ```
 
 
-Google Only Main Names:  ( `r length(google_only_main_names)` files ) 
-
-```{r, echo=FALSE}
-google_only_main_names
-```
-
-Git only (`r length(git_only_main_names)` files )
-
-```{r, echo=FALSE}
-git_only_main_names
-
-```
-
-These appear to be files that do not have initials for entry and review in the suffix, and maybe files that pre-dated using this google drive folder.   
-
-Files with matching main names in both Google Drive and Git repository:
-
-```{r, echo=FALSE}
-print(common_main_names)
-```
 
 ### Species left to review
 
@@ -160,11 +158,8 @@ paste(csv_file_path, ":", csv_file_group_name, "files to process", length(in_rev
 
 ## Next Steps
 
-Open and Run/Render *R/L0/L0-stitch.qmd*
+Open and Run/Render Notebooks in `R/L0/`
 
-### TO-DO
-
-add code here to check checklists
 
 
 

@@ -11,9 +11,9 @@
 # 2. save as 'filepaths.R'.
 # 3. edit filespaths.R variables to match your computer;
 #    this is an R script and uses R syntax, not a config or environment file.
-# 4. in scripts use source(here::here('R/config.R')) and file_paths = get_file_config()
+# 4. in scripts use source(here::here('R/lib/config.R')) and file_paths = get_file_config()
 
-# See readme.md for details and R/config.R for script that reads these in.
+# See readme.md for details and R/lib/config.R for script that reads these in.
 # By convention configuration variables (constants) are uppercase.
 
 # Paths to set and replace "filepath" with your computer's filepath:

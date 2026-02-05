@@ -43,10 +43,10 @@ This requires the script 'stitch.rmd' \[LINK\] to be run to create a stitched fi
 # load in all required packages in function script
 # optionally supress messages for noisey packages
 suppressMessages(
-  source(here::here('R/L0/L0_functions.R'))
+  source(here::here('R/lib/shared_functions.R'))
 )
 
-# This uses functions in R/L0/L0_functions_files which also imports R/config.R
+# this also imports R/lib/config.R
 # which sets the locations of the data folders. 
 
 file_paths <- get_file_paths() 
@@ -70,7 +70,7 @@ if(!dir.exists(L0_dir)) {
 
 ```{r}
 # copy this file name from L0_stitch.rmd to use the same 
-intxnsL0.filename <-"AvianInteractionData_L0_test.csv"
+intxnsL0.filename <-"ain_all_raw.csv"
 
 ```
 

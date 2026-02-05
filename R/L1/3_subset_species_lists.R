@@ -34,7 +34,7 @@ library(stringr)
 
 # Local directories
 # Get file paths
-source("R/config.R")
+source("R/lib/config.R")
 file_paths <- get_file_paths()
 
 #### Read in AviBase species list: all species in Canada and CONUS (with Clements 2024 taxonomy)

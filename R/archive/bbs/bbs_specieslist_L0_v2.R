@@ -29,7 +29,7 @@ library(dplyr)
 ### CONSTANTS
 # 2024 DATA FILE URL
 CURRENT_BBS_CSV_URL <- "https://www.sciencebase.gov/catalog/file/get/66d9ed16d34eef5af66d534b?f=__disk__50%2F9f%2F80%2F509f8039f5d6f62305b9e9779c2b8b6f7295f6d1"
-source(here::here("R/config.R"))
+source(here::here("R/lib/config.R"))
 file_paths <- get_file_config()
 L0_dir<- file.path(file_paths$DATA_FOLDER, "L0")
 L1_dir <-file.path(file_paths$DATA_FOLDER, "L1")

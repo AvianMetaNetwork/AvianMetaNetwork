@@ -4,7 +4,7 @@ library(tidyr)
 library(diffdf)
 
 
-source("./R/config.R")
+source("./R/lib/config.R")
 file_paths <- get_file_paths()
 
 s1 <- read.csv(paste0(file_paths$DATA_FOLDER, "/L0/ain_all_raw.csv"))

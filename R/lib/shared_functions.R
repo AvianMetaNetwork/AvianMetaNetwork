@@ -1,4 +1,4 @@
-# X_functions.R
+# shared_functions.R
 # TITLE:          Avian Interaction Pairs L0 Data Stitching together CSVs into 1
 # AUTHORS:        Phoebe Zarnetske, Pat Bills, Emily Parker
 # COLLABORATORS:  Vincent Miele, Stephane Dray
@@ -18,7 +18,7 @@ suppressMessages({
 })
 
 # this sets file paths using config file. See readme for details
-source(here::here('R/config.R'))
+source(here::here('R/lib/config.R'))
 
 # set the global variable with list of file paths for use in all functions
 # this is set here to ensure that it's set and check that a config file was
@@ -28,8 +28,8 @@ source(here::here('R/config.R'))
 # put this statement in your script or notebook after sourcing this file
 # and put the alternate config files,
 # for example, at the top of your script...
-# source(here::here("X_functions.R")
-# file_paths <- get_file_paths(here::here('testdata.R'))
+# source(here::here("R/lib/shared_functions.R")
+# file_paths <- get_file_paths(here::here('R/test_file_paths.R'))
 
 file_paths <- get_file_paths()
 
@@ -476,6 +476,7 @@ read_and_amend <- function(entry_file, add_entry_file_column= FALSE, fix_errors_
 }
 
 
+
 #' count unique species
 #'
 #' given a data frame and column to count, run n unique species
@@ -836,6 +837,7 @@ discover_interaction_errors <- function(intxns.df){
 }
 
 
+
 #' fix errors
 #'
 #' this code doesn't report, just fixes isses with interaction fields
@@ -888,7 +890,6 @@ fix_interaction_errors <- function(intxns.df){
 
 
 
-
 #' correct the interactions column
 #'
 #' issues warning messages if there are problems
@@ -898,7 +899,6 @@ fix_interaction_errors <- function(intxns.df){
 #'
 #' @return the dataframe with the interactions column corrected
 #'
-
 
 
 #'
@@ -924,7 +924,6 @@ correct_interactions <- function(intxns) {
 
   intxns <- intxns %>% filter(!(interaction==""))
   # no blanks exist
-
 
 
 
