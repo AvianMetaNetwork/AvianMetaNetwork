@@ -1,42 +1,202 @@
-ï»¿old_name,new_name,clements_match,edited,broadened to,note
-Acanthis sp.,Acanthis/SpinusÂ sp.,FALSE,yes,two genera,
-Accipiter sp.,Aerospiza/Tachyspiza/Accipiter/AsturÂ sp.,FALSE,yes,four genera,
-Accipitiridae sp.,Accipitridae,FALSE,yes,,
-Accipitridae sp.,Accipitridae,TRUE,,,
-Hawk sp.,AccipitridaeÂ sp.Â (hawkÂ sp.),TRUE,,,
-Accipitrid sp.,Accipitridae,TRUE,,,
-Actitis sp.,ActitisÂ hypoleucos/macularius,FALSE,yes,two species,
-Aechmophorus sp.,AechmophorusÂ occidentalis/clarkii,FALSE,yes,two species,
-Aethia sp.,Ptychoramphus/AethiaÂ sp.,FALSE,yes,two genera,
-Aimophila sp.,PasserellidaeÂ sp.,FALSE,yes,family,
-Unid. Lark sp.,AlaudidaeÂ sp.,TRUE,,,
-Alcid sp.,AlcidaeÂ sp.,TRUE,,,
-Amazilia sp.,TrochilidaeÂ sp.,FALSE,yes,family,
-Ammodramus sp.,PasserellidaeÂ sp.,FALSE,yes,family,
-Waterfowl sp.,Anatidae sp.,TRUE,,,
-Diving duck sp.,Anatidae sp.,TRUE,,,
-Dabbling duck sp.,AnatidaeÂ sp.Â (dabblingÂ duckÂ sp.),TRUE,,,
-Aythyinae sp.,Anatidae sp.,FALSE,yes,,
-Anhinga sp.,Anhingidae,FALSE,yes,,
-Anhingidae sp.,Anhingidae,TRUE,,,
-Anous sp.,LaridaeÂ sp.,FALSE,yes,family,
-Goose sp.,AnatidaeÂ (gooseÂ sp.),FALSE,yes,,
-Waterbird sp.,AnatidaeÂ sp.,FALSE,yes,,can assume anatidae for NA
-Anseriformes sp.,AnatidaeÂ sp.,FALSE,yes,,can assume anatidae for NA
-Antidae sp.,AnatidaeÂ sp.,FALSE,yes,,
-Aratinga sp.,Eupsittula/Aratinga/Thectocercus/PsittacaraÂ sp.,FALSE,yes,four genera,
-Archilochus sp.,ArchilochusÂ colubris/alexandri,FALSE,yes,two species,
-Heron sp.,ArdeidaeÂ sp.,TRUE,,,
-Bubulcus sp.,ArdeidaeÂ sp.,TRUE,,,
-Ardeitae sp.,ArdeidaeÂ sp.,TRUE,,,
-Ardenna sp.,ProcellariidaeÂ sp.Â (shearwaterÂ sp.),FALSE,yes,Family,
-Arenaria sp.,ScolopacidaeÂ sp.,FALSE,yes,Family,
-Arremenops sp.,PasserellidaeÂ sp.,FALSE,yes,Family,
-Aythyini sp.,Anatidae sp.,FALSE,yes,,
-Baeolophus sp.,ParidaeÂ sp.,FALSE,yes,family,
-Botaurinae sp.,ArdeidaeÂ sp.,FALSE,yes,family,
-Brachyramphus sp.,Brachyramphus/SynthliboramphusÂ sp.,FALSE,yes,two genera,
-Calcariidae sp.,Calcariidae,TRUE,,,
-Calcarius sp.,Calcarius/RhynchophanesÂ sp.,FALSE,yes,two genera,
-Stint sp.,Calidris sp.,FALSE,yes,,
-Callipepla sp.,OdontophoridaeÂ sp.,FALSE,yes,family,
+old_name,new_name,clements_match,broadened to,note
+Acanthis sp.,Acanthis/Spinus sp.,FALSE,two genera,
+Accipiter sp.,Aerospiza/Tachyspiza/Accipiter/Astur sp.,FALSE,four genera,
+Accipitiridae sp.,Accipitridae,FALSE,family,no spuh
+Accipitridae sp.,Accipitridae,TRUE,family,no spuh
+Hawk sp.,Accipitridae sp. (hawk sp.),TRUE,family,
+Accipitrid sp.,Accipitridae,TRUE,family,no spuh
+Actitis sp.,Actitis hypoleucos/macularius,FALSE,two species,
+Aechmophorus sp.,Aechmophorus occidentalis/clarkii,FALSE,two species,
+Aethia sp.,Ptychoramphus/Aethia sp.,FALSE,two genera,
+Aimophila sp.,Passerellidae sp.,FALSE,family,
+Unid. Lark sp.,Alaudidae sp.,TRUE,family,
+Alcid sp.,Alcidae sp.,TRUE,family,
+Amazilia sp.,Trochilidae sp.,FALSE,family,
+Ammodramus sp.,Passerellidae sp.,FALSE,family,
+Waterfowl sp.,Anatidae sp.,TRUE,family,
+Diving duck sp.,Anatidae sp.,TRUE,family,
+Dabbling duck sp.,Anatidae sp. (dabbling duck sp.),TRUE,family,
+Aythyinae sp.,Anatidae sp.,FALSE,family,
+Anhinga sp.,Anhingidae,FALSE,family,no spuh
+Anhingidae sp.,Anhingidae,TRUE,family,no spuh
+Anous sp.,Sterninae sp.,FALSE,subfamily,
+Goose sp.,Anatidae (goose sp.),FALSE,family,
+Waterbird sp.,,,family,Not identifiable
+Antidae sp.,Anatidae sp.,FALSE,family,
+Aratinga sp.,Eupsittula/Aratinga/Thectocercus/Psittacara sp.,FALSE,four genera,
+Archilochus sp.,Archilochus colubris/alexandri,FALSE,two species,
+Heron sp.,Ardeidae sp.,TRUE,family,
+Bubulcus sp.,Ardeidae sp.,TRUE,family,
+Ardeitae sp.,Ardeidae sp.,TRUE,family,
+Ardenna sp.,Procellariidae sp. (shearwater sp.),FALSE,family,
+Arenaria sp.,Scolopacidae sp.,FALSE,family,
+Arremenops sp.,Passerellidae sp.,FALSE,family,
+Aythyini sp.,Anatidae sp.,FALSE,family,
+Baeolophus sp.,Paridae sp.,FALSE,family,
+Botaurinae sp.,Ardeidae sp.,FALSE,family,
+Brachyramphus sp.,Brachyramphus/Synthliboramphus sp.,FALSE,two genera,
+Calcariidae sp.,Calcariidae,TRUE,family,no spuh
+Calcarius sp.,Calcarius/Rhynchophanes sp.,FALSE,two genera,
+Stint sp.,Calidris sp.,FALSE,genus,
+Callipepla sp.,Odontophoridae sp.,FALSE,family,
+Caracara sp.,Falconidae,FALSE,family,
+Cardeulis sp.,Fringillidae sp.,FALSE,family,
+Cardinal sp.,Cardinalidae,TRUE,family,
+Cardinalis sp.,Cardinalidae,FALSE,family,
+Carduelis sp.,Fringillidae sp.,FALSE,family,
+Centrocercus sp.,Tetraoninae sp.,FALSE,subfamily,
+Cepphus sp.,Alcidae sp.,FALSE,family,
+Certhiid sp.,Certhia sp.,TRUE,genus,monotypic family
+Lapwing sp.,Charadriidae sp.,TRUE,family,
+Plover sp.,Charadriidae sp.,TRUE,family,
+Shorebird sp.,Charadriiformes sp. (shorebird sp.),FALSE,order,
+Charadriiformes sp.,Charadriiformes sp. (shorebird sp.),FALSE,order,
+Charadriiform sp.,Charadriiformes sp. (shorebird sp.),FALSE,order,
+Chen sp.,Anser sp.,FALSE,genus,Chen is now incorporated in Anser
+Chlorophanes sp.,Chlorophanes spiza,FALSE,species,monotypic genus
+Cicioniidae sp.,Ciconiidae sp.,FALSE,family,
+Ciconiiform sp.,Ciconiidae sp.,FALSE,family,monotypic order
+Harrier sp.,Circus sp.,FALSE,genus,
+Cistothorus sp.,Troglodytidae sp.,FALSE,family,
+Dove sp.,Columbidae sp.,TRUE,family,
+Contingidae sp.,Cotingidae,FALSE,family,no spuh
+Corvid sp.,Corvidae sp.,FALSE,family,
+Jay sp.,Corvidae sp.,TRUE,family,
+Crow sp.,Corvus sp. (crow sp.),FALSE,genus,
+Cortunix sp.,Synoicus/Coturnix sp.,FALSE,two genera,
+Crax sp.,Cracidae sp. (curassow sp.),FALSE,family,
+Swan sp.,Cygnus sp.,FALSE,genus,
+Dendrocolaptidae sp.,Dendrocolaptinae sp.,FALSE,subfamily,
+Euphagus sp.,Euphagus carolinus/cyanocephalus,FALSE,two species,
+Falcon sp.,Falco sp.,FALSE,genus,
+unid. Falcon sp.,Falco sp.,FALSE,genus,
+unid. falcon sp.,Falco sp.,FALSE,genus,
+Falconidae sp.,Falconidae,TRUE,family,no spuh
+Fregatidae sp.,Fregata sp.,TRUE,genus,monotypic family
+Finch sp.,Fringillidae sp.,TRUE,family,
+Fringillid sp.,Fringillidae sp.,TRUE,family,
+Carduelinae sp.,Fringillidae sp.,TRUE,family,
+Fulmar sp.,Procellariidae,FALSE,family,no spuh
+Partridge sp.,Phasianidae,FALSE,family,no spuh
+Galliform sp.,,FALSE,,Not identifiable
+Gallus sp.,Phasianidae,FALSE,family,no spuh
+Geococcyx sp.,Geococcyx velox/californianus,FALSE,two species,
+Geothlypis sp.,Geothlypis sp. (yellowthroat sp.),FALSE,genus,
+Crane sp.,Gruidae sp.,TRUE,family,
+Grus sp.,Gruidae sp.,FALSE,family,
+Haliaeetus sp.,Haliaeetus/Icthyophaga sp.,FALSE,two genera,
+Haliastur sp.,Accipitridae sp. (hawk sp.),FALSE,family,
+Helmitheros sp.,Helmitheros vermivorum,FALSE,species,monotypic genus
+Himantopus sp.,Recurvirostridae sp.,FALSE,family,
+Swallow sp.,Hirundinidae sp.,FALSE,family,
+Hirundininae sp.,Hirundinidae sp.,FALSE,family,
+Oceanodroma sp.,Hydrobates sp.,FALSE,genus,
+Hydrobatidae sp.,Hydrobates sp.,TRUE,genus,monotypic family
+Hylophilus sp.,Hylophilus/Tunchiornis/Pachysylvia sp.,FALSE,three genera,
+Blackbird sp.,Icteridae sp.,TRUE,family,
+Icterid sp.,Icteridae sp.,TRUE,family,
+Icterinae sp.,Icteridae sp.,FALSE,family,
+Junco sp.,Passerellidae sp.,FALSE,family,
+Lanio sp.,Thraupidae sp.,FALSE,family,
+Lanius sp.,Laniidae sp.,FALSE,family,
+Lapogus sp.,Lagopus sp.,FALSE,genus,
+Gull sp.,Larinae sp.,FALSE,subfamily,
+Larid sp.,Laridae sp.,TRUE,family,
+Leucophaeus sp.,Larinae sp.,FALSE,subfamily,
+Limnodromus sp.,Scolopacidae sp.,FALSE,family,
+Megapodiidae sp.,Megapodiidae,TRUE,family,no spuh
+unid. screech-owl sp.,Megascops  sp.,FALSE,genus,
+Scoter sp.,Melanitta sp.,FALSE,genus,
+Mergus sp.,Mergellus/Lophodytes/Mergus sp.,FALSE,three genera,
+Thrasher sp.,Mimidae sp.,TRUE,family,
+Molothrus sp.,Icteridae sp.,FALSE,family,
+Morus sp.,Sulidae,FALSE,family,no spuh
+Muscicapid sp.,Muscicapidae sp.,TRUE,family,
+Myiozetetes sp.,Tyrannidae sp.,FALSE,family,
+Nectariniidae sp.,Nectariniidae sp. (sunbird sp.),TRUE,family,
+Nycticorax sp.,Nycticorax nycticorax/caledonicus,FALSE,two species,
+Oriolidae sp.,Oriolidae,TRUE,family,no spuh
+Parid sp.,Paridae sp.,TRUE,family,
+Parkesia sp.,Parkesia motacilla/noveboracensis,FALSE,two species,
+Parulid sp.,Parulidae sp.,TRUE,family,
+Parulinae sp.,Parulidae sp.,TRUE,family,
+Passeridae sp.,Passeridae,TRUE,family,no spuh
+Passerine sp.,Passeriformes sp.,FALSE,order,
+Sparrow sp.,Passeriformes ,FALSE,order,
+Pelecanidae sp.,Pelecanus sp.,FALSE,genus,monotypic family
+Phaethontidae sp.,Phaethon sp.,TRUE,genus,monotypic family
+Phalacrocoracid sp.,Phalacrocoracidae sp.,TRUE,family,
+Phalacrocorax sp.,Phalacrocoracidae sp.,FALSE,family,
+Forest grouse sp.,Tetraoninae sp.,TRUE,subfamily,
+Grouse sp.,Tetraoninae sp.,TRUE,subfamily,
+Pheasant sp.,Phasianidae sp. (pheasant sp.),TRUE,family,
+Phasianidea sp.,Phasianidae,TRUE,family,no spuh
+Phoebastria sp.,Diomedeidae sp.,FALSE,family,
+Wood-warbler sp.,Parulidae sp.,TRUE,family,
+Woodpecker sp.,Picidae sp.,TRUE,family,
+Picoides sp.,Picidae sp.,FALSE,family,
+Plegadis sp.,Threskiornithidae sp. (ibis sp.),FALSE,family,
+Ploceidae sp.,Ploceidae,TRUE,family,no spuh
+Grebe sp.,Podicipedidae sp.,FALSE,family,
+Podilymbus sp.,Podicipedidae sp.,FALSE,family,
+Gnatcatcher sp.,Polioptilidae,TRUE,family,no spuh
+Porzana sp.,Porzana/Zapornia sp.,FALSE,two genera,
+Shearwater sp.,Procellariidae sp. (shearwater sp.),TRUE,family,
+Procellariiformes sp.,,FALSE,,Not identifiable
+Petrel sp.,Procellariidae sp.,FALSE,family,
+Procellariiform sp.,,FALSE,,Not identifiable
+Storm-petrel sp.,Oceanitidae/Hydrobatidae sp.,FALSE,two families,
+Psittacid sp.,Psittacidae,TRUE,family,no spuh
+Psittacidae sp.,Psittacidae,TRUE,family,no spuh
+Pyrrhula sp.,Fringillidae sp.,FALSE,family,
+Rallidae sp.,Rallidae,TRUE,family,no spuh
+Rallid sp.,Rallidae,TRUE,family,no spuh
+Ramphastidae sp.,Ramphastidae,TRUE,family,no spuh
+Regulidae sp.,Regulidae,TRUE,family,no spuh
+Regulus sp.,Regulidae,FALSE,family,no spuh
+Rhea sp.,Rheidae,FALSE,family,no spuh
+Rissa sp.,Rissa tridactyla/brevirostris,FALSE,two species,
+Rynchops sp.,Laridae sp.,FALSE,family,
+Sandpiper sp.,Scolopacidae sp.,FALSE,family,
+Sittidae sp.,Sitta sp.,TRUE,genus,monotypic family
+Sittid sp.,Sitta sp.,TRUE,genus,monotypic family
+Eider sp.,Somateria sp.,FALSE,genus,
+Stercorariidae sp.,Stercorarius sp.,TRUE,genus,monotypic family
+Jaeger sp.,Stercorarius sp. (jaeger sp.),TRUE,genus,
+Skua sp.,Stercorarius sp. (skua sp.),TRUE,genus,
+Catharacta sp.,Stercorarius sp.,FALSE,genus,
+Tern sp.,Sterninae sp.,FALSE,subfamily,
+Sternidae sp.,Sterninae sp.,FALSE,subfamily,
+Sternus sp.,Sterninae sp.,FALSE,subfamily,
+Strigidae sp.,Strigidae,TRUE,family,no spuh
+Owl sp.,Strigiformes sp.,FALSE,order,
+unid. Owl sp.,Strigiformes sp.,FALSE,order,
+Sylviidae sp.,Sylvia/Curruca sp.,TRUE,two genera,
+Thamnophilidae sp.,Thamnophilidae,TRUE,family,no spuh
+Tanager sp.,Thraupidae sp. (tanager sp.),TRUE,family,
+Thraupid sp.,Thraupidae sp.,TRUE,family,
+Thraupinae sp.,Thraupidae sp.,TRUE,family,
+unid. Tanager sp.,Thraupidae sp. (tanager sp.),TRUE,family,
+Threskiornis sp.,Threskiornithidae sp. (ibis sp.),TRUE,family,
+Threskiornithidae sp.,Threskiornithidae,TRUE,family,no spuh
+Threskiornithid sp.,Threskiornithidae,TRUE,family,no spuh
+Ibis sp.,Threskiornithidae sp. (ibis sp.),FALSE,family,
+Tiaris sp.,Tiaris olivaceus,FALSE,species,
+Wren sp.,Troglodytidae sp.,TRUE,family,
+Trogonidae sp.,Trogonidae,TRUE,family,no spuh
+Turnicidae sp.,Turnicidae,TRUE,family,no spuh
+Tympanuchus sp.,Tympanuchus cupido/pallidicinctus,FALSE,two genera,
+Tytonidae sp.,Tytonidae,TRUE,family,no spuh
+Uria sp.,Uria lomvia/aalge,FALSE,two species,
+Urile sp.,Phalacrocoracidae sp.,FALSE,family,
+Vireonidae sp.,Vireonidae,TRUE,family,no spuh
+Vireonid sp.,Vireonidae,TRUE,family,no spuh
+Zenaida sp.,Columbidae sp.,FALSE,family,
+Raptor sp.,Accipitriformes/Falconiformes sp.,TRUE,two orders,
+Seabird sp.,,TRUE,,Not identifiable
+Songbird sp.,Passeriformes sp.,TRUE,order,
+Unid. Raptor sp.,Accipitriformes/Falconiformes sp.,TRUE,two orders,
+Unid. Bunting sp.,Passeriformes sp.,TRUE,order,
+Wading bird sp.,,TRUE,,Not identifiable
+unid. Raptor sp.,Accipitriformes/Falconiformes sp.,TRUE,two orders,
+Areid sp.,Ardeidae sp.,TRUE,family,
