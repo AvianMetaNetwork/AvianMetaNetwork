@@ -149,17 +149,17 @@ duplicate_indices <- duplicated(splist$scientific_name_clements2024)
 duplicate_clements <- splist[duplicate_indices, ]
 duplicate_clements
 
-intxns.db.subset <- intxns.db[intxns.db$species1_scientific %in% splist$scientific_name_clements2024 | intxns.db$species2_scientific %in% splist$scientific_name_clements2024,]
+intxns.db.subset <- intxns.db[intxns.db$taxa1_scientific %in% splist$scientific_name_clements2024 | intxns.db$taxa2_scientific %in% splist$scientific_name_clements2024,]
 dim(intxns.db.subset)  #26200 (25958 in manual fix version)
 
-intxns.db.non.subset <- intxns.db[!(intxns.db$species1_scientific %in% splist$scientific_name_clements2024 | intxns.db$species2_scientific %in% splist$scientific_name_clements2024),]
+intxns.db.non.subset <- intxns.db[!(intxns.db$taxa1_scientific %in% splist$scientific_name_clements2024 | intxns.db$taxa2_scientific %in% splist$scientific_name_clements2024),]
 dim(intxns.db.non.subset) #4818 in manual fix version
 # Check that these equate to dim(intxns.db)
 dim(intxns.db.non.subset)+dim(intxns.db.subset)
 dim(intxns.db)  #30776 in manual fix version
 
-usp1<-(unique(intxns.db.subset$species1_scientific))
-usp2<-(unique(intxns.db.subset$species2_scientific))
+usp1<-(unique(intxns.db.subset$taxa1_scientific))
+usp2<-(unique(intxns.db.subset$taxa2_scientific))
 usp1.2<-append(usp1,usp2)
 length(unique(usp1.2)) #2137 unique species in the interaction data
 
@@ -175,27 +175,27 @@ splist<-splist %>%
 ### Flip all non-CAC spp1 and CAC spp2 combos so that spp1 is always a CAC spp 
 
 ```{r}
-cac_spp1 <- intxns.db.subset[intxns.db.subset$species1_scientific %in% unique(splist$scientific_name_clements2024),]
-nocac_spp1 <- intxns.db.subset[!(intxns.db.subset$species1_scientific %in% unique(splist$scientific_name_clements2024)),]
+cac_spp1 <- intxns.db.subset[intxns.db.subset$taxa1_scientific %in% unique(splist$scientific_name_clements2024),]
+nocac_spp1 <- intxns.db.subset[!(intxns.db.subset$taxa1_scientific %in% unique(splist$scientific_name_clements2024)),]
 
 nocac_spp1_flipped <- nocac_spp1 %>% 
   rename(
-    species2_common = species1_common, 
-    species1_common = species2_common, 
-    species2_scientific = species1_scientific, 
-    species1_scientific = species2_scientific, 
-    effect_sp1_on_sp2 = effect_sp2_on_sp1, 
-    effect_sp2_on_sp1 = effect_sp1_on_sp2
+    taxa2_common = taxa1_common, 
+    taxa1_common = taxa2_common, 
+    taxa2_scientific = taxa1_scientific, 
+    taxa1_scientific = taxa2_scientific, 
+    effect_tx1_on_tx2 = effect_tx2_on_tx1, 
+    effect_tx2_on_tx1 = effect_tx1_on_tx2
   ) %>% 
   relocate(colnames(nocac_spp1))
 
 # Check to make sure all spp1 are now CAC species (value should be 0) 
-length(nocac_spp1_flipped$species1_scientific[!(nocac_spp1_flipped$species1_scientific %in% unique(splist$scientific_name_clements2024))])
+length(nocac_spp1_flipped$taxa1_scientific[!(nocac_spp1_flipped$taxa1_scientific %in% unique(splist$scientific_name_clements2024))])
 
 # Recombine 
 intxns.db.subset.new <- rbind(cac_spp1, nocac_spp1_flipped)
 
-network_spp <- unique(c(intxns.db.subset.new$species1_scientific, intxns.db.subset.new$species2_scientific))
+network_spp <- unique(c(intxns.db.subset.new$taxa1_scientific, intxns.db.subset.new$taxa2_scientific))
 
 # Check to make sure network contains all CAC species 
 missing_spp <- setdiff(
@@ -318,20 +318,6 @@ intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in%
 num_intxn_types <- intxns.db.subset.new %>% group_by(interaction) %>% summarize(n=n()) %>% arrange(-n) 
 knitr::kable(num_intxn_types)
 ```
-
-Change species name column so that it reflects the broad range of taxonomic resolutions of the data
-```{r}
-intxns.db.subset.new <- intxns.db.subset.new %>% 
-  rename(
-    taxa1_scientific = species1_scientific, 
-    taxa2_scientific = species2_scientific, 
-    taxa1_common = species1_common,
-    taxa2_common = species2_common,
-    effect_tx1_on_tx2 = effect_sp1_on_sp2,
-    effect_tx2_on_tx1 = effect_sp2_on_sp1
-  )
-```
-
 
 
 Create summary information in a table

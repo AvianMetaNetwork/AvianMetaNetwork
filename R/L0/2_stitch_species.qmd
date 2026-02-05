@@ -227,7 +227,20 @@ intxnsL0 <- intxnsL0sp$intxns
  nrow(intxnsL0)
 ```
 
-> Note that some species1 in a given species1 csv could also be other species because of entering many pair-wise interactions in, for example, mixed flock entry. Any duplicates will be omitted later.
+> Note that some taxa1 in a given taxa1 csv could also be other species because of entering many pair-wise interactions in, for example, mixed flock entry. Any duplicates will be omitted later.
+
+## Change species name columns to taxa names so that it reflects the broad range of taxonomic resolutions of the data
+```{r}
+intxnsL0sp <- intxnsL0sp %>% 
+  rename(
+    taxa1_scientific = species1_scientific, 
+    taxa2_scientific = species2_scientific, 
+    taxa1_common = species1_common,
+    taxa2_common = species2_common,
+    effect_tx1_on_tx2 = effect_sp1_on_sp2,
+    effect_tx2_on_tx1 = effect_sp2_on_sp1
+  )
+```
 
 ## Save Results to Disk
 

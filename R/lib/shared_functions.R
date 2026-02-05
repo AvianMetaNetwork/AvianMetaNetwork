@@ -124,12 +124,12 @@ get_main_names_folder <- function(files = list_csvs()){
 
 ##### UPDATE WHEN COLUMNS CHANGE
 standard_columns<- c(
-    "species1_common",
-    "species2_common",
-    "species1_scientific",
-    "species2_scientific",
-    "effect_sp1_on_sp2",
-    "effect_sp2_on_sp1",
+    "taxa1_common",
+    "taxa2_common",
+    "taxa1_scientific",
+    "taxa2_scientific",
+    "effect_tx1_on_tx2",
+    "effect_tx2_on_tx1",
     "interaction",
     "BOW_evidence",
     "n_studies",
@@ -163,12 +163,12 @@ standard_columns<- c(
 ##### UPDATE IF COLUMNS CHANGE
 
 dataentry_columns <- c(
-  "species1_common",
-  "species2_common",
-  "species1_scientific",
-  "species2_scientific",
-  "effect_sp1_on_sp2",
-  "effect_sp2_on_sp1",
+  "taxa1_common",
+  "taxa2_common",
+  "taxa1_scientific",
+  "taxa2_scientific",
+  "effect_tx1_on_tx2",
+  "effect_tx2_on_tx1",
   "interaction",
   "BOW_evidence",
   "n_studies",
@@ -194,12 +194,12 @@ dataentry_columns <- c(
 
 avian_intxn_column_spec <-
   readr::cols(
-    species1_common = readr::col_character(),
-    species2_common = readr::col_character(),
-    species1_scientific = readr::col_character(),
-    species2_scientific = readr::col_character(),
-    effect_sp1_on_sp2 = readr::col_integer(),
-    effect_sp2_on_sp1 = readr::col_integer(),
+    taxa1_common = readr::col_character(),
+    taxa2_common = readr::col_character(),
+    taxa1_scientific = readr::col_character(),
+    taxa2_scientific = readr::col_character(),
+    effect_tx1_on_tx2 = readr::col_integer(),
+    effect_tx2_on_tx1 = readr::col_integer(),
     interaction = readr::col_character(),
     BOW_evidence = readr::col_character(),
     n_studies = readr::col_integer(),
@@ -284,15 +284,15 @@ amend_intxn_columns <- function(df) {
   # see standard_columns data above
 
 
-  char_cols <- c("species1_common", "species2_common", "species1_scientific", "species2_scientific",
+  char_cols <- c("taxa1_common", "taxa2_common", "taxa1_scientific", "taxa2_scientific",
                  "interaction", "BOW_evidence", "sourceA_URL", "sourceB_URL", "sourceC_URL", "sourceD_URL",
                  "nonbreedingseason", "notesA", "notesB", "notesC", "notesD", "recorder", "entry_date",
                  "uncertain_interaction", "entry_changes", "name_changes", "other_species1", "DatabaseSearchURL")
 
   df[char_cols] <- lapply(df[char_cols], as.character)
   df$n_studies <- as.numeric(df$n_studies)
-  df$effect_sp1_on_sp2 <- as.integer(df$effect_sp1_on_sp2)
-  df$effect_sp2_on_sp1 <- as.integer(df$effect_sp2_on_sp1)
+  df$effect_tx1_on_tx2 <- as.integer(df$effect_tx1_on_tx2)
+  df$effect_tx2_on_tx1 <- as.integer(df$effect_tx2_on_tx1)
   return(df)
 }
 
@@ -303,21 +303,21 @@ amend_intxn_columns <- function(df) {
 #' @param df interactions database df
 #' @returns data frame with empty rows removed
 remove_rows_no_species<- function(df){
-  # with(int.raw(!is.na(int.raw[["species1_scientific"]]) & !is.na(int.raw[["species2_scientific"]]) & !is.na(int.raw[["species2_common"]]))
-  columns_to_check = c("species1_scientific",
-                         "species2_scientific",
-                         "species1_common",
-                         "species2_common")
+  # with(int.raw(!is.na(int.raw[["taxa1_scientific"]]) & !is.na(int.raw[["taxa2_scientific"]]) & !is.na(int.raw[["taxa2_common"]]))
+  columns_to_check = c("taxa1_scientific",
+                         "taxa2_scientific",
+                         "taxa1_common",
+                         "taxa2_common")
 
   if(!all(columns_to_check %in% names(df))){
     warning("couldn't check for blank rows, not all columns present")
     return(df)
   }
 
-  df <- dplyr::filter(df,!(is.na(species1_scientific)&
-                    is.na(species2_scientific) &
-                    is.na(species1_common) &
-                    is.na(species2_common)
+  df <- dplyr::filter(df,!(is.na(taxa1_scientific)&
+                    is.na(taxa2_scientific) &
+                    is.na(taxa1_common) &
+                    is.na(taxa2_common)
   ))
 
   return(df)
@@ -330,63 +330,63 @@ remove_rows_no_species<- function(df){
 #' fix common typos in species.common
 #'
 #' @param intxnsL0 data frame of avian interactions database, must have fields
-#'  species1_scientific, species2_scientific, species1_common, species2_common
+#'  taxa1_scientific, taxa2_scientific, taxa1_common, taxa2_common
 #'  @returns data frame with typos corrected in place
 fix_taxon_typos <- function(intxns.df){
 
   # trim whitespace
   intxns.df<- dplyr::mutate(intxns.df,
-            species1_scientific = trimws(species1_scientific,which=c("right")),
-            species2_scientific = trimws(species2_scientific,which=c("right")),
-            species1_common = trimws(species1_common,which=c("right")),
-            species2_common = trimws(species2_common,which=c("right"))
+            taxa1_scientific = trimws(taxa1_scientific,which=c("right")),
+            taxa2_scientific = trimws(taxa2_scientific,which=c("right")),
+            taxa1_common = trimws(taxa1_common,which=c("right")),
+            taxa2_common = trimws(taxa2_common,which=c("right"))
     )
 
   # sometimes there is no space before "unid" aka Unid.duck"
-  intxns.df$species1_common<- str_replace(intxns.df$species1_common, "[Uu]nid\\.([A-Za-z])", "Unid. \1")
-  intxns.df$species2_common<- str_replace(intxns.df$species2_common, "[Uu]nid\\.([A-Za-z])", "Unid. \1")
+  intxns.df$taxa1_common<- str_replace(intxns.df$taxa1_common, "[Uu]nid\\.([A-Za-z])", "Unid. \1")
+  intxns.df$taxa2_common<- str_replace(intxns.df$taxa2_common, "[Uu]nid\\.([A-Za-z])", "Unid. \1")
 
   # make unid/sp. text consistent in species1
   intxns.df<- dplyr::mutate(intxns.df,
-               species1_scientific = ifelse(
-                 str_starts(species1_scientific, "unid."),  # Exception case
-                 str_replace(species1_scientific, "(unid.)s*(w+)", "1 U2"),
-                 str_to_sentence(species1_scientific)       # Regular case
+               taxa1_scientific = ifelse(
+                 str_starts(taxa1_scientific, "unid."),  # Exception case
+                 str_replace(taxa1_scientific, "(unid.)s*(w+)", "1 U2"),
+                 str_to_sentence(taxa1_scientific)       # Regular case
                ) |> str_replace("spp.", "sp.")
 
   )
 
   # make unid/sp. text consistent in species2
   intxns.df<- dplyr::mutate(intxns.df,
-            species2_scientific = ifelse(
-               str_starts(species2_scientific, "unid."),  # Exception case
-               str_replace(species2_scientific, "(unid.)s*(w+)", "1 U2"),
-               str_to_sentence(species2_scientific)       # Regular case
+            taxa2_scientific = ifelse(
+               str_starts(taxa2_scientific, "unid."),  # Exception case
+               str_replace(taxa2_scientific, "(unid.)s*(w+)", "1 U2"),
+               str_to_sentence(taxa2_scientific)       # Regular case
              ) |> str_replace("spp.", "sp.")
   )
 
   # add a period to the end of all Genus sp.
-  intxns.df$species1_scientific<- str_replace(intxns.df$species1_scientific, " sp$", " sp.")
-  intxns.df$species2_scientific<- str_replace(intxns.df$species2_scientific, " sp$", " sp.")
+  intxns.df$taxa1_scientific<- str_replace(intxns.df$taxa1_scientific, " sp$", " sp.")
+  intxns.df$taxa2_scientific<- str_replace(intxns.df$taxa2_scientific, " sp$", " sp.")
 
 
 
   # remove double spaces from binomials
   intxns.df<- intxns.df %>% dplyr::mutate(
-    species1_scientific = stringr::str_replace_all(species1_scientific, "  ", " "),
-    species2_scientific = stringr::str_replace_all(species2_scientific, "  ", " ")
+    taxa1_scientific = stringr::str_replace_all(taxa1_scientific, "  ", " "),
+    taxa2_scientific = stringr::str_replace_all(taxa2_scientific, "  ", " ")
   )
 
 
   # tidy common_names
   intxns.df<- intxns.df %>% dplyr::mutate(
-    species1_common =
-      stringr::str_trim(species1_common) %>%  # Start with the raw data
+    taxa1_common =
+      stringr::str_trim(taxa1_common) %>%  # Start with the raw data
       stringr::str_replace_all("[Uu]nid ", "unid. ") %>%
       stringr::str_replace_all("Unid.", "unid.") %>%
       stringr::str_to_title(), # Capitalize each word
-    species2_common =
-      stringr::str_trim(species2_common) %>%  # Start with the raw data
+    taxa2_common =
+      stringr::str_trim(taxa2_common) %>%  # Start with the raw data
       stringr::str_replace_all("[Uu]nid ", "unid. ") %>% # add period to unids
       stringr::str_replace_all("Unid.", "unid.") %>%
       stringr::str_to_title()  # Capitalize each word
@@ -485,7 +485,7 @@ read_and_amend <- function(entry_file, add_entry_file_column= FALSE, fix_errors_
 #' @param intxns.df data frame containing the column specied
 #' @param species_column name of the column to count, default first species
 #' @returns n integer count of unique values
-unique_speces_count <- function(intxns.df, species_column="species1_common" ){
+unique_speces_count <- function(intxns.df, species_column="taxa1_common" ){
   n <-intxns.df[[species_column]] |> unique() |> length()
   return(n)
 }
@@ -559,7 +559,7 @@ L0_stitch<-function(csv_file_list, csv_file_group_name, add_entry_file_column = 
 
   # Pre-binding unique value summaries
   # what is this counting?
-  cols_to_summarize = c("n_studies", "effect_sp1_on_sp2", "effect_sp2_on_sp1")
+  cols_to_summarize = c("n_studies", "effect_tx1_on_tx2", "effect_tx2_on_tx1")
   # TODO CHECK THIS
   intxns$pre_binding_summary <- lapply(cols_to_summarize,
               function(col) {
@@ -826,10 +826,10 @@ discover_interaction_errors <- function(intxns.df){
   # loop through all the 0,0 interactionss and collect errors binding into errors df
   for (intxn.keyword in interactions.0){
     intxn_errors.df <- dplyr::bind_rows(intxn_errors.df,
-                       intxns.df[intxns.df$interaction == intxn.keyword & intxns.df$effect_sp1_on_sp2!= 0, ]
+                       intxns.df[intxns.df$interaction == intxn.keyword & intxns.df$effect_tx1_on_tx2!= 0, ]
                        )
     intxn_errors.df <- dplyr::bind_rows(intxn_errors.df,
-                       intxns.df[intxns.df$interaction == intxn.keyword & intxns.df$effect_sp2_on_sp1!= 0, ]
+                       intxns.df[intxns.df$interaction == intxn.keyword & intxns.df$effect_tx2_on_tx1!= 0, ]
                        )
   }
 
@@ -857,8 +857,8 @@ fix_interaction_errors <- function(intxns.df){
 
   for (intxn.keyword in interactions.0){
     if(intxn.keyword %in% intxns.df$interaction) {
-      intxns.df[intxns.df$interaction == intxn.keyword,]$effect_sp1_on_sp2 <- 0
-      intxns.df[intxns.df$interaction == intxn.keyword,]$effect_sp2_on_sp1 <- 0
+      intxns.df[intxns.df$interaction == intxn.keyword,]$effect_tx1_on_tx2 <- 0
+      intxns.df[intxns.df$interaction == intxn.keyword,]$effect_tx2_on_tx1 <- 0
     }
   }
 
@@ -880,7 +880,7 @@ fix_interaction_errors <- function(intxns.df){
 
 
 # Which are NA?
-# intxns.int.entries.NA<-intxns[which(is.na(intxns$effect_sp2_on_sp1)), ]
+# intxns.int.entries.NA<-intxns[which(is.na(intxns$effect_tx2_on_tx1)), ]
 # dim(intxns.int.entries.NA)
 # intxns.int.entries.NA
 # One is a NA for brood parasitism but it's for NZ species so ignore for now.

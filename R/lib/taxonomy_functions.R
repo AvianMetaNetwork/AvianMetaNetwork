@@ -80,16 +80,16 @@ find_closest_match_with_score <- function(name, reference_list) {
 create_names_edit_table <-function(intxns.df) {
   int.raw.names <- intxns.df %>%
     # Select and stack the relevant species columns
-    select(species1_scientific, species1_common, species2_scientific, species2_common) %>%
+    select(taxa1_scientific, taxa1_common, taxa2_scientific, taxa2_common) %>%
     transmute(
-      scientific_name.raw = species1_scientific,  # Original scientific_name
-      common_name.raw = species1_common
+      scientific_name.raw = taxa1_scientific,  # Original scientific_name
+      common_name.raw = taxa1_common
     ) %>%
     bind_rows(
       int.raw %>%
         transmute(
-          scientific_name.raw = species2_scientific,  # Original scientific_name
-          common_name.raw = species2_common
+          scientific_name.raw = taxa2_scientific,  # Original scientific_name
+          common_name.raw = taxa2_common
         )
     ) %>%
     # Remove duplicates and clean up formatting
@@ -246,7 +246,7 @@ unresolved_species<- function(names.df){
 #' @param scientific_name name to find
 #' @returns data frame of matching records
 intxns_by_species<- function(intxns.df, scientific_name){
-  return(filter(intxns.df, species1_scientific == scientific_name | species2_scientific == scientific_name))
+  return(filter(intxns.df, taxa1_scientific == scientific_name | taxa2_scientific == scientific_name))
 }
 
 
@@ -254,7 +254,7 @@ intxns_by_species<- function(intxns.df, scientific_name){
 #'
 #' convenience function, call the above lookup function and returns count of records
 interaction_count_by_species<- function(intxns.df, scientific_name){
-  rex = filter(intxns.df, species1_scientific == scientific_name | species2_scientific == scientific_name)
+  rex = filter(intxns.df, taxa1_scientific == scientific_name | taxa2_scientific == scientific_name)
   return(nrow(rex))
 
 }
@@ -262,7 +262,7 @@ interaction_count_by_species<- function(intxns.df, scientific_name){
 
 #' count interactions by partial match (grep)
 interaction_records_by_match<- function(intxns.df, scientific_name_fragment){
-  rex = filter(intxns.df, grepl(scientific_name_fragment, species1_scientific) | grepl(scientific_name_fragment,species2_scientific))
+  rex = filter(intxns.df, grepl(scientific_name_fragment, taxa1_scientific) | grepl(scientific_name_fragment,taxa2_scientific))
   return(rex)
 }
 
@@ -274,8 +274,8 @@ interaction_count_by_match<- function(intxns.df, scientific_name_fragment){
 #' subset of interactions by partial match common name sp1 or sp2
 interaction_records_by_match_common<- function(intxns.df, common_name_fragment){
   rex = filter(intxns.df,
-               grepl(common_name_fragment, species1_common, ignore.case = TRUE) |
-                 grepl(common_name_fragment,species2_common,ignore.case = TRUE))
+               grepl(common_name_fragment, taxa1_common, ignore.case = TRUE) |
+                 grepl(common_name_fragment,taxa2_common,ignore.case = TRUE))
 
   return(rex)
 }

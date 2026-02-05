@@ -268,10 +268,10 @@ but were are ensuring the data is clean prior to matching taxonomy
 
 ```{r}
 before_filter_nrow <- nrow(int.raw)
-int.raw <- filter(int.raw,!(is.na(species1_scientific)& 
-                             is.na(species2_scientific) & 
-                             is.na(species1_common) & 
-                             is.na(species2_common)
+int.raw <- filter(int.raw,!(is.na(taxa1_scientific)& 
+                             is.na(taxa2_scientific) & 
+                             is.na(taxa1_common) & 
+                             is.na(taxa2_common)
                            ))
 
 print( paste(as.integer(before_filter_nrow - nrow(int.raw)), "blank rows removed"))
@@ -283,14 +283,14 @@ print( paste(as.integer(before_filter_nrow - nrow(int.raw)), "blank rows removed
 # trim white space
 
 int.raw <- dplyr::mutate(int.raw, 
-                         species1_scientific = trimws(species1_scientific,which=c("right")), 
-                         species2_scientific = trimws(species2_scientific,which=c("right")), 
-                         species1_common = trimws(species1_common,which=c("right")),
-                         species2_common = trimws(species2_common,which=c("right"))
+                         taxa1_scientific = trimws(taxa1_scientific,which=c("right")), 
+                         taxa2_scientific = trimws(taxa2_scientific,which=c("right")), 
+                         taxa1_common = trimws(taxa1_common,which=c("right")),
+                         taxa2_common = trimws(taxa2_common,which=c("right"))
 ) 
 
 print("unique scientific name combos after removing white space")
-print(length(unique(paste(int.raw$species1_scientific, int.raw$species2_scientific))))
+print(length(unique(paste(int.raw$taxa1_scientific, int.raw$taxa2_scientific))))
 ```
 
 #### Missing Scientific name check
@@ -301,14 +301,14 @@ Are there any records that are missing a scientific name for species1?
 name, and should be corrected in data entry files*
 
 ```{r}
-records.missingsp1 <- int.raw[is.na(int.raw$species1_scientific),]
+records.missingsp1 <- int.raw[is.na(int.raw$taxa1_scientific),]
 tibble(records.missingsp1)
 ```
 
 Records missing a scientific name for sp2
 
 ```{r}
-records.missingsp2 <- int.raw[is.na(int.raw$species2_scientific),]
+records.missingsp2 <- int.raw[is.na(int.raw$taxa2_scientific),]
 tibble(records.missingsp2)
 
 ```
@@ -317,7 +317,7 @@ Are there rows that have *only* common names for both sp1 and sp2?
 
 ```{r}
  
-int.common_names_only <- dplyr::filter(int.raw, is.na(species1_scientific) & is.na(species2_scientific))
+int.common_names_only <- dplyr::filter(int.raw, is.na(taxa1_scientific) & is.na(taxa2_scientific))
   
 print(nrow(int.common_names_only))
 ```
@@ -336,9 +336,9 @@ List rows with both interaction columns missing
 if(exists("int.raw.saved_all_rows")) int.raw<- int.raw.saved_all_rows
 
 print("n rows with both effects missing:")
-print(nrow(filter(int.raw, is.na(effect_sp1_on_sp2) & is.na(effect_sp2_on_sp1))))
+print(nrow(filter(int.raw, is.na(effect_tx1_on_tx2) & is.na(effect_tx2_on_tx1))))
 print("n rows with at least one effect present:")
-print(nrow(filter(int.raw, !is.na(effect_sp1_on_sp2) | !is.na(effect_sp2_on_sp1))))
+print(nrow(filter(int.raw, !is.na(effect_tx1_on_tx2) | !is.na(effect_tx2_on_tx1))))
 print("list of rows with both effects missing:")
 ```
 
@@ -347,7 +347,7 @@ Table of rows with both effects missing:
 ```{r}
 #| echo: false
 
-tibble(filter(int.raw, is.na(effect_sp1_on_sp2) & is.na(effect_sp2_on_sp1)))
+tibble(filter(int.raw, is.na(effect_tx1_on_tx2) & is.na(effect_tx2_on_tx1)))
 ```
 
 Remove those with no interactions (if any)
@@ -356,7 +356,7 @@ Remove those with no interactions (if any)
 # save the original full list in case we need to check again
 int.raw.saved_all_rows <- int.raw
 
-int.raw <- filter(int.raw, !is.na(effect_sp1_on_sp2) | !is.na(effect_sp2_on_sp1))
+int.raw <- filter(int.raw, !is.na(effect_tx1_on_tx2) | !is.na(effect_tx2_on_tx1))
 print("rows remaining with not both effects NA:")
 print(nrow(int.raw))
 ```
@@ -382,7 +382,7 @@ int.raw<-fix_taxon_typos(int.raw)
 List rows with missing sp1 values but have other data to use for fix
 
 ```{r}
-records.missingsp1 <- int.raw[is.na(int.raw$species1_scientific),]
+records.missingsp1 <- int.raw[is.na(int.raw$taxa1_scientific),]
 print(records.missingsp1)
 ```
 
@@ -391,7 +391,7 @@ Fix these missing species directly by matching the common_names from checklist
 ```{r}
 #| echo: false
  
-for(common_name_for_missingsp1  in records.missingsp1$species1_common){
+for(common_name_for_missingsp1  in records.missingsp1$taxa1_common){
   print(common_name_for_missingsp1)
   
   matching_sp<- checklist %>% 
@@ -421,11 +421,11 @@ apply the manual assignments
 for(cname in names(manual_assignments)){
   print(paste("set records with common name", cname, "to sp1 = ", manual_assignments[[cname]]))
   print("n rows to update:")
-  print(nrow(int.raw[int.raw$species1_common == cname & is.na(int.raw$species1_scientific),]))
+  print(nrow(int.raw[int.raw$taxa1_common == cname & is.na(int.raw$taxa1_scientific),]))
   int.raw[
-    int.raw$species1_common == cname & 
-    is.na(int.raw$species1_scientific),
-    ]$species1_scientific = manual_assignments[[cname]] 
+    int.raw$taxa1_common == cname & 
+    is.na(int.raw$taxa1_scientific),
+    ]$taxa1_scientific = manual_assignments[[cname]] 
 }
 
   
@@ -434,7 +434,7 @@ for(cname in names(manual_assignments)){
 double check: remaining records with **missing sp1:**
 
 ```{r}
-records.missingsp1 <- int.raw[is.na(int.raw$species1_scientific),]
+records.missingsp1 <- int.raw[is.na(int.raw$taxa1_scientific),]
 print(records.missingsp1)  
 ```
 
@@ -443,7 +443,7 @@ print(records.missingsp1)
 rows with missing **sp2 scientific**:
 
 ```{r}
-records.missingsp2<- int.raw[is.na(int.raw$species2_scientific),]
+records.missingsp2<- int.raw[is.na(int.raw$taxa2_scientific),]
 print(records.missingsp2)
 ```
 
@@ -451,10 +451,10 @@ print(records.missingsp2)
 Saved outcome from Previous run
 ```         
 May 2025: 2 rows need editing 
-species1_common species2_common         species1_scientific
+taxa1_common taxa2_common         taxa1_scientific
 866         White-cheeked Pintail   Cinnamon Teal Anas bahamensis rubirostris
 14223 Middle American Screech-Owl            <NA>        Megascops guatamalae
-species2_scientific effect_sp1_on_sp2 effect_sp2_on_sp1          interaction
+taxa2_scientific effect_tx1_on_tx2 effect_tx2_on_tx1          interaction
 866                  <NA>                 1                 1 facilitation-feeding
 14223                <NA>                NA                NA                 <NA>
 one had both NA interactions , now we are removing those
@@ -467,7 +467,7 @@ List the names from the checklist that match those missing in sp2:
 ```{r}
 #| echo: false
 #| 
-for(common_name_for_missingsp2  in records.missingsp2$species2_common){
+for(common_name_for_missingsp2  in records.missingsp2$taxa2_common){
   print(checklist %>% 
     dplyr::filter(common_name == common_name_for_missingsp2) %>% 
     dplyr::select(common_name, scientific_name))
@@ -496,15 +496,15 @@ for(cname in names(manual_assignments)){
   print(paste("set records with common name", cname, "to sp2 = ", manual_assignments[[cname]]))
   print("n rows to update with this command name and missing sp2:")
   rows_to_fix <- nrow(
-    int.raw[int.raw$species2_common == cname & is.na(int.raw$species2_scientific),]
+    int.raw[int.raw$taxa2_common == cname & is.na(int.raw$taxa2_scientific),]
   )
   
   print(rows_to_fix)
   if(rows_to_fix > 0 ){
   int.raw[
-    int.raw$species2_common == cname & 
-    is.na(int.raw$species2_scientific),
-    ]$species2_scientific = manual_assignments[[cname]] 
+    int.raw$taxa2_common == cname & 
+    is.na(int.raw$taxa2_scientific),
+    ]$taxa2_scientific = manual_assignments[[cname]] 
   }
 }
   # double check remaining rows with missing sp2 (should be zero)
@@ -513,7 +513,7 @@ for(cname in names(manual_assignments)){
 Double check that there are no remaining rows with missing scientific names
 
 ```{r}
-tibble(int.raw[is.na(int.raw$species2_scientific),]) 
+tibble(int.raw[is.na(int.raw$taxa2_scientific),]) 
 ```
 *completed fixes for missing scientific names*
 
@@ -542,12 +542,12 @@ Column Definitions:
 - edit_notes: text of why edits were made
 
 The edit columns are based on the Clements 2024 checklist.
-Determine how many unique entries are in int.raw\$species1_scientific, which 
+Determine how many unique entries are in int.raw\$taxa1_scientific, which 
 are unique combos of scientific names.
 
 ```{r}
 unique.sp.raw <- data.frame(scientific_name.raw = with(int.raw, union(
-  species1_scientific, species2_scientific
+  taxa1_scientific, taxa2_scientific
 )))
 
 print(dim(unique.sp.raw)) #3913 # May 29, 2025: 3889; Sept. 29, 2025: 3879; Oct 26: 3873
@@ -1595,10 +1595,10 @@ Hybrids to standardize:
   Hybrid Western Gull X Glaucous-Winged Gull = Larus occidentalis x glaucescens
   Hybrid Barnacle X Bar-Headed Goose = Branta leucopsis x anser indicus
 
-dplyr::filter(int.raw, species1_scientific %in% c("Branta leucopsis x"))
+dplyr::filter(int.raw, taxa1_scientific %in% c("Branta leucopsis x"))
 # NO HYBRIDS IN CLEANED DATA NOW
-dplyr::filter(int.raw, species1_scientific %in% c("Branta leucopsis x Anser indicus"))
-dplyr::filter(int.raw, species2_scientific %in% c("Branta leucopsis x Anser indicus"))
+dplyr::filter(int.raw, taxa1_scientific %in% c("Branta leucopsis x Anser indicus"))
+dplyr::filter(int.raw, taxa2_scientific %in% c("Branta leucopsis x Anser indicus"))
 # dplyr::filter(unresolved.gbif, scientific_name.edit %in% c("Branta leucopsis x anser indicus"))
 # dplyr::filter(unresolved.gbif, scientific_name.edit %in% c("Branta leucopsis x anser indicus"))
 # fixed_names1$scientific_name[fixed_names1$scientific_name.edit == "Branta leucopsis x anser indicus"] <- "Branta leucopsis x Anser indicus"
@@ -1647,17 +1647,17 @@ for(r in 1:nrow(int.raw.names)){
   # this allows for matching on the raw sci name for common name updates, 
   # even after it's been updated
   
-  updated_sp1_rows = which(int.raw$species1_scientific == scientific_name.raw)
+  updated_sp1_rows = which(int.raw$taxa1_scientific == scientific_name.raw)
   if(length(updated_sp1_rows) > 0){
-    int.raw.resolved[updated_sp1_rows, ]$species1_scientific <- scientific_name.edit
-    int.raw.resolved[updated_sp1_rows, ]$species1_common <- common_name.edit
+    int.raw.resolved[updated_sp1_rows, ]$taxa1_scientific <- scientific_name.edit
+    int.raw.resolved[updated_sp1_rows, ]$taxa1_common <- common_name.edit
     updated_rows <- union(updated_rows, updated_sp1_rows)
   }
 
-  updated_sp2_rows = which(int.raw$species2_scientific == scientific_name.raw)
+  updated_sp2_rows = which(int.raw$taxa2_scientific == scientific_name.raw)
   if(length(updated_sp2_rows) > 0){
-    int.raw.resolved[updated_sp2_rows, ]$species2_scientific <- scientific_name.edit
-    int.raw.resolved[updated_sp2_rows,  ]$species2_common <- common_name.edit
+    int.raw.resolved[updated_sp2_rows, ]$taxa2_scientific <- scientific_name.edit
+    int.raw.resolved[updated_sp2_rows,  ]$taxa2_common <- common_name.edit
     updated_rows <- union(updated_rows, updated_sp2_rows)
   }
   
@@ -1671,13 +1671,13 @@ Review the updated database using `View(int.raw.resolved)`  The original is stil
 Some manual updates for Northwestern Crow (common name doesn't exist anymore but the data still contain the subspecies; re-assign to American Crow)
 ```{r}
 
-int.raw.resolved$species1_scientific[int.raw.resolved$species1_scientific == "Corvus brachyrhynchos caurinus"] <- "Corvus brachyrhynchos"
+int.raw.resolved$taxa1_scientific[int.raw.resolved$taxa1_scientific == "Corvus brachyrhynchos caurinus"] <- "Corvus brachyrhynchos"
 
-int.raw.resolved$species1_common[int.raw.resolved$species1_scientific == "Corvus brachyrhynchos"] <- "American Crow"
+int.raw.resolved$taxa1_common[int.raw.resolved$taxa1_scientific == "Corvus brachyrhynchos"] <- "American Crow"
 
-int.raw.resolved$species2_scientific[int.raw.resolved$species2_scientific == "Corvus brachyrhynchos caurinus"] <- "Corvus brachyrhynchos"
+int.raw.resolved$taxa2_scientific[int.raw.resolved$taxa2_scientific == "Corvus brachyrhynchos caurinus"] <- "Corvus brachyrhynchos"
 
-int.raw.resolved$species2_common[int.raw.resolved$species2_scientific == "Corvus brachyrhynchos"] <- "American Crow"
+int.raw.resolved$taxa2_common[int.raw.resolved$taxa2_scientific == "Corvus brachyrhynchos"] <- "American Crow"
 ```
 
 ```{r}
@@ -1693,7 +1693,7 @@ int.raw <- int.raw.resolved
 ```{r}
 # Combine both scientific name columns from the interaction data
 # (taxa1 = species A, taxa2 = species B), then keep only unique names
-unique_taxa_list <- unique(c(int.raw$species1_scientific, int.raw$species2_scientific))
+unique_taxa_list <- unique(c(int.raw$taxa1_scientific, int.raw$taxa2_scientific))
 
 # Extract and store only the names that do NOT match Clements taxonomy
 # These are the mismatches that need correction/review
@@ -1702,15 +1702,15 @@ mismatch <- unique_taxa_list[!(unique_taxa_list %in% checklist$scientific_name)]
 # For taxa already labeled according to Clements, copy taxa1_scientific into taxa1_clements
 # For taxa not labeled according to Clements, put NA
 int.raw$taxa1_clements <- ifelse(
-  int.raw$species1_scientific %in% mismatch, 
+  int.raw$taxa1_scientific %in% mismatch, 
   NA, 
-  int.raw$species1_scientific
+  int.raw$taxa1_scientific
 )
 
 int.raw$taxa2_clements <- ifelse(
-  int.raw$species2_scientific %in% mismatch, 
+  int.raw$taxa2_scientific %in% mismatch, 
   NA, 
-  int.raw$species2_scientific
+  int.raw$taxa2_scientific
 )
 
 # make a clean lookup
@@ -1719,9 +1719,9 @@ lookup <- clements_mismatches %>%
 
 # Join in new Clements names where needed
 int.raw <- int.raw %>%
-  left_join(lookup, by = c("species1_scientific" = "old_name")) %>%
+  left_join(lookup, by = c("taxa1_scientific" = "old_name")) %>%
   rename(new1 = new_name) %>%
-  left_join(lookup, by = c("species2_scientific" = "old_name")) %>%
+  left_join(lookup, by = c("taxa2_scientific" = "old_name")) %>%
   rename(new2 = new_name) %>%
   mutate(
     taxa1_clements = if_else(!is.na(new1), new1, taxa1_clements),
@@ -1730,8 +1730,8 @@ int.raw <- int.raw %>%
   select(-new1, -new2)
 
 # Identify any remaining mismatches 
-remaining_mismatch <- unique(c(int.raw$species1_scientific[is.na(int.raw$taxa1_clements)], 
-                               int.raw$species2_scientific[is.na(int.raw$taxa2_clements)]))
+remaining_mismatch <- unique(c(int.raw$taxa1_scientific[is.na(int.raw$taxa1_clements)], 
+                               int.raw$taxa2_scientific[is.na(int.raw$taxa2_clements)]))
 
 
 # Save list of new mismatches if relevant (if not, then delete the previous list)
@@ -1749,7 +1749,7 @@ if(length(remaining_mismatch) > 0){
 ```{r}
 
 print("unique scientific names = number of unique species in this database")
-print(length(union(int.raw$species1_scientific, int.raw$species2_scientific)))
+print(length(union(int.raw$taxa1_scientific, int.raw$taxa2_scientific)))
 
 
 print("unique types of interactions")
@@ -1764,9 +1764,9 @@ print("unique pairwise interactions") #19417 (non-manual fixes); 19403 with manu
 # x <- unique(as.data.frame(t(apply(dat, 1, sort ))));
 # rownames(x) <- 1:nrow(x);
 # x;
-print(length(unique(paste(int.raw$species1_scientific, int.raw$species2_scientific))))
+print(length(unique(paste(int.raw$taxa1_scientific, int.raw$taxa2_scientific))))
 
-# edit to report number of unique rows by DATA$species1_scientific, DATA$species2_scientific, DATA$interaction
+# edit to report number of unique rows by DATA$taxa1_scientific, DATA$taxa2_scientific, DATA$interaction
 
 ```
 
