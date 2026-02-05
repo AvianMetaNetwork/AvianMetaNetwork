@@ -16,8 +16,27 @@ library(stringr)
 set.seed(44)
 
 df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv"))
-spp <- read.csv(here::here("./data/L1/species_checklists/spp_joint_cac_colsubset.csv"))
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_ain_cac.csv"))
 
+
+#### TAXA COUNTS ####
+
+unique_taxa_list <- unique(c(df$taxa1_clements, df$taxa2_clements))
+
+num_total_taxa <- length(unique_taxa_list)
+
+total_cac_taxa <- sum(spp$canada_ak_conus)
+
+num_non_cac_taxa <-num_total_taxa - total_cac_taxa
+
+#### SPECIES/SUBSPECIES COUNTS ####
+
+#Removing hybrids, genera and unidentified
+total_spp <- length(spp$scientific.name[spp$category %in% c("species", "subspecies")])
+
+total_spp_cac <- sum(spp$canada_ak_conus)
+
+#### INTERACTIONS ####
 
 num_intxns <- nrow(df)
 
@@ -44,67 +63,55 @@ unique_intxns <- df %>%
   )  %>%
   distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
 
-unique_taxa_list <- unique(c(df$taxa1_scientific, df$taxa2_scientific))
-num_total_taxa <- length(unique_taxa_list)
-
-total_cac_taxa1 <- unique(df$taxa1_scientific[df$taxa1_scientific %in% spp$scientific_name_clements2024])
-total_cac_taxa2 <- unique(df$taxa2_scientific[df$taxa2_scientific %in% spp$scientific_name_clements2024])
-total_cac_taxa <- unique(c(total_cac_taxa1, total_cac_taxa2))
-
-num_non_cac_taxa <-num_total_taxa - length(total_cac_taxa)
-
-unique_spp_list_names <- unique(spp$scientific_name_clements2024)
-unique_spp1_ain_names <- unique(df$taxa1_scientific)
-
-#Removing hybrids, genera and unidentified
-unique_spp_sbp_list <- unique_taxa_list[!str_detect(unique_taxa_list, regex("sp\\.|unid\\.|_x_", ignore_case = TRUE))]
-unique_spp_list <- unique(str_replace(unique_spp_sbp_list, "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1"))
-unique_gen_list <- unique(str_replace(unique_spp_list, "^([A-Za-z]+).*$", "\\1"))
-
-na_spp_list <- unique_spp_list[unique_spp_list %in% spp$scientific_name_clements2024]
-
-na_gen_list <- unique(str_replace(na_spp_list, "^([A-Za-z]+).*$", "\\1"))
-
-
 
 ```
+
+-   **Check**: Number of taxa in species list equals number of taxa in network: `r length(unique_taxa_list) == length(unique(spp$scientific.name))`
+
+### Taxa-level summary 
+
+-   Number of taxa (total): `r num_total_taxa`
+
+-   Number of focal taxa: `r total_cac_taxa`
+
+-   Number of additional non-focal taxa: `r num_non_cac_taxa`
+
+### Species-level summary
+
+-   Number of species (total): `r length(total_spp)`
+
+-   Number of North American species: `r total_spp_cac`
+
+-   Number of additional species: `r length(total_spp) - length(total_spp_cac)`
+
+-   Percent of world's bird spp (out of 11,1145 spp): `r round(length(spp$scientific.name)/11145*100, 2)`
+
+### Genus-level summary 
+
+-   Number of North American Genera:`r `
+
+-   Number of additional genera: `r `
+
+-   Number of total genera: `r `
+
+### Interactions summary
+
+-   Total number of interaction types: `r length(unique(df$interaction))`
 
 -   Number of documented pairwise interactions: `r num_intxns`
 
 -   Number of unique pairwise interactions: `r nrow(unique_intxns)`
 
--   Number of focal taxa: `r length(total_cac_taxa)`
+#### Unique taxa1/taxa2/interaction combinations by interaction type:
 
--   Number of additional non-focal taxa: `r num_non_cac_taxa`
-
--   Number of taxa (total): `r num_total_taxa`
-
--   Number of North American species: `r length(na_spp_list)`
-
--   Number of additional species: `r length(unique_spp_list) - length(na_spp_list)`
-
--   Number of species (total): `r length(unique_spp_list)`
-
--   Percent of world's bird spp (out of 11,1145 spp): `r round(length(unique_spp_list)/11145*100, 2)`
-
--   Number of North American Genera:`r length(na_gen_list)`
-
--   Number of additional genera: `r length(unique_gen_list) - length(na_gen_list)`
-
--   Number of total genera: `r length(unique_gen_list)`
-
--   Total number of interaction types: `r length(unique(df$interaction))`
-
-### Interactions summary 
-
-#### Unique taxa1/taxa2/interaction combinations by interaction type: 
 ```{r}
 source(here::here("_interaction_categories_and_colors.R"))
 
 unique_intxns %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
 ```
 
-#### Total interactions by type (includes repeat documentation of same taxa1/taxa2/interaction type combinations): 
+#### Total interactions by type (includes repeat documentation of same taxa1/taxa2/interaction type combinations):
+
 ```{r}
 df %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
 ```
