@@ -29,12 +29,12 @@ total_cac_taxa <- sum(spp$canada_ak_conus)
 
 num_non_cac_taxa <- num_total_taxa - total_cac_taxa
 
-#### SPECIES/SUBSPECIES COUNTS ####
+#### SPECIES COUNTS ####
 
-#Removing hybrids, genera and unidentified
-total_spp <- length(spp$scientific.name[spp$category %in% c("species", "subspecies")])
+#Removing hybrids, genera, subspecies and unidentified
+total_spp <- length(spp$scientific.name[spp$category %in% c("species")])
 
-total_spp_cac <- sum(spp$canada_ak_conus)
+total_spp_cac <- sum(spp$canada_ak_conus[spp$category %in% c("species")])
 
 #### GENUS/FAMILY LEVEL COUNTS ####
 
@@ -130,7 +130,7 @@ pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
 
 -   Number of additional species: `r total_spp - total_spp_cac`
 
--   Percent of world's bird spp (out of 11,1145 spp): `r round(length(spp$scientific.name)/11145*100, 2)`%
+-   Percent of world's bird spp (out of 11,1145 spp): `r round(total_spp/11145*100, 2)`%
 
 ### Genus/Family/Order-level summary
 
