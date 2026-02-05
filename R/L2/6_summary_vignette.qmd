@@ -46,8 +46,16 @@ total_ord_cac <- length(unique(spp$order[spp$canada_ak_conus == TRUE]))
 
 total_ord_non_cac <-  length(unique(spp$order)) - total_ord_cac
 
+#### North American Only Interactions #### 
+spp_ls_cac <- spp$scientific.name[spp$canada_ak_conus == TRUE]
+
+ain_spp1_cac <- df[df$taxa1_clements %in% spp_ls_cac,]
+ain_spp_all_cac <- ain_spp1_cac[ain_spp1_cac$taxa2_clements %in% spp_ls_cac,]
+
+
 #### INTERACTIONS ####
 
+## All interactions 
 num_intxns <- nrow(df)
 
 unique_intxns <- df %>% 
@@ -73,12 +81,40 @@ unique_intxns <- df %>%
   )  %>%
   distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
 
+## CAC only interactions 
+num_intxns_cac <- nrow(ain_spp_all_cac)
+
+unique_intxns_cac <- ain_spp_all_cac %>% 
+  dplyr::select(taxa1_scientific, 
+                taxa2_scientific, 
+                effect_tx1_on_tx2, 
+                effect_tx2_on_tx1, 
+                interaction) %>% 
+  filter(!duplicated(.)) %>%
+  mutate(
+    # Labels taxa pairs by alphabetical order 
+    taxa_lo = pmin(taxa1_scientific, taxa2_scientific),
+    taxa_hi = pmax(taxa1_scientific, taxa2_scientific),
+
+    # Checks whether order is swapped (non-alphabetical) 
+    swapped = taxa1_scientific > taxa2_scientific,
+
+    # normalize effects so they always mean:
+    # eff_lo_on_hi = effect of taxa_lo on taxa_hi
+    # eff_hi_on_lo = effect of taxa_hi on taxa_lo
+    eff_lo_on_hi = if_else(swapped, effect_tx2_on_tx1, effect_tx1_on_tx2),
+    eff_hi_on_lo = if_else(swapped, effect_tx1_on_tx2, effect_tx2_on_tx1)
+  )  %>%
+  distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
+
+pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
+                             length(unique_intxns$interaction)*100,2)
 
 ```
 
 -   **Check**: Number of taxa in species list equals number of taxa in network: `r length(unique_taxa_list) == length(unique(spp$scientific.name))`
 
-### Taxa-level summary 
+### Taxa-level summary
 
 -   Number of taxa (total): `r num_total_taxa`
 
@@ -94,9 +130,9 @@ unique_intxns <- df %>%
 
 -   Number of additional species: `r total_spp - total_spp_cac`
 
--   Percent of world's bird spp (out of 11,1145 spp): `r round(length(spp$scientific.name)/11145*100, 2)`
+-   Percent of world's bird spp (out of 11,1145 spp): `r round(length(spp$scientific.name)/11145*100, 2)`%
 
-### Genus/Family/Order-level summary 
+### Genus/Family/Order-level summary
 
 -   Number of North American orders: `r total_ord_cac`
 
@@ -106,11 +142,11 @@ unique_intxns <- df %>%
 
 -   Number of additional families: `r total_fam_non_cac`
 
--   Number of North American genera:`r `
+-   Number of North American genera:`r`
 
--   Number of additional genera: `r `
+-   Number of additional genera: `r`
 
--   Number of total genera: `r `
+-   Number of total genera: `r`
 
 ### Interactions summary
 
@@ -119,6 +155,11 @@ unique_intxns <- df %>%
 -   Number of documented pairwise interactions: `r num_intxns`
 
 -   Number of unique pairwise interactions: `r nrow(unique_intxns)`
+
+-   Number of unique pairwise interactions among focal taxa: `r nrow(unique_intxns_cac)`
+
+-   Percent of unique pairwise interactions among focal taxa: `r pct_unique_in_cac`%
+
 
 #### Unique taxa1/taxa2/interaction combinations by interaction type:
 
