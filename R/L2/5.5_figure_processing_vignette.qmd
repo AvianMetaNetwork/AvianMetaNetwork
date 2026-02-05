@@ -915,7 +915,7 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
     #Create a standalone legend plot with LINES
     legend_plot <- ggplot(legend_data, aes(x = category, y = 1, color = category)) +
       geom_line(size = legend_line_size) +
-      scale_color_manual(values = setNames(legend_data$category_color, legend_data$category),
+      scale_color_manual(values = alpha(setNames(legend_data$category_color, legend_data$category), edge_alpha),
                          name = "Interaction Category") +
       theme_void() +
       theme(legend.position = "bottom",
@@ -938,7 +938,7 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
     #Create a standalone legend plot with LINES
     legend_plot <- ggplot(legend_data, aes(x = interaction, y = 1, color = interaction)) +
       geom_line(size = legend_line_size) +
-      scale_color_manual(values = setNames(legend_data$color, legend_data$interaction),
+      scale_color_manual(values = alpha(setNames(legend_data$color, legend_data$interaction), edge_alpha),
                          name = "Interaction Type") +
       theme_void() +
       theme(legend.position = "bottom",
