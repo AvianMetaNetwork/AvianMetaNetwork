@@ -171,6 +171,16 @@ splist<-splist %>%
              scientific_name_bbs2024, AOU_bbs2024, in_bbs2024)
 
 ```
+### Remove entries with no equivalent Clements name for a taxa
+## (E.g., Galliform sp.)
+
+```{r}
+intxns.db.subset <- intxns.db.subset[
+  !is.na(intxns.db.subset$taxa1_clements) &
+  !is.na(intxns.db.subset$taxa2_clements),
+]
+```
+
 
 ### Flip all non-CAC spp1 and CAC spp2 combos so that spp1 is always a CAC spp 
 
