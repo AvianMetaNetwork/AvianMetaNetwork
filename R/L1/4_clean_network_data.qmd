@@ -1724,7 +1724,6 @@ if(length(remaining_mismatch) > 0){
   write.csv(remaining_mismatch, here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv"), row.names=FALSE)
 }else(file.remove(here::here("./data/L1/aux_mismatches_with_clements_TOFIXMANUALLY.csv")))
 
-
 ```
 
 
