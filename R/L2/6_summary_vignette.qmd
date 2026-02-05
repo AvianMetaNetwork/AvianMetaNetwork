@@ -27,7 +27,7 @@ num_total_taxa <- length(unique_taxa_list)
 
 total_cac_taxa <- sum(spp$canada_ak_conus)
 
-num_non_cac_taxa <-num_total_taxa - total_cac_taxa
+num_non_cac_taxa <- num_total_taxa - total_cac_taxa
 
 #### SPECIES/SUBSPECIES COUNTS ####
 
@@ -35,6 +35,16 @@ num_non_cac_taxa <-num_total_taxa - total_cac_taxa
 total_spp <- length(spp$scientific.name[spp$category %in% c("species", "subspecies")])
 
 total_spp_cac <- sum(spp$canada_ak_conus)
+
+#### GENUS/FAMILY LEVEL COUNTS ####
+
+total_fam_cac <- length(unique(spp$family[spp$canada_ak_conus == TRUE]))
+
+total_fam_non_cac <-  length(unique(spp$family)) - total_fam_cac
+
+total_ord_cac <- length(unique(spp$order[spp$canada_ak_conus == TRUE]))
+
+total_ord_non_cac <-  length(unique(spp$order)) - total_ord_cac
 
 #### INTERACTIONS ####
 
@@ -78,17 +88,25 @@ unique_intxns <- df %>%
 
 ### Species-level summary
 
--   Number of species (total): `r length(total_spp)`
+-   Number of species (total): `r total_spp`
 
 -   Number of North American species: `r total_spp_cac`
 
--   Number of additional species: `r length(total_spp) - length(total_spp_cac)`
+-   Number of additional species: `r total_spp - total_spp_cac`
 
 -   Percent of world's bird spp (out of 11,1145 spp): `r round(length(spp$scientific.name)/11145*100, 2)`
 
-### Genus-level summary 
+### Genus/Family/Order-level summary 
 
--   Number of North American Genera:`r `
+-   Number of North American orders: `r total_ord_cac`
+
+-   Number of additional orders: `r total_ord_non_cac`
+
+-   Number of North American families: `r total_fam_cac`
+
+-   Number of additional families: `r total_fam_non_cac`
+
+-   Number of North American genera:`r `
 
 -   Number of additional genera: `r `
 
