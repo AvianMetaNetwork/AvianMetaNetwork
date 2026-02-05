@@ -361,22 +361,6 @@ print("rows remaining with not both effects NA:")
 print(nrow(int.raw))
 ```
 
-#### Some quick typo fixes
-
-This is the same function run during stitching, but run it again and to ensure 
-nothing was missed when it was run during L0.  Shouldn't really find anything else
-
-```{r}
-
-# int.raw1<-fix_taxon_typos(int.raw) 
-# See what is different between int.raw and int.raw1 using the diffdf package:
-# diffdf(int.raw, int.raw1)
-# Should be finding editorial differences involving "."
-# Oct 5: found 12 rows that differ in some way (spaces and "." ",")
-int.raw<-fix_taxon_typos(int.raw)
-```
-
-
 #### Discovery and repair of missing Sp1/Sp2 scientific names
 
 List rows with missing sp1 values but have other data to use for fix
@@ -1820,4 +1804,6 @@ Data Paper Goal:
 ```{r}
 #| label: subset_check
 # rcode for above, prints a data frame of non-checklist rows
+
+sessionInfo()
 ```
