@@ -14,8 +14,10 @@ editor: visual
 library(dplyr)
 library(stringr)
 set.seed(44)
+
 df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv"))
 spp <- read.csv(here::here("./data/L1/species_checklists/spp_joint_cac_colsubset.csv"))
+
 
 num_intxns <- nrow(df)
 
@@ -25,11 +27,7 @@ unique_intxns <- df %>%
                 effect_tx1_on_tx2, 
                 effect_tx2_on_tx1, 
                 interaction) %>% 
-  filter(!duplicated(.)) 
-
-
-
-unique_pairs <- unique_intxns %>%
+  filter(!duplicated(.)) %>%
   mutate(
     # Labels taxa pairs by alphabetical order 
     taxa_lo = pmin(taxa1_scientific, taxa2_scientific),
@@ -66,33 +64,54 @@ unique_gen_list <- unique(str_replace(unique_spp_list, "^([A-Za-z]+).*$", "\\1")
 na_spp_list <- unique_spp_list[unique_spp_list %in% spp$scientific_name_clements2024]
 
 na_gen_list <- unique(str_replace(na_spp_list, "^([A-Za-z]+).*$", "\\1"))
+
+
+
 ```
 
 -   Number of documented pairwise interactions: `r num_intxns`
--   Number of unique pairwise interactions: `r nrow(unique_pairs)`
+
+-   Number of unique pairwise interactions: `r nrow(unique_intxns)`
+
 -   Number of focal taxa: `r length(total_cac_taxa)`
+
 -   Number of additional non-focal taxa: `r num_non_cac_taxa`
+
 -   Number of taxa (total): `r num_total_taxa`
 
-
 -   Number of North American species: `r length(na_spp_list)`
+
 -   Number of additional species: `r length(unique_spp_list) - length(na_spp_list)`
+
 -   Number of species (total): `r length(unique_spp_list)`
+
 -   Percent of world's bird spp (out of 11,1145 spp): `r round(length(unique_spp_list)/11145*100, 2)`
 
 -   Number of North American Genera:`r length(na_gen_list)`
+
 -   Number of additional genera: `r length(unique_gen_list) - length(na_gen_list)`
+
 -   Number of total genera: `r length(unique_gen_list)`
 
 -   Total number of interaction types: `r length(unique(df$interaction))`
 
+### Interactions summary 
+
+#### Unique taxa1/taxa2/interaction combinations by interaction type: 
+```{r}
+source(here::here("_interaction_categories_and_colors.R"))
+
+unique_intxns %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
+```
+
+#### Total interactions by type (includes repeat documentation of same taxa1/taxa2/interaction type combinations): 
+```{r}
+df %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
+```
+
 ### Species list summary
 
 -   Total number of species in the North American Avian Interaction Taxa List: `r length(unique(spp$scientific_name_clements2024))`
-
-```{r}
-unique_intxns %>% group_by(interaction) %>% summarize(n=n()) %>% arrange(-n)
-```
 
 # Interaction Data Exploratory Figures
 
