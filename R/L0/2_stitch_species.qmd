@@ -129,7 +129,6 @@ intxnsL0sp$intxns <- sources_wide_to_long(intxnsL0sp$intxns)
 nrow(intxnsL0sp$intxns)
 
 ```
-
 *Optionally examine the full stitched data frame:*
 
 ```{r}
@@ -199,8 +198,6 @@ Optional
 #                   ) 
 ```
 
-*Count of species after binding:*
-
 ```
 # paste("Count of species after binding:", as.character(intxnsL0spir$count))
 ```
@@ -229,9 +226,10 @@ intxnsL0 <- intxnsL0sp$intxns
 
 > Note that some taxa1 in a given taxa1 csv could also be other species because of entering many pair-wise interactions in, for example, mixed flock entry. Any duplicates will be omitted later.
 
+
 ## Change species name columns to taxa names so that it reflects the broad range of taxonomic resolutions of the data
 ```{r}
-intxnsL0sp <- intxnsL0sp %>% 
+intxnsL0 <- intxnsL0 %>% 
   rename(
     taxa1_scientific = species1_scientific, 
     taxa2_scientific = species2_scientific, 
@@ -252,10 +250,10 @@ export the data to become the current L0 interaction data, overwrite any existin
 # this file name is set at the top of this script, BUT 
 # change the name here to save a test file or overwrite previous version
 # stitched_L0_file <- "AvianInteractionData_L0_stitch.csv" 
-L0_file <- save_L0_intxns(intxnsL0sp$intxns,
-                          stitched_L0_file,
-                          L0_dir = file_paths$L0)
-print(L0_file)
+L0_file <- write.csv(intxnsL0, 
+                     file.path(file_paths$L0, stitched_L0_file),
+                     row.names = F, 
+                     fileEncoding = "UTF-8")
 
-
+sessionInfo()
 ```
