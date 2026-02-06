@@ -2231,101 +2231,18 @@ vertical-align: -.125em;
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clootl)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtree)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggnewscale)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>inter_NA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;../Avian-Interaction-Database-Working/L1/ain_cac.csv&quot;</span>)) <span class="co">#NA avian interaction data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtree)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggnewscale)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>inter_NA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;../Avian-Interaction-Database-Working/L1/ain_cac.csv&quot;</span>)) <span class="co">#NA avian interaction data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The distribution figure (Fig. 2) and example networks (Fig. 4) both employ a mutual color scheme and order of interactions. This is defined here:</p>
+<p>The distribution figure (Fig. 2) and example networks (Fig. 4) both employ a mutual color scheme and order of interactions. This is defined in the <code>_interaction_categories_and_colors.R</code> script and called here:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>interaction_categories <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">interaction =</span> <span class="fu">c</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Trophic (Dark Red)</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;predation&quot;</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mobbing (Pink)</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;mobbing&quot;</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Competition (Dark Blues)</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;competition&quot;</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facilitation (Greens)</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;facilitation&quot;</span>, <span class="st">&quot;facilitation-mixed flocking&quot;</span>, <span class="st">&quot;facilitation-comigration&quot;</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;facilitation-foraging&quot;</span>, <span class="st">&quot;communal nesting&quot;</span>, <span class="st">&quot;communal roosting&quot;</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commensalism (Purples)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;commensalism&quot;</span>, <span class="st">&quot;commensalism-scavenge&quot;</span>, <span class="st">&quot;commensalism-chick adoption&quot;</span>, </span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;commensalism-call mimicry&quot;</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parasitism (Oranges/Browns)</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;kleptoparasitism&quot;</span>, <span class="st">&quot;brood parasitism&quot;</span>, <span class="st">&quot;nest takeover&quot;</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Amenalism (Black)</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;amensalism&quot;</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Other (Grays)</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;co-occur&quot;</span>, <span class="st">&quot;hybridization&quot;</span>, <span class="st">&quot;copulation&quot;</span>, <span class="st">&quot;courtship&quot;</span>, <span class="st">&quot;play&quot;</span>, <span class="st">&quot;accidental killing&quot;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">category =</span> <span class="fu">c</span>(</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Trophic</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Trophic&quot;</span>,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mobbing</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Mobbing&quot;</span>,</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Competition</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Competition&quot;</span>,</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facilitation</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Facilitation&quot;</span>, <span class="dv">6</span>),</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commensalism</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Commensalism&quot;</span>, <span class="dv">4</span>),</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parasitism</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Parasitism&quot;</span>, <span class="dv">3</span>),</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Amenalism</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Amenalism&quot;</span>,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># N/A</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Other&quot;</span>, <span class="dv">6</span>)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">c</span>(</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Trophic (Reds/Oranges)</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#800000&quot;</span>, </span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mobbing (Teal)</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#E0115F&quot;</span>,</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Competition (Dark Blues)</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#00008B&quot;</span>,</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facilitation (Greens)</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#006400&quot;</span>, <span class="st">&quot;#228B22&quot;</span>, <span class="st">&quot;#32CD32&quot;</span>, <span class="st">&quot;#00A86B&quot;</span>, <span class="st">&quot;#50C878&quot;</span>, <span class="st">&quot;#3CB371&quot;</span>,</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commensalism (Purples)</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#4B0082&quot;</span>, <span class="st">&quot;#6A5ACD&quot;</span>, <span class="st">&quot;#9370DB&quot;</span>, <span class="st">&quot;#BA55D3&quot;</span>,</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parasitism (Oranges/Browns)</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#D2691E&quot;</span>, <span class="st">&quot;#DEB887&quot;</span>, <span class="st">&quot;#F4A460&quot;</span>,</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Amenalism (Black)</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#000000&quot;</span>,</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># N/A (Grays)</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#808080&quot;</span>, <span class="st">&quot;#696880&quot;</span>, <span class="st">&quot;#373737&quot;</span>, <span class="st">&quot;#7C6E7F&quot;</span>, <span class="st">&quot;#9897A9&quot;</span>, <span class="st">&quot;#787276&quot;</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">category_color =</span> <span class="fu">c</span>(</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Trophic</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#800000&quot;</span>,</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mobbing</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#E0115F&quot;</span>,</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Competition</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#00008B&quot;</span>,</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facilitation</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;#006400&quot;</span>, <span class="dv">6</span>),</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commensalism</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;#4B0082&quot;</span>, <span class="dv">4</span>),</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parasitism</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;#D2691E&quot;</span>, <span class="dv">3</span>),</span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Amenalism</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#000000&quot;</span>,</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Other</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;#808080&quot;</span>, <span class="dv">6</span>)</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Define category order for plotting</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>category_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Trophic&quot;</span>, <span class="st">&quot;Mobbing&quot;</span>, <span class="st">&quot;Competition&quot;</span>, <span class="st">&quot;Facilitation&quot;</span>,</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Commensalism&quot;</span>, <span class="st">&quot;Parasitism&quot;</span>, <span class="st">&quot;Amenalism&quot;</span>,</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Other&quot;</span>)</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>interaction_categories<span class="sc">$</span>category <span class="ot">&lt;-</span> <span class="fu">factor</span>(interaction_categories<span class="sc">$</span>category,</span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">levels =</span> category_order)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;_interaction_categories_and_colors.R&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>One thing to note about the database is that it includes many rows with duplicate interactions (same species pair and interaction type). For example:</p>
 <div class="cell">
@@ -2357,7 +2274,7 @@ vertical-align: -.125em;
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">&quot;We removed &quot;</span>, <span class="fu">nrow</span>(inter_NA) <span class="sc">-</span> <span class="fu">nrow</span>(inter_NA_slim), <span class="st">&quot; duplicate rows!&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>We removed 7750 duplicate rows!</code></pre>
+<pre><code>We removed 7748 duplicate rows!</code></pre>
 </div>
 </div>
 <section id="distribution-of-interactions-by-type-figure-2" class="level2">
@@ -2386,7 +2303,7 @@ vertical-align: -.125em;
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(type_summ_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        interaction     category   color category_color total unique
-1         predation      Trophic #800000        #800000  6519   4750
+1         predation      Trophic #800000        #800000  6510   4743
 2           mobbing      Mobbing #E0115F        #E0115F  1028    894
 3       competition  Competition #00008B        #00008B  4028   2717
 4      facilitation Facilitation #006400        #006400  2006   1339
@@ -2417,7 +2334,7 @@ vertical-align: -.125em;
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">&quot;After initial cleaning, the data contains &quot;</span>, <span class="fu">nrow</span>(inter_NA_trim), <span class="st">&quot; rows&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>After initial cleaning, the data contains 16378 rows</code></pre>
+<pre><code>After initial cleaning, the data contains 16379 rows</code></pre>
 </div>
 </div>
 <p>We will also repeat the slimming step, as collapsing the subspecies to their larger species creates new duplicate rows (same species pair and interaction type). For example, <code>Acanthis flammea hornemanni/exilipes</code> is converted to <code>Acanthis flammea</code>, which may cause new duplicated interactions, where a species had separate interactions with both the species and subspecies.</p>
@@ -3161,7 +3078,7 @@ vertical-align: -.125em;
 <span id="cb26-223"><a href="#cb26-223" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Create a standalone legend plot with LINES</span></span>
 <span id="cb26-224"><a href="#cb26-224" aria-hidden="true" tabindex="-1"></a>    legend_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(legend_data, <span class="fu">aes</span>(<span class="at">x =</span> category, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">color =</span> category)) <span class="sc">+</span></span>
 <span id="cb26-225"><a href="#cb26-225" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">size =</span> legend_line_size) <span class="sc">+</span></span>
-<span id="cb26-226"><a href="#cb26-226" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">setNames</span>(legend_data<span class="sc">$</span>category_color, legend_data<span class="sc">$</span>category),</span>
+<span id="cb26-226"><a href="#cb26-226" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">alpha</span>(<span class="fu">setNames</span>(legend_data<span class="sc">$</span>category_color, legend_data<span class="sc">$</span>category), edge_alpha),</span>
 <span id="cb26-227"><a href="#cb26-227" aria-hidden="true" tabindex="-1"></a>                         <span class="at">name =</span> <span class="st">&quot;Interaction Category&quot;</span>) <span class="sc">+</span></span>
 <span id="cb26-228"><a href="#cb26-228" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_void</span>() <span class="sc">+</span></span>
 <span id="cb26-229"><a href="#cb26-229" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
@@ -3184,7 +3101,7 @@ vertical-align: -.125em;
 <span id="cb26-246"><a href="#cb26-246" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Create a standalone legend plot with LINES</span></span>
 <span id="cb26-247"><a href="#cb26-247" aria-hidden="true" tabindex="-1"></a>    legend_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(legend_data, <span class="fu">aes</span>(<span class="at">x =</span> interaction, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">color =</span> interaction)) <span class="sc">+</span></span>
 <span id="cb26-248"><a href="#cb26-248" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">size =</span> legend_line_size) <span class="sc">+</span></span>
-<span id="cb26-249"><a href="#cb26-249" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">setNames</span>(legend_data<span class="sc">$</span>color, legend_data<span class="sc">$</span>interaction),</span>
+<span id="cb26-249"><a href="#cb26-249" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">alpha</span>(<span class="fu">setNames</span>(legend_data<span class="sc">$</span>color, legend_data<span class="sc">$</span>interaction), edge_alpha),</span>
 <span id="cb26-250"><a href="#cb26-250" aria-hidden="true" tabindex="-1"></a>                         <span class="at">name =</span> <span class="st">&quot;Interaction Type&quot;</span>) <span class="sc">+</span></span>
 <span id="cb26-251"><a href="#cb26-251" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_void</span>() <span class="sc">+</span></span>
 <span id="cb26-252"><a href="#cb26-252" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>

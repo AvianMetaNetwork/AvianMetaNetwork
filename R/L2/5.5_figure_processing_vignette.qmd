@@ -107,7 +107,6 @@ inter_NA_trim <- inter_NA_slim %>%
     filter(.data[["taxa1_scientific"]] != .data[["taxa2_scientific"]])
 
 message("After initial cleaning, the data contains ", nrow(inter_NA_trim), " rows")
-
 ```
 
 We will also repeat the slimming step, as collapsing the subspecies to their larger species creates new duplicate rows (same species pair and interaction type). For example, `Acanthis flammea hornemanni/exilipes` is converted to `Acanthis flammea`, which may cause new duplicated interactions, where a species had separate interactions with both the species and subspecies.

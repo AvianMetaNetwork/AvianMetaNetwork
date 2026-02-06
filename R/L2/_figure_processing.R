@@ -74,9 +74,9 @@ inter_NA_trim <- inter_NA_slim %>%
   #Collapse subspecies to species
   mutate(
     "taxa1_scientific" = str_replace(.data[["taxa1_scientific"]],
-                                        "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1"),
+                                     "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1"),
     "taxa2_scientific" = str_replace(.data[["taxa2_scientific"]],
-                                        "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1")
+                                     "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1")
   ) %>%
   #Remove self interactions
   filter(.data[["taxa1_scientific"]] != .data[["taxa2_scientific"]])

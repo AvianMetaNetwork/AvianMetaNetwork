@@ -46,6 +46,15 @@ total_ord_cac <- length(unique(spp$order[spp$canada_ak_conus == TRUE]))
 
 total_ord_non_cac <-  length(unique(spp$order)) - total_ord_cac
 
+total_gen <- length(unique(spp$scientific.name[spp$category %in% c("species", "subspecies")] %>%
+                    word(1)))
+
+total_gen_cac <- length(unique(spp$scientific.name[spp$canada_ak_conus == TRUE & spp$category %in% c("species", "subspecies")] %>% word(1)))  
+
+total_gen_non_cac <- total_gen - total_gen_cac
+
+
+
 #### North American Only Interactions #### 
 spp_ls_cac <- spp$scientific.name[spp$canada_ak_conus == TRUE]
 
@@ -130,7 +139,7 @@ pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
 
 -   Number of additional species: `r total_spp - total_spp_cac`
 
--   Percent of world's bird spp (out of 11,1145 spp): `r round(total_spp/11145*100, 2)`%
+-   Percent of world's bird spp (out of 11,145 spp): `r round(total_spp/11145*100, 2)`%
 
 ### Genus/Family/Order-level summary
 
@@ -142,11 +151,11 @@ pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
 
 -   Number of additional families: `r total_fam_non_cac`
 
--   Number of North American genera:`r`
+-   Number of North American genera:`r total_gen_cac`
 
--   Number of additional genera: `r`
+-   Number of additional genera: `r total_gen_non_cac`
 
--   Number of total genera: `r`
+-   Number of total genera: `r total_gen`
 
 ### Interactions summary
 
@@ -190,7 +199,7 @@ source(here::here("../Avian-Interaction-Database/R/L2/_figure_processing.R"))
 
 ### Interaction Distribution Figure
 
-```{r, fig.width=14, out.width="100%"}
+```{r, fig.width=14, fig.height=14, out.width="100%"}
 #Defining the position of the brackets in the figure
 bracket_data <- type_summ_total %>%
   group_by(category) %>% 
