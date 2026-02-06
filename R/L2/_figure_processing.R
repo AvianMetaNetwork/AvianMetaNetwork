@@ -32,8 +32,8 @@ source(here::here("_interaction_categories_and_colors.R"))
 inter_NA_slim <- inter_NA %>%
   rowwise() %>% #This removes duplicate interactions (same sp pair and int type)
   mutate(       #by creating columns of the species pairs in alphabetical order
-    sp_min = min(taxa1_scientific, taxa2_scientific),
-    sp_max = max(taxa1_scientific, taxa2_scientific)
+    sp_min = min(taxa1_clements, taxa2_clements),
+    sp_max = max(taxa1_clements, taxa2_clements)
   ) %>%
   ungroup() %>%
   distinct(sp_min, sp_max, interaction, .keep_all = TRUE) %>% #removing duplicates
@@ -66,26 +66,37 @@ type_summ_total$interaction <- factor(type_summ_total$interaction,
 # Phylogeny figure data processing, tree generation, and plot function
 # --------------------------------------------------------------------
 
+#load in clements data for identifying subspecies and species
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_ain_cac.csv"))
+
 inter_NA_trim <- inter_NA_slim %>%
+  #Join with spp to get category information for both taxa
+  left_join(spp %>% select(scientific.name, category),
+            by = c("taxa1_clements" = "scientific.name")) %>%
+  rename(taxa1_category = category) %>%
+  left_join(spp %>% select(scientific.name, category),
+            by = c("taxa2_clements" = "scientific.name")) %>%
+  rename(taxa2_category = category) %>%
+  #Keep rows where both taxa1 and taxa2 are subspecies
   filter(
-    !str_detect(.data[["taxa1_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE)),
-    !str_detect(.data[["taxa2_scientific"]], regex("sp\\.|unid\\.|_x_", ignore_case = TRUE))
+    taxa1_category %in% c("species", "subspecies"),
+    taxa2_category %in% c("species", "subspecies")
   ) %>%
-  #Collapse subspecies to species
+  #Collapse all to species level (simplifying subspecies)
   mutate(
-    "taxa1_scientific" = str_replace(.data[["taxa1_scientific"]],
-                                     "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1"),
-    "taxa2_scientific" = str_replace(.data[["taxa2_scientific"]],
-                                     "^([A-Za-z]+\\s+[A-Za-z]+).*$", "\\1")
+    taxa1_clements = word(taxa1_clements, 1, 2),
+    taxa2_clements = word(taxa2_clements, 1, 2)
   ) %>%
+  #Remove the temporary category columns
+  select(-taxa1_category, -taxa2_category) %>%
   #Remove self interactions
-  filter(.data[["taxa1_scientific"]] != .data[["taxa2_scientific"]])
+  filter(taxa1_clements != taxa2_clements)
 
 inter_NA_clean <- inter_NA_trim %>%
   rowwise() %>% #This removes duplicate interactions (same sp pair and int type)
   mutate(       #by creating columns of the species pairs in alphabetical order
-    sp_min = min(taxa1_scientific, taxa2_scientific),
-    sp_max = max(taxa1_scientific, taxa2_scientific)
+    sp_min = min(taxa1_clements, taxa2_clements),
+    sp_max = max(taxa1_clements, taxa2_clements)
   ) %>%
   ungroup() %>%
   distinct(sp_min, sp_max, interaction, .keep_all = TRUE) %>% #removing duplicates
@@ -95,109 +106,39 @@ inter_NA_flip <- inter_NA_clean %>%
   rename(
     temp_sp1_com = .data[["taxa2_common"]],
     temp_sp2_com = .data[["taxa1_common"]],
-    temp_sp1_sci = .data[["taxa2_scientific"]],
-    temp_sp2_sci = .data[["taxa1_scientific"]]
+    temp_sp1_cle = .data[["taxa2_clements"]],
+    temp_sp2_cle = .data[["taxa1_clements"]]
   ) %>%
   rename(
     taxa1_common = temp_sp1_com,
     taxa2_common = temp_sp2_com,
-    taxa1_scientific = temp_sp1_sci,
-    taxa2_scientific = temp_sp2_sci
+    taxa1_clements = temp_sp1_cle,
+    taxa2_clements = temp_sp2_cle
   )
 
 inter_NA_full <- dplyr::union(inter_NA_clean, inter_NA_flip)
 
 inter_NA_working <- inter_NA_full %>%
-  group_by(.data[["taxa1_scientific"]]) %>%
+  group_by(.data[["taxa1_clements"]]) %>%
   #Replace spaces with underscores to match tree tips
-  mutate(taxa1_scientific = str_replace_all(.data[["taxa1_scientific"]], " ", "_")) %>%
-  rename(species = taxa1_scientific) %>%
+  mutate(taxa1_scientific = str_replace_all(.data[["taxa1_clements"]], " ", "_")) %>%
+  rename(species = taxa1_clements) %>%
   summarize(
     n_int = n(),
     n_type = n_distinct(.data[["interaction"]]),
     .groups = "drop"
   )
 
-get_clements_family <- function(species_vector,
-                                taxonomy_year = 2024,
-                                return_full_taxonomy = FALSE) {
-
-  #Access the taxonomy data from clootl_data
-  taxonomy_name <- paste0("Year", taxonomy_year)
-
-  if (!taxonomy_name %in% names(clootl_data$taxonomy.files)) {
-    stop("Taxonomy year ", taxonomy_year, " not available. Use 2021-2024.")
-  }
-
-  clements <- clootl_data$taxonomy.files[[taxonomy_name]]
-
-  message("Using Clements taxonomy year: ", taxonomy_year)
-  message("Looking up ", length(species_vector), " species...")
-
-
-  #Clean species names (remove underscores if present)
-  species_clean <- str_replace_all(species_vector, "_", " ")
-
-  #Create a lookup dataframe
-  results <- data.frame(
-    species = species_vector,
-    species_clean = species_clean,
-    family = NA_character_,
-    order = NA_character_,
-    stringsAsFactors = FALSE
+inter_NA_working <- inter_NA_working %>%
+  left_join(
+    spp %>%
+      mutate(genus_species = word(scientific.name, 1, 2)) %>%
+      select(genus_species, family),
+    by = c("species" = "genus_species")
   )
 
-  #Match each species to Clements data
-  for (i in seq_along(species_clean)) {
-    sp <- species_clean[i]
-
-    #Match on SCI_NAME column (confirmed from your screenshot)
-    match <- clements %>%
-      filter(SCI_NAME == sp)
-
-    #If no exact match, try matching genus + species only
-    if (nrow(match) == 0) {
-      genus_species <- str_extract(sp, "^[A-Za-z]+\\s+[A-Za-z]+")
-      if (!is.na(genus_species)) {
-        #Escape special characters for regex
-        pattern <- paste0("^", gsub(" ", "\\\\s+", genus_species))
-        match <- clements %>%
-          filter(str_detect(SCI_NAME, pattern))
-      }
-    }
-
-    if (nrow(match) > 0) {
-      #Extract FAMILY and ORDER from matched row
-      if ("FAMILY" %in% names(match)) {
-        results$family[i] <- match$FAMILY[1]
-      }
-      if ("ORDER" %in% names(match)) {
-        results$order[i] <- match$ORDER[1]
-      }
-    }
-  }
-
-  n_found <- sum(!is.na(results$family))
-  n_missing <- sum(is.na(results$family))
-  message("Found families for ", n_found, "/", length(species_vector), " species")
-  if (n_missing > 0) {
-    message("Missing families for ", n_missing, " species")
-    message("First few missing: ", paste(head(species_clean[is.na(results$family)], 3), collapse = ", "))
-  }
-
-
-  #Return appropriate format
-  if (return_full_taxonomy) {
-    return(results)
-  } else {
-    return(results$family)
-  }
-}
-
-inter_NA_working$family <- get_clements_family(
-  inter_NA_working[["species"]],
-  taxonomy_year = 2024
-)
+inter_NA_working <- inter_NA_working %>%
+  mutate(species = str_replace_all(species, " ", "_"))
 
 inter_NA_list <- str_replace_all(inter_NA_working$species, "_", " ")
 NA_tree <- extractTree(species = inter_NA_list, label_type = "scientific", taxonomy_year = 2024)
@@ -374,21 +315,21 @@ create_network <- function(data, #input dataset, should be inter_NA_int
 
   #Filter interactions involving focal species
   focal_interactions <- data %>%
-    filter(taxa1_scientific == focal_species |
-             taxa2_scientific == focal_species)
+    filter(taxa1_clements == focal_species |
+             taxa2_clements == focal_species)
 
   #Get network species and their interactions
-  network_species <- unique(c(focal_interactions$taxa1_scientific,
-                              focal_interactions$taxa2_scientific))
+  network_species <- unique(c(focal_interactions$taxa1_clements,
+                              focal_interactions$taxa2_clements))
 
   network_data <- data %>%
-    filter(taxa1_scientific %in% network_species,
-           taxa2_scientific %in% network_species) %>%
+    filter(taxa1_clements %in% network_species,
+           taxa2_clements %in% network_species) %>%
     left_join(interaction_categories, by = "interaction")
 
   #Create graph with vertex and edge attributes
   network_graph <- graph_from_data_frame(
-    d = network_data[, c("taxa1_scientific", "taxa2_scientific")],
+    d = network_data[, c("taxa1_clements", "taxa2_clements")],
     vertices = NULL)
 
   V(network_graph)$is_focal <- V(network_graph)$name == focal_species
@@ -547,16 +488,16 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 
     #Filter interactions involving focal species
     focal_interactions <- data %>%
-      filter(taxa1_scientific == focal_species |
-               taxa2_scientific == focal_species)
+      filter(taxa1_clements == focal_species |
+               taxa2_clements == focal_species)
 
     #Get network species and their interactions
-    network_species <- unique(c(focal_interactions$taxa1_scientific,
-                                focal_interactions$taxa2_scientific))
+    network_species <- unique(c(focal_interactions$taxa1_clements,
+                                focal_interactions$taxa2_clements))
 
     network_data <- data %>%
-      filter(taxa1_scientific %in% network_species,
-             taxa2_scientific %in% network_species) %>%
+      filter(taxa1_clements %in% network_species,
+             taxa2_clements %in% network_species) %>%
       left_join(interaction_categories, by = "interaction")
 
     #Track unique interactions/categories across all networks
@@ -567,7 +508,7 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 
     #Create graph with vertex and edge attributes
     network_graph <- graph_from_data_frame(
-      d = network_data[, c("taxa1_scientific", "taxa2_scientific")],
+      d = network_data[, c("taxa1_clements", "taxa2_clements")],
       vertices = NULL
     )
 
