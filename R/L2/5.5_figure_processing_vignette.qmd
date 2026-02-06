@@ -334,11 +334,10 @@ plot_phylo_combined <- function(tree, #tree produced earlier, should be NA_tree
                   size = tip_size) +
     scale_color_manual(values = family_colors, na.value = "grey50", name = "Family", guide = "none") +
     theme(
-      legend.position = c(0.705, 0.24),
+      legend.position = c(0.735, 0.26),
       legend.justification = c(1, 0),
-      legend.title = element_text(size = 16),
-      legend.text = element_text(size = 15),
-      plot.title = element_text(size = 18)
+      legend.title = element_text(size = 20),
+      legend.text = element_text(size = 18)
     )
 
   # Add family labels at center positions
