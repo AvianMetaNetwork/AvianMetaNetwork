@@ -119,9 +119,15 @@ unique_intxns_cac <- ain_spp_all_cac %>%
 pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
                              length(unique_intxns$interaction)*100,2)
 
+entry_changes_pct <- round(sum(!is.na(df$entry_changes))/length(df$entry_changes)*100,2)
+
 ```
 
--   **Check**: Number of taxa in species list equals number of taxa in network: `r length(unique_taxa_list) == length(unique(spp$scientific.name))`
+### Sanity Checks
+
+-   Number of taxa in species list equals number of taxa in network: `r length(unique_taxa_list) == length(unique(spp$scientific.name))`
+
+-   Percent of interactions with entry changes: `r entry_changes_pct`%
 
 ### Taxa-level summary
 
