@@ -30,14 +30,23 @@ source(here::here("_interaction_categories_and_colors.R"))
 # --------------------------------------------------------------------
 
 inter_NA_slim <- inter_NA %>%
-  rowwise() %>% #This removes duplicate interactions (same sp pair and int type)
-  mutate(       #by creating columns of the species pairs in alphabetical order
+  rowwise() %>%
+  mutate(
+    #Create columns of the species pairs in alphabetical order
     sp_min = min(taxa1_clements, taxa2_clements),
-    sp_max = max(taxa1_clements, taxa2_clements)
+    sp_max = max(taxa1_clements, taxa2_clements),
+    #Check if order is swapped
+    swapped = taxa1_clements > taxa2_clements,
+    #Normalize effects based on alphabetical order
+    eff_min_on_max = if_else(swapped, effect_tx2_on_tx1, effect_tx1_on_tx2),
+    eff_max_on_min = if_else(swapped, effect_tx1_on_tx2, effect_tx2_on_tx1)
   ) %>%
   ungroup() %>%
-  distinct(sp_min, sp_max, interaction, .keep_all = TRUE) %>% #removing duplicates
-  select(-sp_min, -sp_max) #and deleting the helper columns
+  #Remove duplicates based on normalized columns
+  distinct(sp_min, sp_max, interaction, eff_min_on_max, eff_max_on_min,
+           .keep_all = TRUE) %>%
+  #Delete the helper columns
+  select(-sp_min, -sp_max, -swapped, -eff_min_on_max, -eff_max_on_min)
 
 
 # --------------------------------------------------------------------
