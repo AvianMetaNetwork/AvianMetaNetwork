@@ -68,19 +68,19 @@ ain_spp_all_cac <- ain_spp1_cac[ain_spp1_cac$taxa2_clements %in% spp_ls_cac,]
 num_intxns <- nrow(df)
 
 unique_intxns <- df %>% 
-  dplyr::select(taxa1_scientific, 
-                taxa2_scientific, 
+  dplyr::select(taxa1_clements, 
+                taxa2_clements, 
                 effect_tx1_on_tx2, 
                 effect_tx2_on_tx1, 
                 interaction) %>% 
   filter(!duplicated(.)) %>%
   mutate(
     # Labels taxa pairs by alphabetical order 
-    taxa_lo = pmin(taxa1_scientific, taxa2_scientific),
-    taxa_hi = pmax(taxa1_scientific, taxa2_scientific),
+    taxa_lo = pmin(taxa1_clements, taxa2_clements),
+    taxa_hi = pmax(taxa1_clements, taxa2_clements),
 
     # Checks whether order is swapped (non-alphabetical) 
-    swapped = taxa1_scientific > taxa2_scientific,
+    swapped = taxa1_clements > taxa2_clements,
 
     # normalize effects so they always mean:
     # eff_lo_on_hi = effect of taxa_lo on taxa_hi
@@ -94,19 +94,19 @@ unique_intxns <- df %>%
 num_intxns_cac <- nrow(ain_spp_all_cac)
 
 unique_intxns_cac <- ain_spp_all_cac %>% 
-  dplyr::select(taxa1_scientific, 
-                taxa2_scientific, 
+  dplyr::select(taxa1_clements, 
+                taxa2_clements, 
                 effect_tx1_on_tx2, 
                 effect_tx2_on_tx1, 
                 interaction) %>% 
   filter(!duplicated(.)) %>%
   mutate(
     # Labels taxa pairs by alphabetical order 
-    taxa_lo = pmin(taxa1_scientific, taxa2_scientific),
-    taxa_hi = pmax(taxa1_scientific, taxa2_scientific),
+    taxa_lo = pmin(taxa1_clements, taxa2_clements),
+    taxa_hi = pmax(taxa1_clements, taxa2_clements),
 
     # Checks whether order is swapped (non-alphabetical) 
-    swapped = taxa1_scientific > taxa2_scientific,
+    swapped = taxa1_clements > taxa2_clements,
 
     # normalize effects so they always mean:
     # eff_lo_on_hi = effect of taxa_lo on taxa_hi
