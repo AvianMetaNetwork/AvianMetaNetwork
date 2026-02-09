@@ -1,107 +1,42 @@
 ---
-title: "L1 taxonomic harmonization"
+title: "Avian Interaction Database L1 taxonomic corrections and updates"
 author: 
   - Phoebe L. Zarnetske
   - Patrick Bills
+  - Kelly Kapsar
 format:
   html:
     toc: true
-    toc-depth: 3
+    toc-depth: 2
     embed-resources: true
 editor: source
-date: 11/06/2025
+date: 2026-02-06
 date-format: iso
 ---
 
-## Avian Interaction Pairs Data: L0 to L1 taxonomic harmonization
-
-### About
-
-- **PROJECT:** Avian Interaction Database
-- **COLLABORATORS:** Vincent Miele, Stephane Dray
-- **Run Date:** `r Sys.Date()`
-
-### Data inputs:
-
-**Avian Interaction Database L0**
-
-Raw Data, combined (stitched) and with content
-cleaning but taxonomic names as entered (older names, typos, etc)
-
-*Set the interactions database file to read from here:*
-
-( output From `R/L0/2_stitch_species.R` )
-
-```{r}
-# Clear all existing data
-rm(list=ls())
-
-AvianInteractionData_L0_file <-  "ain_all_raw.csv"
-
-```
-
-
-**Main Checklists:**
-
-- Full 2024 Clements/eBird list 
-- GBIF database (via taxadb package)
-
-Curated Species checklist: 
-
-- Current selected species list =
-  combined checklist based on Clements/eBird v2024, Avibase v8.17, BBS v2024:
-  output from `R/L0/AvianInteractionData_specieslists_L1.R` (global) or
-  `R/L0/3_subset_species_lists.R` (North America)
-  - used for species lookup / matching
-
-**Manual Taxonomic Resolution Overrides Table:**
-
-- Rows of corrections to be applied to L0 data for updating species 
-as entered to match the current checklist.  Update the code below 
-
 ```{r}
 #| echo: false
-
-manual_taxonomic_resolutions_file_name<- here::here('R/L1', "aux_taxonomy_resolutions_202510.csv")
-
-clements_mismatches <- readr::read_csv(here::here("./data/L1/aux_mismatches_with_clements_best_match.csv"))
-
+#| output: false
+# Clear all existing data
+rm(list=ls())
 ```
 
+## About
 
-
-### DATA OUTPUT:
-
-Taxonomic Resolution Table: 
-
-Avian Interaction Database, cleaned and with taxonomic names resolved to 
-match checklists listed above: `ain_all.csv`
-
-```{r}
-AvianInteractionData_L1_file <- "ain_all.csv" 
-
-today_date_string <- format(Sys.Date(),"%Y-%m-%d")
-AvianInteractionData_L1_taxonomy_table_file <- "aux_taxonomy_resolutions.csv"
-
-```
-
-
-### Next script to run: 
-
-- 5_subset_network.qmd - this cleans further (e.g., breeding/non-breeding) and some of that needs to go in general cleaning (either here or in another script).
-
-
-### NOTES
+- PROJECT: Avian Interaction Database
+- COLLABORATORS: Vincent Miele, Stephane Dray
+- Run Date: `r Sys.Date()`
+- Next script to run: 5_subset_network.qmd
+  this cleans further (e.g., breeding/non-breeding) and some of that needs to go in general cleaning (either here or in another script).
 
 This script is used to refine species name changes to align with the 
 Clements & eBird checklist to create an Rdata file.  
 
 Currently, the script is working for a checklist of CONUS+Alaska+Canada.  
 
-L0 data are checked to assign updated scientific and common names to the interaction pairs data. Makes a new column that also includes scientific name changes associated with the AOUcombo.index for merging with those names in the AvianInteractionData_AOUindex_L1.csv
-
-
-GOOD EXAMPLE TO TRACE MATCHING: Aeronautes saxitalis should be Aeronautes saxatalis
+L0 data are checked to assign updated scientific and common names to the interaction pairs data. 
+This Makes a new column that also includes scientific name changes associated with the AOUcombo.index 
+for merging with those names in the AvianInteractionData_AOUindex_L1.csv
 
 ### Workflow Summary
 
@@ -112,7 +47,7 @@ in a table to identify the current accepted name in checklist
    - read in checklists and L0 data (int.raw)
    - final data cleaning to ensure no typos etc
    - create a name resolution table to be completed (int.raw.names)
-2. fix missing scientific names manually 
+2. fix missing scientific names manually if any (only 1)
 3. resolve scientific names already exactly matching checklist 
 4. for those names not resolved, use fuzzy matching to find scientific names in checklist (high confidence only)
 5. for those names not resolved, match common names with checklist (high confidence only)
@@ -126,37 +61,73 @@ in a table to identify the current accepted name in checklist
     - interaction data with checklist names resolved 
     - resolutions table with explanations
 
-### Versions
+### Major Revisions
 
--   Original R script `AvianInteractionData_L1.R` 27 Oct 2022 (PLZ)
--   updated through 12 Dec 2024 (PLZ);
-    -   As of Dec. 12, 2024, this is mainly cleaned for BBS species
--  May 2025- July 2025 convert to workflow notebook/Quarto, (PSB)
--  August 2025, using new species lists Canada+CONUS from PLZ (PSB)
--  September 10, 2025, using species lists from commit from PLZ (PSB)
--  Oct 1, 2025: workflow reorganization for better taxonomic resolution (PSB; PLZ edits and checks
-
-
-## TO DO / Notes
-
-complete code to apply CSV of resolutions to file
-
-code/function to checklist to be able to be moved around
-
-perhaps also include the species code from Clements in the final taxonomy table 
-so that it can be looked up next year directly to see if scientific name has changed
-
-read the original 2024 list, not my version that has 2023/22 links (does not add rows)
-
-add code to get the timestamp for the L0 file and report that here
+- Original R script `AvianInteractionData_L1.R` 27 Oct 2022 (PLZ)
+- updated through 12 Dec 2024 (PLZ);
+  -   As of Dec. 12, 2024, this is mainly cleaned for BBS species
+- May 2025- July 2025 convert to workflow notebook/Quarto, (PSB)
+- August 2025, using new species lists Canada+CONUS from PLZ (PSB)
+- September 10, 2025, using species lists from commit from PLZ (PSB)
+- Oct 1, 2025: workflow reorganization for better taxonomic resolution (PSB; PLZ edits and checks)
+- Nov 2025- January 2026: rename and edits to better system workflow organization, variable names, 
+           handling UniD (genus-level) entries (KK)
+- Feb 6, 2026: Quarto notebook edits for readable data in rendered report (PSB)
 
 
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
+## Setup
 
-## Data Set-up
+### Data inputs:
 
-File paths used for this run:
+#### **Avian Interaction Database L0**
+
+Raw Data, combined (stitched) and with content
+cleaning but taxonomic names as entered (older names, typos, etc)
+
+*Set the interactions database file to read from here: ( output From `R/L0/2_stitch_species.R` )*
+
+```{r}
+AvianInteractionData_L0_file <-  "ain_all_raw.csv"
+```
+#### **Main Checklists:**
+
+- Full 2024 Clements/eBird list 
+- GBIF database (via taxadb package)
+
+Curated Species checklist: 
+
+- Current selected species list =
+  combined checklist based on Clements/eBird v2024, Avibase v8.17, BBS v2024:
+  output from `R/L0/AvianInteractionData_specieslists_L1.R` (global) or
+  `R/L0/3_subset_species_lists.R` (North America)
+  - used for species lookup / matching
+
+#### **Manual Taxonomic Resolution Overrides Table:**
+
+- Rows of corrections to be applied to L0 data for updating species 
+as entered to match the current checklist.  Update the code below 
+
+```{r}
+
+manual_taxonomic_resolutions_file_name<- here::here('R/L1', "aux_taxonomy_resolutions_202510.csv")
+clements_mismatches <- readr::read_csv(here::here("./data/L1/aux_mismatches_with_clements_best_match.csv"))
+
+```
+
+### Data Outputs
+
+#### Taxonomic Resolution Table: 
+
+Avian Interaction Database, cleaned and with taxonomic names resolved to 
+match checklists listed above: `ain_all.csv`
+
+```{r}
+AvianInteractionData_L1_file <- "ain_all.csv" 
+AvianInteractionData_L1_taxonomy_table_file <- "aux_taxonomy_resolutions.csv"
+
+```
+
+### Setup: File paths used for this run:
 
 ```{r}
 #| echo: false
@@ -224,17 +195,15 @@ print("CORRECTED CHECKLIST COLUMNS:")
 print(names(checklist))
 ```
 
+set how we find 'species' in checklist
 
-**SET HOW WE FIND 'SPECIES' IN CHECKLIST**
-
-The Clements checklist includes families, species, hybrids, etc.   In several
+*The Clements checklist includes families, species, hybrids, etc.   In several
 places below we want to find only the 'species' which include a few 
 categories.  This variable is used in several places in this notebook
-to search only 'species' in the checklist 
+to search only 'species' in the checklist*
 
 ```{r}
 species_categories <- c("group (monotypic)","species","slash","subspecies","genus","family")
-
 ```
 
 ```{r}
@@ -248,17 +217,19 @@ on_checklist <- function(sciname){
   return(FALSE)
 }
 ```
-#### Interactions Data
+
+### Interactions Data Set-up
 
 To use a different or test files, edit this L0 filename:
 
 ```{r}
+#| echo: false
 full_path_stitched_file <- file.path(file_paths$L0,AvianInteractionData_L0_file)
 int.raw<-read.csv(full_path_stitched_file)
 print(paste("read in ", nrow(int.raw), "records from ", full_path_stitched_file))
 ```
 
-### Final Interaction Data Cleaning/Corrections
+## Final Interaction Data Cleaning/Corrections
 
 Most of these filters and adjustments are now made during the 2_stitch_species process
 but were are ensuring the data is clean prior to matching taxonomy
@@ -505,13 +476,7 @@ tibble(int.raw[is.na(int.raw$taxa2_scientific),])
 
 
 
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
-## Taxonomy Adjustments Table
+2. ## Taxonomy Adjustments Table
 
 **Create new data frame of all names, as is in the raw file, and what is to be 
 adjusted/updated/assigned.
@@ -548,25 +513,27 @@ See documentation in `taxonomy_functions.R` script for details
 process, there should be very few differences between 'raw' and 'edited' 
 names at this point in the process*
 
-
 ```{r}
-## create the raw <- edit adjustments table 
+#| echo: false
+# create the raw <- edit adjustments table 
 int.raw.names <- create_names_edit_table(int.raw)
 head(tibble(int.raw.names))
 ```
 
-
 Number of unique species in taxonomy edits table  - no resolutions made yet
+
+This May include entries that are duplicates but with a typo or old species name that needs resolution. 
 
 ```{r}
 #| echo: false
 #| output: true
 
-nrow(unique(unresolved_species(int.raw.names)))
+count_L0_total_unique_species_unedited<- nrow(unique(unresolved_species(int.raw.names)))
 
 ```
 
-Historical numbers of unresolved species:
+Historical numbers of total species from L0 data:
+Feb 2026: 3873  
 May 2025: 3889
 Sept 2025: 3876
 Oct 2025: 3876
@@ -587,15 +554,10 @@ scientific_name.raw common_name.raw scientific_name.edit common_name.edit
 ```
 
 
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
-### Example Checking process:
+**Example Checking process:**
 
 
 Discovery that Dendroica pinus - Pine Warbler - genus was updated to Setophaga pinus
-
 checklists for the old and then new name FOR THIS SPECIES
 
 ```{r}
@@ -642,21 +604,10 @@ int.raw.names <- add_name_edits(edits.df = int.raw.names,
 
 
 
-
-
-
-
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
 ## Checklist matches
 
 Identify those species from the database that are already on the latest checklist
 and add a note to track those. These do not need to be resolved. 
-
 
 ```{r}
 
@@ -668,41 +619,47 @@ checklist.species <- checklist[checklist$category %in% species_categories, "scie
 
 # make a copy
 int.raw.names.checklist_match <- int.raw.names
+# count them
+count_L0_rows_scinames_already_on_checklist<- nrow(int.raw.names.checklist_match[int.raw.names$scientific_name.edit %in% checklist.species, ])
 # add note when it matches
+count_L0_species_scinames_already_on_checklist <- length(unique(int.raw.names.checklist_match[int.raw.names$scientific_name.edit %in% checklist.species,]$scientific_name.raw))
+
 int.raw.names.checklist_match[int.raw.names$scientific_name.edit %in% checklist.species, ]$edit_notes <- on_checklist_note
 
-print(unresolved_species(int.raw.names.checklist_match))
+# optional, review all those taxa that are not found in Clements
+# print(unresolved_species(int.raw.names.checklist_match))
 
 ```
 
-#### L0 Checklist matching Summary
+### L0 Checklist matching Summary
 
 Number rows with species already on the checklist, so already resolved, which includes
 full species and subspecies, but not slashes, unids, families or hybrids
 
 ```{r}
 #| echo: false
-#| output:true
+#| output: true
 
 nrow(filter(int.raw.names.checklist_match, !is.na(edit_notes) ))
 ```
 
+<!-- **THIS IS INCORRECT**
 
-Unique scientific names in the database NOT matched to the checklist : 
+Unique scientific names in the database NOT matched to the checklist : -->
 ```{r}
 
-nrow(unique ( unresolved_species(int.raw.names.checklist_match)))
+# nrow(unique ( unresolved_species(int.raw.names.checklist_match)))
 
 ```
 September 2025: 545 rows 
 October 5, 2025: 429 rows
 
-### save to actual list and continue
+
+save to actual list and continue
 
 ```{r}
 int.raw.names <- int.raw.names.checklist_match
 ```
-
 
 Remaining (unique) scientific names to resolve: 
 
@@ -710,26 +667,33 @@ Remaining (unique) scientific names to resolve:
 #| echo: false
 #| output: true
 
-length(unique(unresolved_species(int.raw.names)$scientific_name.raw))
+count_scinames_needing_to_be_matched <- length(unique(unresolved_species(int.raw.names)$scientific_name.raw))
+print(count_scinames_needing_to_be_matched)
 
 ```
+February 2024: 425
 September 2025: 504 (just about 30 redundant common names)
 October 6, 2025: 404
+February 2026: 401
+
+
+Remaining Rows (sciname + common name combo) that need checking
+```{r}
+#| echo: false
+#| output: true
+
+count_rows_needing_matching_after_clements_match <- length(unique(unresolved_species(int.raw.names)$scientific_name.raw))
+
+print(count_rows_needing_matching_after_clements_match )
+```
 
 
 
-
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
 
 ## Fuzzy Matching of Scientific Name to checklist
 
 Use fuzzy logic function ( see taxonomy_functions.R ) to find closest match from the CHECKLIST reference list
 Function to find the closest match with a similarity score, try and determine what misspellings exist 
-
 
 #### Reference list of scientific names from eBird Clements CHECKLIST 2024**
 
@@ -752,7 +716,8 @@ nrow(reference_names)
 
 ```{r}
 
-print(length(unique(unresolved_species(int.raw.names)$scientific_name.edit)))
+count_scinames_unresolved_prior_to_sciname_fuzzy_matching <- length(unique(unresolved_species(int.raw.names)$scientific_name.edit))
+print(count_scinames_unresolved_prior_to_sciname_fuzzy_matching)
 ```
 ### Resolve matches based on scientific_name.edit and Clements Checklist
 
@@ -764,6 +729,8 @@ each record in the unresolved names
 *(this takes several minutes to complete)*
 
 ```{r}
+#| label: sciname_fuzzy_match_loop
+
 # prepare a data frame to fill up with match data with current unresolved species
 scientific_name_matches <- unresolved_species(int.raw.names)
 # add new columns
@@ -791,6 +758,11 @@ tibble(scientific_name_matches)
 Distribution of Match Scores
 
 ```{r}
+#| label: fuzzy_match_historgram
+#| echo: false
+#| output: true
+
+
 suppressMessages(suppressWarnings(library(ggplot2))) # don't print to console
 g<- ggplot(scientific_name_matches, aes(scientific_name_match_score)) +  
         geom_histogram(binwidth=0.01, color = "#000000", fill = "#0099F8") # + 
@@ -860,17 +832,16 @@ Oct 26, 2025:
 ```{r}
 
 edit_note <- "high confidence str match to checklist (Clements 2024) "
-
-
 # make a copy
 int.raw.names.matches <- int.raw.names
-
 # fill the matching rows with the matched sci names
 # this assignment works becuase the match data frame contains the original row numbers
 int.raw.names.matches[high_confidence_matches$row_number,]$scientific_name.edit<- high_confidence_matches$closest_scientific_name_match
 int.raw.names.matches[high_confidence_matches$row_number,]$edit_notes <- paste( edit_note, round(high_confidence_matches$scientific_name_match_score,3))
 
-# to review these assignments, run View(int.raw.names.matches) which includes all resolutions
+# to review these assignments, run 
+#   tibble(int.raw.names.matches) 
+# which includes all resolutions
 ```
 
 Remaining species to resolve after high-confidence scientific name match:
@@ -952,28 +923,22 @@ skip this because the histogram above shows this information.
 ```
 
 
----
-
-## CHECKPOINT: save current workspace with current date
-
 ```{r}
+#| echo: false
 
+# **optional CHECKPOINT: save current workspace with current date**
 # today_date_string <- format(Sys.Date(),"%Y-%m-%d")
 # rdata_file_name <- paste0("AvianInteractionData_L1_workspace", today_date_string, ".RData")
 # save.image(file.path(file_paths$L1,rdata_file_name ))
 ```
 
 
+## Exact Match on Common names
 
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
-## Match on Common names
-
-after applying high-confidence matches, try matching on common names using 
-the same technique. 
+After applying exact and high-confidence fuzzy matches to scientific name/taxa,
+those remaining unresolved species may have had a species name change but the
+common name is preserved.  
+Try exact matching on common names that are in Clement's. 
 
 Exact matches will have fuzzy match score=1.0, but just less coding to go through
 the whole matching process instead of direct match and then fuzzy match
@@ -1035,8 +1000,6 @@ which corrects a good number of species.
 common_name_match_threshold <- 0.94
 ```
 
-
-
 Update name edits using common name matches
 
 ```{r}
@@ -1062,11 +1025,9 @@ int.raw.names.matches<- int.raw.names
 int.raw.names.matches[high_confidence_common_matches$row_number,]$scientific_name.edit<- high_confidence_common_matches$scientific_name.checklist
 # paste in the confidence level of these matches
 int.raw.names.matches[high_confidence_common_matches$row_number,]$edit_notes <- paste( common_match_note, round(high_confidence_common_matches$name_match_score,3))
-
-
 ```
 
-Remaining unresolved rows after high confidence scientific and common name matches
+Remaining unresolved rows after high confidence scientific and common name matches:
 
 ```{r}
 #| echo: false
@@ -1086,17 +1047,11 @@ print(length(unique(unresolved_species(int.raw.names.matches)$scientific_name.ra
 int.raw.names <- int.raw.names.matches
 ```
 
-
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
 ## Optional, Save the unresolved 
 
-Save our current unresolved species (prior to GBIF matching) in order to import
-into a spreadsheet to build a fixes table the first time. 
+Save our current unresolved species after trying Fuzzy matching on Scientific name
+and Common name, but prior to GBIF matching.  This is the basis for a table
+aux_taxonomy_resolutions.csv
 
 This maybe useful for comparison in future years
 
@@ -1126,7 +1081,13 @@ int.raw.names.unresolved<- mutate(int.raw.names.unresolved,
 
 ```
 
-Optional: Save CSV of our current unresolved species
+Optional: show this table of remaining unresolved to compare with current list
+
+```{r}
+# tibble(int.raw.names.unresolved)
+```
+
+Optional: Save CSV of our current unresolved species as the basis for a taxonomy resolution table.  
 
 ```{r}
 # today_date_string <- format(Sys.Date(),"%Y-%m-%d")
@@ -1137,18 +1098,6 @@ Optional: Save CSV of our current unresolved species
 
 
 
-
-
-
-
-
-
-
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
 
 
 ## TaxaDB and GBIF Matching
@@ -1168,7 +1117,7 @@ This process takes the remaining unresolved names, finds the accepted GBIF name 
 and if that name is also on Clements, that is what will be assigned
 
 
-### Create a local GBIF database
+#### Create a local GBIF database
 
 Create a local gbif database in :
 ```{r}
@@ -1203,7 +1152,7 @@ for( w in ws) print(w$parent)
 IF there are duplicate matches (there will be warnings here)
 
 
-###  TaxaDB/GBIF Edits review
+####  TaxaDB/GBIF Edits review
 
 of unresolved, how many had GBIF matches:
 
@@ -1233,7 +1182,7 @@ print(nrow(gbif_on_checklist))
 
 *TO-DO* 
 
-we know it is suggesting Gallus gallus for chicken but that is not correct 
+we know it is suggesting Gallus gallus for chicken but that is currently not correct 
 by checklist, so remove all of those 
 
 ```{r}
@@ -1242,27 +1191,31 @@ print(nrow(gbif_on_checklist))
 ```
 
 
-apply these changes 
+apply these changes from GBIF discovery
 
 ```{r}
 # make a copy 
 int.raw.names.gbif <- int.raw.names
-# just use a loop through gbif matches to update 
+count_rows_matched_via_gbif <- 0
+# just use a loop through gbif matches to update, because sometime multiple rows match a sci name (due to sciname+common name combos)
 for(r in 1:nrow(gbif_on_checklist)){
   names_row <- which(int.raw.names.gbif $scientific_name.raw == gbif_on_checklist[r,"scientific_name.raw"] & 
-                int.raw.names.gbif $common_name.raw == gbif_on_checklist[r,"common_name.raw"])
+                int.raw.names.gbif$common_name.raw == gbif_on_checklist[r,"common_name.raw"])
   
   int.raw.names.gbif[names_row, ]$scientific_name.edit <- gbif_on_checklist[r,]$accepted_scientific_name
   gbif_note <- paste("GBIF: Match using taxadb/", gbif_on_checklist[r,]$scientific_id, " on checklist (Clements 2024)")
-  int.raw.names.gbif[names_row, ]$edit_notes <- gbif_note
-}
-                  
   
+  int.raw.names.gbif[names_row, ]$edit_notes <- gbif_note
+  count_rows_matched_via_gbif <- count_rows_matched_via_gbif + nrow( int.raw.names.gbif[names_row, ])
+}
+
+# save the count matched names for summary
+count_names_matched_via_gbif <- nrow(gbif_on_checklist)
 ```
 
-Review outcome of applying GBIF
+Optional Review outcome of applying GBIF
 ```{r}
-tibble(filter(int.raw.names.gbif, grepl("GBIF", edit_notes)))
+# tibble(filter(int.raw.names.gbif, grepl("GBIF", edit_notes)))
 ```
 
 After Review, save copy back to taxonomy table variable
@@ -1279,32 +1232,29 @@ Remaining species to resolve after fuzzy and gbif matching:
 #| echo: false
 #| output: true
 print("unresolved rows in names table:")
-print(length(unresolved_species_rows(int.raw.names.gbif)))
+count_postGBIF_umatched_rows <- length(unresolved_species_rows(int.raw.names.gbif))
+print(count_postGBIF_umatched_rows)
 print("unresolved unique scientific names ")
-print(length(unique(unresolved_species(int.raw.names.gbif)$scientific_name.raw)))
+count_postGBIF_umatched_scinames <- length(unique(unresolved_species(int.raw.names.gbif)$scientific_name.raw))
+print(count_postGBIF_umatched_scinames)
 
 ```
 
 
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-
 ## Scientific Name Changes: Low Confidence Matches on scientific name
 
-**OPTIONAL**
-
-this may no longer be necessary since ~ 50 species to resolve after
-applying the high-confidence resolutions. 
-
+**OPTIONAL:This is not normally necessary given so few unresolved species using current methods**
 
 Extract scientific name matches with lower confidence (match_score <= 0.90) 
-for those remaining species that didn't match for further 
-checking
+for those remaining species that haven't been resolved to see if
+this may be helpful.  
+
+*As of Fall 2025, there are so few left to match ( < 50 ) and low-confidence fuzzy matching has not be fruitful, and not helpful for 'unids', so it's unused.*
+
+*The remaining resolutions are done manually (see below). This code is left here for reference*
 
 ```{r}
-
+#| echo: false
 # low_confidence_matches <- scientific_name_matches %>%
 #   filter(
 #     (scientific_name_match_score < 0.9 & !is.na(scientific_name_match_score)) 
@@ -1327,24 +1277,16 @@ checking
 # length(unique(low_confidence_matches$scientific_name.raw))
 ```
 
-previously 69 out of 326 - checks out OK; May 29, 2025: 65
-Sept 2025: 9 
+**low-confidence match tallies:**
+
+- previously ( early 2025): 69 out of 326 - checks out OK; 
+- May 29, 2025: 65
+- Sept 2025: 9 
+- since Fall 2025, no longer used
 
 
-
-
-Scroll through these Low Confidence Matches in order from highest to lowest
-
-Assigning closest low-confidence match with update notes,
-and will be updated if necessary below
-
-
-
-
---------------------------------------------------------------------------------
 
 ## Unid : Genus-only species fixes
-
 
 Open the Unid sp. (Genu-only) to work on:
 
@@ -1357,18 +1299,18 @@ print(paste("unique:", length(unique(int.raw.names.unid$scientific_name.edit))))
 
 ```
 
+**These unids have been added to the `aux_taxonomony_resolutions` file Feb 2026**
 
 
+### Sumary Counts after 
 
---------------------------------------------------------------------------------
+<!-- *TO-DO: move this into a function so can be called at each step in workflow -->
 
+*The goal of this step in the workflow is to resolve any taxa in the database to match
+with an entry in Clement's checklist.  This summarizes how we are doing so far, prior to 
+applying the 'manual' resolutions from `aux_taxonomy_resolutions` CSV*
 
-## SUMMARY Examine Name Corrections and Notes so far
-
-*TO-DO: move this into a function so can be called at each step in workflow
-
-Total number of name combinations in database:
-
+Total number of name combinations (scientific+ common name) in database:
 
 ```{r}
 #| echo: false
@@ -1378,14 +1320,12 @@ print(nrow(int.raw.names))
 
 ```
 
-number of full species without notes (dispensation/edits) :
-
+**number of full species that have found a resolution method (excluding unid, Genus only)**
 ```{r}
 #| echo: false
 #| output: true
 
 print(nrow(unresolved_species(int.raw.names)))
-
 ```
 
 number of all rows without notes (dispensation/edits) including Unid.:
@@ -1398,11 +1338,14 @@ print( nrow( filter(int.raw.names, is.na(edit_notes))))
 
 ```
 
+To view the unresolved, run "tibble(unresolved_species(int.raw.names))"
 
-### checkpoint save
+
 ```{r}
 #| echo: false
 #| output: true
+
+# # optional checkpoint save
 
 # today_date_string <- format(Sys.Date(),"%Y-%m-%d")
 # rdata_file_name <- paste0("AvianInteractionData_L1_workspace", today_date_string, ".RData")
@@ -1412,13 +1355,6 @@ print( nrow( filter(int.raw.names, is.na(edit_notes))))
 # print(paste("whole enviroment saved as ", f))
 
 ```
-
-
-
-
-
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
 
 ## Manual Taxanomic Edits
 
@@ -1542,7 +1478,6 @@ int.raw.names <- int.raw.names.manual
 
 ```
 
-
 review data frame to make decisions
 
 ```{r}
@@ -1552,7 +1487,7 @@ review data frame to make decisions
 ```
 
 
-### Subspecies
+### Subspecies Manual Resolution
 
 check if there are any subspecies remaining that have interactions
 
@@ -1671,8 +1606,11 @@ int.raw <- int.raw.resolved
 
 ```
 
-## Create new column for the Clements string for the scientific name 
-### This should mostly be the same as the taxa1_scientific and taxa2_scientific, except for a few unid. where our level of taxonomic resolution is higher than any option in the Clements species list
+## Record the resolved taxomy in database
+
+*Create new column for the Clements string for the scientific name*
+
+This should mostly be the same as the taxa1_scientific and taxa2_scientific, except for a few unid. where our level of taxonomic resolution is higher than any option in the Clements species list
 
 ```{r}
 # Combine both scientific name columns from the interaction data
@@ -1727,9 +1665,12 @@ if(length(remaining_mismatch) > 0){
 ```
 
 
-## Database Summary
+## Print Database Summary
 
 ```{r}
+#| label: database_summary
+#| echo: false
+#| output: true
 
 print("unique scientific names = number of unique species in this database")
 print(length(union(int.raw$taxa1_scientific, int.raw$taxa2_scientific)))
@@ -1754,7 +1695,7 @@ print(length(unique(paste(int.raw$taxa1_scientific, int.raw$taxa2_scientific))))
 ```
 
 
-Save Results to CSV
+## Save Results to CSV
 
 ```{r}
 #| label: save_output
@@ -1777,8 +1718,52 @@ print(paste("taxonomic_resolutions_file saved to ", f))
 
 ```
 
+## Summary Counts
+
+
+These are counts of taxa from the full list extracted from the L0, cleaned database. 
+Each "taxa" on this list is a unique combination of (Scientific taxa + Common name), where 
+sometimes the common name entred may vary depending on the original source, creating unique combinations
+
+
+|taxa  |  count | description |
++------+--------+-------------+
+| All  | 435    | number of unique taxa from cleaned data that were not in Clement's list |
+|      |        | matches found from high-confidence fuzzy search on Scientific Name |
+|      |        |
+
+
+
+
+Throughout the workflow, all species names were aligned with the Clements/eBird 2024 checklist (REF) for taxonomic harmonization, and any discrepancies were changed in code (Fig. 2 “Clean database”). To harmonize taxonomy for scientific names that did not exactly match species on the Clements/eBird checklist (425 taxa), we ran through a series of semi-automated steps to harmonize the taxonomy. First, we used fuzzy text search on scientific names with a threshold of 0.95 to automatically correct potential typos. For the remaining unresolved names, we used the rGBIF and taxaDB packages to identify known synonyms, resolving XXX taxa. Finally, for the remaining discrepancies (72 taxa), we manually evaluated the scientific names, referring to the Clements/eBird 2024 checklist (REF), Avibase (REF), the 2024 BBS species list (REF), and BOW (REF) to create a manual taxonomic cross-walk table (REF for this manual edit table). In code, all taxonomy changes were added to a master crosswalk table (REF FOR TABLE) and reviewed prior to altering the avian interaction network data.  
+
+```{r}
+# first pass at printing the summary counts (ultimately should go into markdown table)
+
+print(paste("count_L0_total_unique_species_unedited ", count_L0_total_unique_species_unedited))
+print(paste("count_L0_rows_scinames_already_on_checklist ", count_L0_rows_scinames_already_on_checklist))
+print(paste("count_L0_species_scinames_already_on_checklist ", count_L0_rows_scinames_already_on_checklist))
+
+print(paste("count_scinames_needing_to_be_matched after checklist match", count_scinames_needing_to_be_matched ))
+
+print(paste("count_rows_needing_matching_after_clements_match ", count_rows_needing_matching_after_clements_match ))
+
+
+print(paste("count_scinames_unresolved_prior_to_sciname_fuzzy_matching", count_scinames_unresolved_prior_to_sciname_fuzzy_matching))
+print(paste("high_confidence fuzzy match threshold", high_confidence_threshold))
+
+print(paste("count_names_matched_via_gbif ", count_names_matched_via_gbif))
+print(paste("count_rows_matched_via_gbif ",  count_rows_matched_via_gbif)) 
+print(paste("count_postGBIF_umatched_rows ", count_postGBIF_umatched_rows))
+print(paste("count_postGBIF_umatched_scinames", count_postGBIF_umatched_scinames))
+
+
+
+```
 
 ## Subset to the checklist 
+
+**Notes about next steps for subsetting**
 
 This should go into a different script/notebook
 
@@ -1802,7 +1787,15 @@ Data Paper Goal:
 
 ```{r}
 #| label: subset_check
+#| echo: false
+
 # rcode for above, prints a data frame of non-checklist rows
 
+```
+
+---
+
+```{r}
 sessionInfo()
 ```
+
