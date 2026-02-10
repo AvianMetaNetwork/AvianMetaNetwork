@@ -1,11 +1,10 @@
 # TITLE:          L1 Species Lists: North America (CONUS and Alaska and Canada)
-#                 Reads in lists and keeps track of which species are in which list.
+# AUTHORS:        Phoebe Zarnetske
+# COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker, Pat Bills, Kelly Kapsar
+# DESCRIPTION:    Reads in lists and keeps track of which species are in which list.
 #                 Also keeps track of name changes in diff columns.
 #                 Creates a final list of species in Canada / Alaska / CONUS for use in the North
-#                 American Avian Interaction data paper and avian-meta-network paper.
-#
-#                 ****See AvianInteractionData_specieslists_L1.R for the
-#                 comprehensive global list.
+#                 American AvianMetaNetwork data paper and avian-meta-network paper.
 #
 #                 Reads in: (1) spp_avibase_cac_2024.csv (created in
 #                 R/L0/1_generate_species_lists.R) = CA-CONUS List,
@@ -13,17 +12,13 @@
 #                 AviBase Alaska list (taxonomy from Clements 2024)
 #                 (2) Clements-eBird 2024 list
 #                 (3) BBS 2024 release
-# AUTHORS:        Phoebe Zarnetske
-# COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker, Pat Bills
 # DATA INPUT:     L0 data: spp_avibase_cac_2024.csv,
 #                         eBird-Clements-v2024-integrated-checklist-October-2024-rev.csv,
 #                         spp_bbs_2024_clean.csv
 #                     all from 1_generate_species_lists.R
 # DATA OUTPUT:    L1 data: spp_joint_cac.csv; spp_joint_cac_colsubset.csv (column subset)
 # PROJECT:        AvianMetaNet & avian-meta-network
-# DATE:           17 January 2022 - 5 Nov 2025
-#
-#                 Next script to run: AvianInteractionData_L1.R
+# DATE:           17 January 2022 - 10 February 2026
 
 # Clear all existing data
 rm(list=ls())

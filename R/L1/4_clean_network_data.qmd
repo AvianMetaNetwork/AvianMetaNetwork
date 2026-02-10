@@ -35,8 +35,6 @@ Clements & eBird checklist to create an Rdata file.
 Currently, the script is working for a checklist of CONUS+Alaska+Canada.  
 
 L0 data are checked to assign updated scientific and common names to the interaction pairs data. 
-This Makes a new column that also includes scientific name changes associated with the AOUcombo.index 
-for merging with those names in the AvianInteractionData_AOUindex_L1.csv
 
 ### Workflow Summary
 
@@ -98,8 +96,7 @@ Curated Species checklist:
 
 - Current selected species list =
   combined checklist based on Clements/eBird v2024, Avibase v8.17, BBS v2024:
-  output from `R/L0/AvianInteractionData_specieslists_L1.R` (global) or
-  `R/L0/3_subset_species_lists.R` (North America)
+  `R/L0/3_subset_species_lists.R`
   - used for species lookup / matching
 
 #### **Manual Taxonomic Resolution Overrides Table:**
@@ -1735,7 +1732,7 @@ sometimes the common name entred may vary depending on the original source, crea
 
 
 
-Throughout the workflow, all species names were aligned with the Clements/eBird 2024 checklist (REF) for taxonomic harmonization, and any discrepancies were changed in code (Fig. 2 “Clean database”). To harmonize taxonomy for scientific names that did not exactly match species on the Clements/eBird checklist (425 taxa), we ran through a series of semi-automated steps to harmonize the taxonomy. First, we used fuzzy text search on scientific names with a threshold of 0.95 to automatically correct potential typos. For the remaining unresolved names, we used the rGBIF and taxaDB packages to identify known synonyms, resolving XXX taxa. Finally, for the remaining discrepancies (72 taxa), we manually evaluated the scientific names, referring to the Clements/eBird 2024 checklist (REF), Avibase (REF), the 2024 BBS species list (REF), and BOW (REF) to create a manual taxonomic cross-walk table (REF for this manual edit table). In code, all taxonomy changes were added to a master crosswalk table (REF FOR TABLE) and reviewed prior to altering the avian interaction network data.  
+Throughout the workflow, all species names were aligned with the Clements/eBird 2024 checklist (REF) for taxonomic harmonization, and any discrepancies were changed in code (Fig. 2 “Clean database”). To harmonize taxonomy for scientific names that did not exactly match species on the Clements/eBird checklist (425 taxa), we ran through a series of semi-automated steps to harmonize the taxonomy. First, we used fuzzy text search on scientific names with a threshold of 0.95 to automatically correct potential typos. For the remaining unresolved names, we used the rGBIF and taxaDB packages to identify known synonyms, resolving XXX taxa. Finally, for the remaining discrepancies (72 taxa), we manually evaluated the scientific names, referring to the Clements/eBird 2024 checklist (REF), Avibase (REF), the 2024 BBS species list (REF), and BOW (REF) to create a manual taxonomic cross-walk table (REF for this manual edit table). In code, all taxonomy changes were added to a master crosswalk table (REF FOR TABLE) and reviewed prior to altering the AvianMetaNetwork data.  
 
 ```{r}
 # first pass at printing the summary counts (ultimately should go into markdown table)

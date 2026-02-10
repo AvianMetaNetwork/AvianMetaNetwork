@@ -1,7 +1,18 @@
-# ------------------------------------------------------------
-# Identify Clements taxa used in the amn dataset and flag
-# which ones occur in the Canada / Alaska / CONUS species list
-# ------------------------------------------------------------
+
+# TITLE:          AvianMetaNetwork: North American Taxa List
+# AUTHORS:        Phoebe Zarnetske, Kelly Kapsar
+# COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker, Pat Bills
+# DESCRIPTION:    Generates a complete list of all of the taxa in the North American
+#                 AvianMetaNetwork, including complete Clements name information,
+#                 and an indicator column for whether the taxa is a N. American taxa
+#                 (i.e., Canada, AK, CONUS).
+# DATA INPUT:     eBird-Clements-v2024-integrated-checklist-October-2024-rev.csv
+#                 spp_joint_cac.csv
+#                 amn_cac.csv
+# DATA OUTPUT:    spp_clem_in_amn_cac.csv
+# PROJECT:        AvianMetaNet & avian-meta-network
+# DATE:           17 January 2022 - 10 February 2026
+
 
 # Load shared helper functions used across the project
 source(here::here('R/lib/shared_functions.R'))

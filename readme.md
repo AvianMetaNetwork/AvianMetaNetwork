@@ -51,7 +51,7 @@ The workflow for this repository follows the guidelines set out by the [Environm
 
 ## Workflow
 
-![main AIDB workflowdiagram](website/images/avian_interaction_database_main_workflow_diagram_2025.png)
+![main AMN workflowdiagram](website/images/amn_generalized_workflow_diagram_2025.png)
 
 *Overview of AvianMetaNet data colleciton, data entry, aggregation and cleaning (K. Kapsar)*
 

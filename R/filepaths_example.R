@@ -17,7 +17,7 @@
 # By convention configuration variables (constants) are uppercase.
 
 # Paths to set and replace "filepath" with your computer's filepath:
-# The L0 and L1 data folders are within the Avian-Interaction-Working repository's folder:
+# The L0 and L1 data folders are within the AvianMetaNetwork-Working repository's folder:
 DATA_FOLDER <-  "/path/to/data_respository/top_folder"
 
 # Path for for L0 and L1 checklists (Clements etc):
@@ -27,4 +27,4 @@ CHECKLIST_L1 = "./data/L1/species_checklists"
 
 # Add comments or save alternate paths using comments, for example:
 # Path for old data folder:
-# DATA_FOLDER   "/Users/billspat/SpaCELab/atx/Avian-Interaction-Database-Working"
+# DATA_FOLDER   "/Users/billspat/SpaCELab/atx/AvianMetaNetwork-Working"

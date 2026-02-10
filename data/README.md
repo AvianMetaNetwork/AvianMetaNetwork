@@ -18,11 +18,11 @@ list of interaction types and codes with descriptions with the following columns
 
  - type_of_interaction: short name of interaction
  - asymmetric: yes/no, is the interaction directional rather than the same 
- - species 1 or 2: possible values for either interaction code
- - species 2 or 1: possible values for either interaction code
+ - taxa 1 or 2: possible values for either interaction code
+ - taxa 2 or 1: possible values for either interaction code
  - definition: long description of the interaction
 
- **[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](AvianInteractionData_ENTRY_INSTRUCTIONS.md)**
+ **[L0/AvianMetaNetwork_DATA_ENTRY_INSTRUCTIONS.md](AvianMetaNetwork_DATA_ENTRY_INSTRUCTIONS.md)**
  
  Detailed protocol for data entry, version control and validation, includes process flowchart
  avian-intxn-db-data-entry-flowchart.png
@@ -49,7 +49,7 @@ This folder holds files are the checklists built from code used in final taxonom
 
 ## Note
 
-any folder labeled archive has files no longer used in our workflow but preserved for reference
-and comparison
+Any folder labeled archive has files no longer used in our workflow but preserved for reference
+and comparison.
 
 

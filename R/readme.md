@@ -1,9 +1,9 @@
-# AvianMetaNet: 
+# AvianMetaNet Code: 
 ## Workflow for cleaning and building database
 
 ###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
-https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database
+https://github.com/AvianMetaNetwork/AvianMetaNetwork
 
 
 ## Overview
@@ -34,8 +34,8 @@ the "*reconcile taxonomy*" step below, in the data folder of this repository.
 
 * R/L0/1_generate_species_lists.R = Generates species lists used for taxonomic harmonization and regional subsetting
 * R/L0/2_stitch_species.qmd = stitches together all individual csvs in /L0/species
-* R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Coninental United States (CONUS)
-* R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepencies based on current and past Clements names.  
+* R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Continental United States (CONUS)
+* R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepancies based on current and past Clements names.  
 * R/L1/5_subset_network.qmd = subsets interaction network to only include focal species in the subset species list generated in script 3. 
 * R/L2/6_summary_vignette.qmd = counts of records by categories of final database 
 
@@ -47,7 +47,7 @@ the "*reconcile taxonomy*" step below, in the data folder of this repository.
 - R/L2: code for creating simple summaries and visualizations of the data in the database
 - R/lib: scripts with shared functions used by main database build scripts
 - R/archive: code from previous versions saved for reference
-- R/auxilliary scripts: 
+- R/auxiliary scripts: 
 
 ## Getting Started
 
@@ -56,7 +56,7 @@ assumes the use of Rstudio 2025 version or above.
 
 1. setup 
    - clone the private git repository with the in-progress (aka 'raw') data  
-     from https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working.git
+     from https://github.com/AvianMetaNetwork/AvianMetaNetwork-Working.git
      to a folder on your computer.  Note the location of this folder for steps later. 
      If you are a collaborator and you don't have access, please contact the project
      director. 
@@ -93,11 +93,13 @@ assumes the use of Rstudio 2025 version or above.
 
 1. Subset for specific analysis
    -  Some analyses only include focal species in the subset species list generated in script 3. 
-   -  R/L1/5_subset_network.qmd = subsets interaction network to 
+   -  R/L1/5_subset_network.qmd = subsets interaction network
+   
+1. Generate final taxa list with Clements names
 
 1. Summarize and visualize results
 
-
+![detailed AMN workflow diagram](website/images/amn_detailed_workflow_diagram_2025.png)
 
 ## Detailed Set-up and Configuration for R code
 
@@ -131,7 +133,7 @@ Example `filepaths.R` contents (see also the content of the file `filepaths_exam
 
 ```
 # path the clone of the in-progress data repository
-DATA_FOLDER =  "/Users/USERID/Avian-Interaction-Database-Working"
+DATA_FOLDER =  "/Users/USERID/AvianMetaNetwork-Working"
 # Path for for L0 and L1 checklists (Clements etc):
 CHECKLIST_L0 = "./data/L0/species_checklists"
 CHECKLIST_L1 = "./data/L1/species_checklists"
@@ -258,7 +260,7 @@ Please see main readme for additional acknlowedgmens
 ### OPTIONAL Google Drive Setup
 
 We use Google Sheets to facilitate data entry for each species (see protocol in
-[L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working/L0/AvianInteractionData_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, 
+[L0/AvianMetaNetwork_DATA_ENTRY_INSTRUCTIONS.md](https://github.com/AvianMetaNetwork/AvianMetaNetwork/L0/AvianMetaNetwork_DATA_ENTRY_INSTRUCTIONS.md). If, as part of using the R code, 
 you'd like to view and access the intermediate files in Google Drive, you must 
 ave Google Drive installed on your computer.  
 
@@ -266,12 +268,12 @@ ave Google Drive installed on your computer.
 manager reviewing those in-process google drive sheets. 
 
 From Google Sheets, the raw data is saved as CSV in the working repository once the work
-(typically for a species) is finished.   See our main readme for the workflow.  
+(typically for a species) is finished. See our main readme for the workflow.  
 
 However you may want to check and read the google sheets before they have been saved to CSV. 
 If you want to so this, you must first have access to the AvianMetaNet working
 Google drive (collaborator only), set up Google drive to sync that folder to your computer, and
-possibly make changes to your google Drive setup on your computer.   There is no code here to
+possibly make changes to your google Drive setup on your computer. There is no code here to
 read directly from the Google Sheets files directly via the Google Cloud API due to restrictions
 and complexity of setting that up.  
 

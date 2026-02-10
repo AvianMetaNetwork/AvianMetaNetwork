@@ -2,7 +2,7 @@
 #                   creates formatted versions of lists as L0 data
 
 # AUTHORS:        Phoebe Zarnetske
-# COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker
+# COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker. Kelly Kapsar
 # DATA INPUT:     Imports L0 raw species list data from:
 #                 (1) Clements/eBird Checklist v2024 (Cornell Lab of Ornithology)
 #                 (2) the USGS North American Breeding Bird Survey (BBS) SpeciesList
@@ -18,14 +18,12 @@
 #                   and formatted
 #                 (4) AviBase Global list, by region; version 8.17 Nov 2024 list
 # PROJECT:        AvianMetaNet & avian-meta-network
-# DATE:           17 January 2022 - 26 August 2025
-# NOTES:          bbs_specieslist_2024_L1.csv is produced in bbs_specieslist_L1.R
-#
-#               Next script to run: bbs_specieslist_L1.R or AvianInteractionData_specieslists_L1.R or
-#                           3_subset_species_lists.R
-#               NOTES: check out this site for code w BBS: https://rdrr.io/github/davharris/mistnet/src/extras/BBS-analysis/data_extraction/data-extraction.R
-#               For other types of lists check out: https://datazone.birdlife.org/search
-#               which has data on migratory status, conservation status, etc.
+# DATE:           17 January 2022 - 10 February 2026
+# NOTES:          bbs_specieslist_2024_L1.csv is produced in bbs_specieslist_L1.R.
+#                 Check out this site for code w BBS:
+#                 https://rdrr.io/github/davharris/mistnet/src/extras/BBS-analysis/data_extraction/data-extraction.R
+#                 For other types of lists check out: https://datazone.birdlife.org/search
+#                 which has data on migratory status, conservation status, etc.
 
 
 # Clear all existing data
