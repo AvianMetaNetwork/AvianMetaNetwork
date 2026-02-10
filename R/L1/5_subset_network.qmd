@@ -283,8 +283,8 @@ intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in%
 
 
 # List of characters to re-assign
-old_facil_sub<- c("facilitation-feeding")
-new_facil_sub <- "facilitation-foraging"
+old_facil_sub<- c("facilitation-feeding", "facilitation-foraging")
+new_facil_sub <- "facilitation-feeding/foraging"
 # Re-assign values 
 intxns.db.subset.new$interaction <- ifelse(intxns.db.subset.new$interaction %in% old_facil_sub, 
                                        new_facil_sub, 
@@ -386,9 +386,11 @@ fb <- file.path(file_paths$L1, AvianInteractionData_CanadaAKCONUS_breeding_file 
 write_csv(intxns.db.subset.new.breeding, fb)
 print(fb)
 
-fx <- file.path(file_paths$L1, AvianInteractionData_L1_not_CanadaAKCONUS_file )
-write_csv(intxns.db.non.subset, fx)
-print(fx)
+# THE NON-CAC SUBSET DOES NOT CURRENTLY GET UPDATED IN THE CODE WITH THE 
+# GENERALIZED INTERACTION NAMES 
+# fx <- file.path(file_paths$L1, AvianInteractionData_L1_not_CanadaAKCONUS_file )
+# write_csv(intxns.db.non.subset, fx)
+# print(fx)
 
 ```
 
