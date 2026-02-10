@@ -15,8 +15,8 @@ library(dplyr)
 library(stringr)
 set.seed(44)
 
-df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv"))
-spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_ain_cac.csv"))
+df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/amn_cac.csv"))
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_amn_cac.csv"))
 
 
 #### TAXA COUNTS ####
@@ -58,8 +58,8 @@ total_gen_non_cac <- total_gen - total_gen_cac
 #### North American Only Interactions #### 
 spp_ls_cac <- spp$scientific.name[spp$canada_ak_conus == TRUE]
 
-ain_spp1_cac <- df[df$taxa1_clements %in% spp_ls_cac,]
-ain_spp_all_cac <- ain_spp1_cac[ain_spp1_cac$taxa2_clements %in% spp_ls_cac,]
+amn_spp1_cac <- df[df$taxa1_clements %in% spp_ls_cac,]
+amn_spp_all_cac <- amn_spp1_cac[amn_spp1_cac$taxa2_clements %in% spp_ls_cac,]
 
 
 #### INTERACTIONS ####
@@ -91,9 +91,9 @@ unique_intxns <- df %>%
   distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
 
 ## CAC only interactions 
-num_intxns_cac <- nrow(ain_spp_all_cac)
+num_intxns_cac <- nrow(amn_spp_all_cac)
 
-unique_intxns_cac <- ain_spp_all_cac %>% 
+unique_intxns_cac <- amn_spp_all_cac %>% 
   dplyr::select(taxa1_clements, 
                 taxa2_clements, 
                 effect_tx1_on_tx2, 

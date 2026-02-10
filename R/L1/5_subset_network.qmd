@@ -17,13 +17,13 @@ date-format: iso
 
 ### About
 
-- **PROJECT:** Avian Interaction Database (CONUS/Canada/AK) and MetaNetwork
+- **PROJECT:** AvianMetaNet (CONUS/Canada/AK) and MetaNetwork
 - **COLLABORATORS:** Vincent Miele, Stephane Dray
 - **Run Date:** `r Sys.Date()`
 
 ### Data inputs:
 
-**Avian Interaction Database L0**
+**AvianMetaNet L0**
 
 Raw Data, combined (stitched) and with content
 cleaning but taxonomic names as entered (older names, typos, etc)
@@ -37,7 +37,7 @@ cleaning but taxonomic names as entered (older names, typos, etc)
 # Clear all existing data
 rm(list=ls())
 
-AvianInteractionData_L1_file <-  "ain_all.csv"
+AvianInteractionData_L1_file <-  "amn_all.csv"
 
 ```
 
@@ -53,14 +53,14 @@ Curated Species checklist:
 
 ### DATA OUTPUT:
 
-L1 Canada, Alaska, CONUS species from L1 Avian Interaction Database 
-  (`ain_all.csv`); saved as:
+L1 Canada, Alaska, CONUS species from L1 AvianMetaNet 
+  (`amn_all.csv`); saved as:
 
 ```{r}
-AvianInteractionData_CanadaAKCONUS_L1_file <- "ain_cac.csv"
-AvianInteractionData_CanadaAKCONUS_breeding_file <- "ain_cac_breeding.csv"
+AvianInteractionData_CanadaAKCONUS_L1_file <- "amn_cac.csv"
+AvianInteractionData_CanadaAKCONUS_breeding_file <- "amn_cac_breeding.csv"
 AvianInteractionData_L1_not_CanadaAKCONUS_file <- 
-  "ain_notcac.csv"
+  "amn_notcac.csv"
 today_date_string <- format(Sys.Date(),"%Y-%m-%d")
 
 ```
@@ -69,7 +69,7 @@ today_date_string <- format(Sys.Date(),"%Y-%m-%d")
 ### Next script to run: 
 
 - depends on project: 
-  - for Avian Interaction Database North America (Data Paper): a summary and 
+  - for AvianMetaNet North America (Data Paper): a summary and 
   figure-generating script (to be written)
   - for Avian MetaNetwork Analysis: https://github.com/SpaCE-Lab-MSU/avian-meta-network/tree/main/R/L2
 

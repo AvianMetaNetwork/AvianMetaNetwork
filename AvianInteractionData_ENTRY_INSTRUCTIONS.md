@@ -1,5 +1,5 @@
-# Avian Interaction Database: 
-## Instructions for Data Entry in Avian Interaction Database in L0 subdirectory
+# AvianMetaNet: 
+## Instructions for Data Entry in AvianMetaNet in L0 subdirectory
 
 From the [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
@@ -19,10 +19,10 @@ it has text encoding that differs from GitHub and Google Sheets.
 
 ### The Working repository L0 folder contains the following files:
 
-### [**ain_metadata_colnames_v0.csv**](ain_metadata_v0.csv) 
+### [**amn_metadata_colnames_v0.csv**](amn_metadata_v0.csv) 
 Metadata for columns in original version of interaction data sheet. 
 
-### [**ain_metadata_colnames_v1.csv**](ain_metadata_v1.csv) 
+### [**amn_metadata_colnames_v1.csv**](amn_metadata_v1.csv) 
 Metadata for columns in modified version of interaction data sheet. 
 
 ### [**AvianInteractionData_SpeciesList**](https://docs.google.com/spreadsheets/d/1gT4ljF1yH1_WweINnAW4JfQ1Ytr6OFoXUu24a__qCqM/edit?usp=sharing) 
@@ -74,7 +74,7 @@ b) Go to **Birds of the World Online** (BOW, via the MSU Library electronic reso
 
 - In general, the best approach to entering the species' data is to open the BOW species account and just skim through it page by page (section by section, in order) for **capitalized species names (often Common Names)** and ***italicized species names (often Genus species)***; this should catch nearly all the entries and will add new ones we missed before. You may see other plain text terms like "passerines" or "corvids" and these refer to entire groups of species in an interaction - these are still important to record and should not be skipped.
 
-c) Enter interactions for the species you selected by designating the selected species in "species1_scientific" and "species1_common" in your file, and the species it interacts with in "species2_scientific" and "species2_common", based on evidence from Birds of the World Online. Refer to [**`ain_metadata_colnames_v1.csv`**](ain_metadata_colnames_v1.csv) for rules about how to enter each column, and the information below:
+c) Enter interactions for the species you selected by designating the selected species in "species1_scientific" and "species1_common" in your file, and the species it interacts with in "species2_scientific" and "species2_common", based on evidence from Birds of the World Online. Refer to [**`amn_metadata_colnames_v1.csv`**](ain_metadata_colnames_v1.csv) for rules about how to enter each column, and the information below:
 
 **Citations, Source URLs & Text Excerpts**
 - Add the BOW citation to the "citation" column. For BOW, this is found at the bottom of each BOW page (simply copy-paste it); it's the same citation for the entire account). For other non-BOW sources (see below for Web of Science / Google Scholar), use the MLA style citation.

@@ -1,5 +1,5 @@
 ---
-title: "Avian Interaction Database: L0 File Preparation"
+title: "AvianMetaNet: L0 File Preparation"
 author: 
   - Phoebe L. Zarnetske
   - Patrick Bills
@@ -17,7 +17,7 @@ date-format: iso
 
 ## About
 
--   PROJECT: Avian Interaction Database & Avian Meta-Network
+-   PROJECT: AvianMetaNet & Avian Meta-Network
 -   AUTHORS: Phoebe Zarnetske, Pat Bills, Emily Parker, Kelly Kapsar
 -   COLLABORATORS: Vincent Miele, Stephane Dray
 -   DATA INPUT: Data entry CSV files in L0 folder
@@ -48,7 +48,7 @@ The code here saves the file in the Data folder in L0 in the configuration of `f
 *First set the file to save*
 
 ```{r}
-stitched_L0_file <- "ain_all_raw.csv" 
+stitched_L0_file <- "amn_all_raw.csv" 
 ```
 
 *Then, setup the folders and files from configuration and check them*

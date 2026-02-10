@@ -1,4 +1,4 @@
-# Avian Interaction Database: 
+# AvianMetaNet: 
 ## Workflow for cleaning and building database
 
 ###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
@@ -13,7 +13,7 @@ for how the data are pulled from primary sources, see the [Project Readme file](
 in the root directory. 
 
 This documents the process and R code for cleaning and building
-the Avian Interaction Database from a collection of data entry tables entered over time
+the AvianMetaNet from a collection of data entry tables entered over time
 by contributors to the database, primarily workers in the 
 [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
@@ -269,7 +269,7 @@ From Google Sheets, the raw data is saved as CSV in the working repository once 
 (typically for a species) is finished.   See our main readme for the workflow.  
 
 However you may want to check and read the google sheets before they have been saved to CSV. 
-If you want to so this, you must first have access to the Avian Interaction Database working
+If you want to so this, you must first have access to the AvianMetaNet working
 Google drive (collaborator only), set up Google drive to sync that folder to your computer, and
 possibly make changes to your google Drive setup on your computer.   There is no code here to
 read directly from the Google Sheets files directly via the Google Cloud API due to restrictions

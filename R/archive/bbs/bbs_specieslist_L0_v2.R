@@ -4,7 +4,7 @@
 # COLLABORATORS:  Vincent Miele, Stephane Dray, Emily Parker, Patrick Bills
 # DATA INPUT:     Imports L0 raw species list data from the USGS North American Breeding Bird Survey (SpeciesList.txt is updated every year).
 # DATA OUTPUT:    L0 data: bbs_specieslist_2023_L0.csv - this is a copy of the raw data, just omitting the top lines without data
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - April 2025
 # NOTES:          bbs_specieslist_2024_L1.csv is produced in bbs_specieslist_L1.R
 #                 Next script to run: bbs_specieslist_L1_v2.R

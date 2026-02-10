@@ -14,7 +14,7 @@ date: 08/27/2025
 date-format: iso
 ---
 
--   PROJECT: Avian Interaction Database & Avian Meta-Network
+-   PROJECT: AvianMetaNet & Avian Meta-Network
 -   AUTHORS: Phoebe Zarnetske, Pat Bills, Emily Parker
 -   COLLABORATORS: Vincent Miele, Stephane Dray
 -   DATA INPUT: Data entry CSV files in L0 folder
@@ -70,7 +70,7 @@ if(!dir.exists(L0_dir)) {
 
 ```{r}
 # copy this file name from L0_stitch.rmd to use the same 
-intxnsL0.filename <-"ain_all_raw.csv"
+intxnsL0.filename <-"amn_all_raw.csv"
 
 ```
 

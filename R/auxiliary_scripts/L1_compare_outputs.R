@@ -68,8 +68,8 @@ drop_altered_interactions <- function(df_key, altered_interactions) {
 # -----------------------------
 source("./R/lib/config.R")
 file_paths <- get_file_paths()
-d1 <- read.csv(paste0(file_paths$DATA_FOLDER, "/L1/ain_cac_breeding_7Jan2026.csv"))
-d2 <- read.csv(paste0(file_paths$DATA_FOLDER, "/L1/ain_cac_breeding.csv"))
+d1 <- read.csv(paste0(file_paths$DATA_FOLDER, "/L1/amn_cac_breeding_7Jan2026.csv"))
+d2 <- read.csv(paste0(file_paths$DATA_FOLDER, "/L1/amn_cac_breeding.csv"))
 
 d1_key <- d1 %>% standardize_for_compare() %>% make_swap_safe()
 d2_key <- d2 %>% standardize_for_compare() %>% make_swap_safe()

@@ -7,7 +7,7 @@
 # DATA OUTPUT:    L1 data: AvianInteractionData_L1.csv
 #                 L1 data: AvianInteractionData_L1_BBS.csv for BBS analysis
 #                 L1 data: bbs_splist_2024_L1.csv for BBS analysis (species name changes)
-# PROJECT:        Avian Interaction Database 
+# PROJECT:        AvianMetaNet 
 # DATE:           27 Oct 2022; updated through 12 Dec 2024  
 # NOTES:          Next script to run: 
 #                 This script is used to clean up columns in the interaction dataset.

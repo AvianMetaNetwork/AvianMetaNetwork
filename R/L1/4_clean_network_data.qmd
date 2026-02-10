@@ -1,5 +1,5 @@
 ---
-title: "Avian Interaction Database L1 taxonomic corrections and updates"
+title: "AvianMetaNet: L1 taxonomic corrections and updates"
 author: 
   - Phoebe L. Zarnetske
   - Patrick Bills
@@ -23,7 +23,7 @@ rm(list=ls())
 
 ## About
 
-- PROJECT: Avian Interaction Database
+- PROJECT: AvianMetaNet
 - COLLABORATORS: Vincent Miele, Stephane Dray
 - Run Date: `r Sys.Date()`
 - Next script to run: 5_subset_network.qmd
@@ -79,7 +79,7 @@ in a table to identify the current accepted name in checklist
 
 ### Data inputs:
 
-#### **Avian Interaction Database L0**
+#### **AvianMetaNet L0**
 
 Raw Data, combined (stitched) and with content
 cleaning but taxonomic names as entered (older names, typos, etc)
@@ -87,7 +87,7 @@ cleaning but taxonomic names as entered (older names, typos, etc)
 *Set the interactions database file to read from here: ( output From `R/L0/2_stitch_species.R` )*
 
 ```{r}
-AvianInteractionData_L0_file <-  "ain_all_raw.csv"
+AvianInteractionData_L0_file <-  "amn_all_raw.csv"
 ```
 #### **Main Checklists:**
 
@@ -118,11 +118,11 @@ clements_mismatches <- readr::read_csv(here::here("./data/L1/aux_mismatches_with
 
 #### Taxonomic Resolution Table: 
 
-Avian Interaction Database, cleaned and with taxonomic names resolved to 
-match checklists listed above: `ain_all.csv`
+AvianMetaNet, cleaned and with taxonomic names resolved to 
+match checklists listed above: `amn_all.csv`
 
 ```{r}
-AvianInteractionData_L1_file <- "ain_all.csv" 
+AvianInteractionData_L1_file <- "amn_all.csv" 
 AvianInteractionData_L1_taxonomy_table_file <- "aux_taxonomy_resolutions.csv"
 
 ```

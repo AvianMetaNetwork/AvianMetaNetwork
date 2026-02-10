@@ -1,4 +1,4 @@
-# Avian Interaction Database Data folder
+# AvianMetaNet Data folder
 
 `/data/README.md`
 

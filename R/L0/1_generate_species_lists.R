@@ -17,7 +17,7 @@
 #                   - this is data pulled from the AviBase species list website
 #                   and formatted
 #                 (4) AviBase Global list, by region; version 8.17 Nov 2024 list
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - 26 August 2025
 # NOTES:          bbs_specieslist_2024_L1.csv is produced in bbs_specieslist_L1.R
 #

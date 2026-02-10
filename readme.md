@@ -1,10 +1,10 @@
-# Avian Interaction Database 
+# AvianMetaNet 
 ###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
 https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database
 
 This repository contains code, workflows, documentation, and support data to 
-build the Avian Interaction Database.  
+build the AvianMetaNet.  
 
 The database is in preparation for publication as an open access data paper. 
 From 2012-2014, Zarnetske and Zonneveld compiled bird-bird interactions among cavity nesting birds 
@@ -20,7 +20,7 @@ and further bird-bird interactions were added in by Zarnetske and MSU SpaCE Lab 
 
 ## Data Availability
 
-The published Avian Interaction Database, documentation, and this code is available 
+The published AvianMetaNet, documentation, and this code is available 
 from the Environmental Data Initiative (EDI) repository for download as a zip file: 
 *LINK PROVIDED UPON PUBLICATION*
 
@@ -53,7 +53,7 @@ The workflow for this repository follows the guidelines set out by the [Environm
 
 ![main AIDB workflowdiagram](website/images/avian_interaction_database_main_workflow_diagram_2025.png)
 
-*Overview of Avian Interaction Database data colleciton, data entry, aggregation and cleaning (K. Kapsar)*
+*Overview of AvianMetaNet data colleciton, data entry, aggregation and cleaning (K. Kapsar)*
 
 For Data entry workflow (L0), see our detailed [data entry protocol](./AvianInteractionData_ENTRY_INSTRUCTIONS.md) we make available to all project members
 
@@ -111,9 +111,9 @@ Funding is provided by Michigan State University (to P.L. Zarnetske), and by a M
 
 MSU Undergraduates led the presentation of a research poster at the 
 2024 [MSU Undergraduate University Research and Arts Forum](https://urca.msu.edu/uuraf):
-*DePasquale, G., I. Hirschowitz, C. Roche, E.G. Parker, P. Bills, P.L. Zarnetske. April 2024. The North American Avian Interaction Database. Michigan State University Undergraduate Research and Arts Forum (UURAF). East Lansing, MI. Poster Presentation.*
+*DePasquale, G., I. Hirschowitz, C. Roche, E.G. Parker, P. Bills, P.L. Zarnetske. April 2024. The North American AvianMetaNet. Michigan State University Undergraduate Research and Arts Forum (UURAF). East Lansing, MI. Poster Presentation.*
 
-In Prep: *The Avian Interaction Database: biotic interactions among birds of the continental United States and Canada*, 
+In Prep: *The AvianMetaNet: biotic interactions among birds of the continental United States and Canada*, 
 Phoebe Zarnetske, Patrick Bills, Kelly Kapsar, Lucas Mansfield, Emily G Parker
 Caroline Roche, India Hirschowitz, Giovanni DePasquale, Sara Zonneveld
 

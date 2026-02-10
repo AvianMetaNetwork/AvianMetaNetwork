@@ -20,7 +20,7 @@
 #                         spp_bbs_2024_clean.csv
 #                     all from 1_generate_species_lists.R
 # DATA OUTPUT:    L1 data: spp_joint_cac.csv; spp_joint_cac_colsubset.csv (column subset)
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - 5 Nov 2025
 #
 #                 Next script to run: AvianInteractionData_L1.R

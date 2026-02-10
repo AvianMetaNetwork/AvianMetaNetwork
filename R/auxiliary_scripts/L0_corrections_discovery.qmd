@@ -1,5 +1,5 @@
 ---
-title: "Avian Interaction Database Correction Discovery"
+title: "AvianMetaNet Correction Discovery"
 author: 
   - Phoebe L. Zarnetske
   - Patrick Bills
@@ -15,7 +15,7 @@ date-format: iso
 
 ---
 
-- PROJECT: Avian Interaction Database & Avian Meta-Network
+- PROJECT: AvianMetaNet & Avian Meta-Network
 - AUTHORS: Phoebe Zarnetske, Patrick Bills, Emily Parker
 - COLLABORATORS: Vincent Miele, Stephane Dray, R
 - DATA INPUT: Data entry CSV files in L0 folder
@@ -39,7 +39,7 @@ stop_on_error <- TRUE
 
 ```
 
-# Data Corrections: Avian Interaction Database Project
+# Data Corrections: AvianMetaNet Project
 
 ### Overview
 

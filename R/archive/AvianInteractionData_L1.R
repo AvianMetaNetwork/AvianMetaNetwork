@@ -16,7 +16,7 @@
 #
 # DATA OUTPUT:    L1 data: int.namefix.bbs.RData (taxonomic harmonization & BBS columns into interaction data)
 #                 
-# PROJECT:        Avian Interaction Database 
+# PROJECT:        AvianMetaNet 
 # DATE:           27 Oct 2022; updated through 12 Dec 2024; May 29, 2025  
 # NOTES:          Next script to run: AvianInteractionData_L1_post_taxa_cleaning.R
 #                 This script is used to refine species name changes to align 

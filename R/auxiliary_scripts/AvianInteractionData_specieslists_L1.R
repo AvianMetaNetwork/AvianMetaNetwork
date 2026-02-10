@@ -21,7 +21,7 @@
 #                         bbs_splist_2024_L0.csv
 #                     all from AvianInteractionData_specieslists_L0.R
 # DATA OUTPUT:    L1 data: canada.conus.splist_L1.CSV 
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - 18 Aug 2025
 #                 
 #                 Next script to run: AvianInteractionData_L1.R

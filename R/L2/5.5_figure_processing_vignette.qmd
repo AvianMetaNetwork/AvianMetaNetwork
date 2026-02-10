@@ -24,7 +24,7 @@ library(igraph)
 library(ggraph)
 library(cowplot)
 
-inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv")) #NA avian interaction data
+inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/amn_cac.csv")) #NA avian interaction data
 ```
 
 The distribution figure (Fig. 2) and example networks (Fig. 4) both employ a mutual color scheme and order of interactions. This is defined in the `_interaction_categories_and_colors.R` script and called here:
@@ -101,7 +101,7 @@ For both the phylogeny figure (Fig. 3) and network figure (Fig. 4), we do some f
 
 ```{r}
 #load in clements data for identifying subspecies and species
-spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_ain_cac.csv")) 
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_amn_cac.csv")) 
 
 inter_NA_trim <- inter_NA_slim %>%
     #Join with spp to get category information for both taxa

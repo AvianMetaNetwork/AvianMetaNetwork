@@ -1,5 +1,5 @@
 ---
-title: 'Avian Interaction Database: Data File Repository Reporting'
+title: 'AvianMetaNet: Data File Repository Reporting'
 author: 
   - Phoebe L. Zarnetske
   - Patrick Bills
@@ -18,7 +18,7 @@ date-format: iso
 
 # L0 Data Preparation: Stitch Raw Species Files
 
-- PROJECT: Avian Interaction Database & Avian Meta-Network
+- PROJECT: AvianMetaNet & Avian Meta-Network
 - AUTHORS: Phoebe Zarnetske, Pat Bills, Emily Parker
 - COLLABORATORS: Vincent Miele, Stephane Dray
 - DATA INPUT: Data entry CSV files in L0 folder
@@ -28,7 +28,7 @@ date-format: iso
 
 ## Report of files present in L0 folders
 
-Data is collected in the Avian Interaction database in the form of CSV files named for the species, and checked into a git repository for tracking.  See [data entry protocol](#).  However to make it easy to enter these data, we are using Google Sheets spreadsheet for the entry, and then saving as CSVs into a "to be reviewed" folder.  CSV species data files in this folder is checked by a data manager and moved to the main 'species' folder.   
+Data is collected in the AvianMetaNet in the form of CSV files named for the species, and checked into a git repository for tracking.  See [data entry protocol](#).  However to make it easy to enter these data, we are using Google Sheets spreadsheet for the entry, and then saving as CSVs into a "to be reviewed" folder.  CSV species data files in this folder is checked by a data manager and moved to the main 'species' folder.   
 
 This notebook counts files in various states and checks if shows he counts of files, whichspecies and their locations.  Run this to count the current state. 
 
