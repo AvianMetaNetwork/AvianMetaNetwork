@@ -37,7 +37,9 @@ the "*reconcile taxonomy*" step below, in the data folder of this repository.
 * R/L1/3_subset_species_lists.R = generates regional taxonomic crosswalk species checklist for Canada, Alaska, and the Continental United States (CONUS)
 * R/L1/4_clean_network_data.qmd = fixes species names, interaction codes, checks species name discrepancies based on current and past Clements names.  
 * R/L1/5_subset_network.qmd = subsets interaction network to only include focal species in the subset species list generated in script 3. 
-* R/L2/6_summary_vignette.qmd = counts of records by categories of final database 
+* R/L1/6_generate_final_network_checklist.R = creates final Clements list of all taxa in the AvianMetaNetwork
+* R/L2/7_figre_processing_vignette.qmd = provides centralized data loading, cleaning and utility functions that are used in the phylogeny, network and interaction distribution figures
+* R/L2/8_summary_vignette.qmd = counts of records by categories of final database 
 
 ## Folders
 

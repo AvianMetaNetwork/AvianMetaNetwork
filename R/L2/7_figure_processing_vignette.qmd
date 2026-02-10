@@ -839,4 +839,4 @@ create_combined_network <- function(data, #dataset (inter_NA_int)
 }
 ```
 
-Now we have everything we need to generate the plots! See `6_summary_vignette.qmd`
+Now we have everything we need to generate the plots! See `8_summary_vignette.qmd`
