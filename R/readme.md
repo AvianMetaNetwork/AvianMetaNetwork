@@ -99,7 +99,7 @@ assumes the use of Rstudio 2025 version or above.
 
 1. Summarize and visualize results
 
-![detailed AMN workflow diagram](website/images/amn_detailed_workflow_diagram_2025.png)
+![detailed AMN workflow diagram](../website/images/amn_detailed_workflow_diagram_2025.png)
 
 ## Detailed Set-up and Configuration for R code
 
