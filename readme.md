@@ -1,7 +1,7 @@
 # AvianMetaNet 
 ###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
-https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database
+https://github.com/AvianMetaNetwork/AvianMetaNetwork
 
 This repository contains code, workflows, documentation, and support data to 
 build the AvianMetaNet.  
@@ -55,7 +55,7 @@ The workflow for this repository follows the guidelines set out by the [Environm
 
 *Overview of AvianMetaNet data colleciton, data entry, aggregation and cleaning (K. Kapsar)*
 
-For Data entry workflow (L0), see our detailed [data entry protocol](./AvianInteractionData_ENTRY_INSTRUCTIONS.md) we make available to all project members
+For Data entry workflow (L0), see our detailed [data entry protocol](./AvianMetaNetwork_DATA_ENTRY_INSTRUCTIONS.md) we make available to all project members
 
 For data cleaning and harmonizing workflow (L1), as well as summarizing and visualizing
 the database (L2) see [R script workflow](R/readme.md)
