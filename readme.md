@@ -1,7 +1,7 @@
 # AvianMetaNet 
 ###  [Spatial and Community Ecology Lab (SpaCE Lab)](https://www.communityecologylab.com)
 
-[github.com/SpaCE-Lab-MSU/Avian-Interaction-Database](https://github.com/AvianMetaNetwork/AvianMetaNetwork)
+https://github.com/AvianMetaNetwork/AvianMetaNetwork
 
 This repository contains code, workflows, documentation, and support data to 
 build the AvianMetaNet.  
