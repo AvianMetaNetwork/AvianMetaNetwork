@@ -1,3 +1,4 @@
+
 #This script provides the data formatting and cleaning needed to produce the figures that appear in the paper from the North American Avian Interaction Databse
 #This script has little annotating information, as the same code is present in 7_figure_processing_vignette.qmd
 #Vignette 7 contains a walkthrough of the process, with explanations of the logic and explanations of intermediate outputs.
@@ -18,7 +19,7 @@ library(igraph)
 library(ggraph)
 library(cowplot)
 
-inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/ain_cac.csv")) #NA avian interaction data
+inter_NA <- read.csv(here::here("../AvianMetaNetwork-Working/L1/amn_cac.csv")) #NA avian interaction data
 
 # --------------------------------------------------------------------
 # Interaction color scheme and ordering
@@ -77,7 +78,7 @@ type_summ_total$interaction <- factor(type_summ_total$interaction,
 # --------------------------------------------------------------------
 
 #load in clements data for identifying subspecies and species
-spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_ain_cac.csv"))
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_amn_cac.csv"))
 
 inter_NA_trim <- inter_NA_slim %>%
   #Join with spp to get category information for both taxa
@@ -295,9 +296,9 @@ plot_phylo_combined <- function(tree, #tree produced earlier, should be NA_tree
 # Network figure data processing and plot function
 # --------------------------------------------------------------------
 
-source(here::here("../Avian-Interaction-Database/website/code/avicommons_clem.r"))
-avi <- jsonlite::fromJSON(here::here("../Avian-Interaction-Database/website/code/avicommons_full.json"))
-clem <- readr::read_csv(here::here("../Avian-Interaction-Database/website/code/clemtax_2025.csv"))
+source(here::here("../AvianMetaNetwork/website/code/avicommons_clem.r"))
+avi <- jsonlite::fromJSON(here::here("../AvianMetaNetwork/website/code/avicommons_full.json"))
+clem <- readr::read_csv(here::here("../AvianMetaNetwork/website/code/clemtax_2025.csv"))
 
 inter_NA_int <- inter_NA_clean %>% #removing "non-interactions"
   filter(interaction != "co-occur" & interaction != "hybridization")

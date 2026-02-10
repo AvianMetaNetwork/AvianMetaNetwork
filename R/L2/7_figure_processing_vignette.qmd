@@ -24,7 +24,7 @@ library(igraph)
 library(ggraph)
 library(cowplot)
 
-inter_NA <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/amn_cac.csv")) #NA avian interaction data
+inter_NA <- read.csv(here::here("../AvianMetaNetwork-Working/L1/amn_cac.csv")) #NA avian interaction data
 ```
 
 The distribution figure (Fig. 2) and example networks (Fig. 4) both employ a mutual color scheme and order of interactions. This is defined in the `_interaction_categories_and_colors.R` script and called here:
@@ -219,7 +219,6 @@ inter_NA_working <- inter_NA_working %>%
   mutate(species = str_replace_all(species, " ", "_"))
 ```
 
-
 Now we can use `clootl` to extract a phylogenetic tree. We need to remove the underscores from the species names temporarily to search with `clootl`, but these are left in the `inter_NA_working` dataframe to match with the tip labels later.
 
 ```{r}
@@ -372,9 +371,9 @@ plot_phylo_combined <- function(tree, #tree produced earlier, should be NA_tree
 The interaction figures use creative commons images sourced from AviCommons, using the following files: `avicommons_clem.r`, `avicommons_full.json` and `clemtax_2025.csv`. THese need to be sourced into the environment:
 
 ```{r, warning=F, message=F}
-source(here::here("../Avian-Interaction-Database/website/code/avicommons_clem.r"))
-avi <- jsonlite::fromJSON(here::here("../Avian-Interaction-Database/website/code/avicommons_full.json"))
-clem <- readr::read_csv(here::here("../Avian-Interaction-Database/website/code/clemtax_2025.csv"))
+source(here::here("../AvianMetaNetwork/website/code/avicommons_clem.r"))
+avi <- jsonlite::fromJSON(here::here("../AvianMetaNetwork/website/code/avicommons_full.json"))
+clem <- readr::read_csv(here::here("../AvianMetaNetwork/website/code/clemtax_2025.csv"))
 ```
 
 Next, we need edit `inter_NA_clean` to remove a few interaction types (co-occurrence and hybridization) that don't fit well into an ecological network.

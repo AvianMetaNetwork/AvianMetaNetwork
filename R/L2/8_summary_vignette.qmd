@@ -15,7 +15,7 @@ library(dplyr)
 library(stringr)
 set.seed(44)
 
-df <- read.csv(here::here("../Avian-Interaction-Database-Working/L1/amn_cac.csv"))
+df <- read.csv(here::here("../AvianMetaNetwork-Working/L1/amn_cac.csv"))
 spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_amn_cac.csv"))
 
 
@@ -175,7 +175,6 @@ entry_changes_pct <- round(sum(!is.na(df$entry_changes))/length(df$entry_changes
 
 -   Percent of unique pairwise interactions among focal taxa: `r pct_unique_in_cac`%
 
-
 #### Unique taxa1/taxa2/interaction combinations by interaction type:
 
 ```{r}
@@ -199,8 +198,7 @@ df %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=
 Source `_figure_processing.R` which contains the data processing and plotting functions. See `7_figure_processing_vignette.qmd` for further explanation of the data processing and plot functions!
 
 ```{r, warning=FALSE, message=FALSE}
-source(here::here("../Avian-Interaction-Database/R/L2/_figure_processing.R"))
-
+source(here::here("R/L2/_figure_processing.R"))
 ```
 
 ### Interaction Distribution Figure
