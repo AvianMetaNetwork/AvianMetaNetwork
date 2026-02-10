@@ -3,6 +3,7 @@
 #Vignette 7 contains a walkthrough of the process, with explanations of the logic and explanations of intermediate outputs.
 #This script exists so it can be sourced by the final vignette, 8_summary_vignette.qmd
 
+
 # --------------------------------------------------------------------
 # Libraries and data
 # --------------------------------------------------------------------
