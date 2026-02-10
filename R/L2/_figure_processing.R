@@ -1,6 +1,6 @@
 #This script provides the data formatting and cleaning needed to produce the figures that appear in the paper from the North American Avian Interaction Databse
-#This script has little annotating information, as the same code is present in 5.5_figure_processing_vignette.qmd
-#Vignette 5.5 contains a walkthrough of the process, with explanations of the logic and explanations of intermediate outputs.
+#This script has little annotating information, as the same code is present in 7_figure_processing_vignette.qmd
+#Vignette 7 contains a walkthrough of the process, with explanations of the logic and explanations of intermediate outputs.
 #This script exists so it can be sourced by the final vignette, 6_summary_vignette.qmd
 
 # --------------------------------------------------------------------
