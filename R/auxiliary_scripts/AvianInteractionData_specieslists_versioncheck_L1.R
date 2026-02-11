@@ -22,7 +22,7 @@
 #                         AvianInteractionData_SpeciesList_dataentry_11Aug2025.csv
 #                     all from AvianInteractionData_specieslists_L0.R
 # DATA OUTPUT:    L1 data: CSVs tracking the different data subsets for checking 
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - 1 Sep 2025
 #                 
 #                 Next script to run: AvianInteractionData_L1.R

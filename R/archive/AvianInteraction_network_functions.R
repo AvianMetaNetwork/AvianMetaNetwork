@@ -7,7 +7,7 @@
 # DATA OUTPUT:    converts the interaction data into bidirectional Edge Lists and iGraph 'graph' objecs.
 #                 these may be saved as CSVs, or as graphml files for import into network/graph visualization programs
 #                  (like Cytoscape) or used in other analysis
-# PROJECT:        Avian Interaction Database
+# PROJECT:        AvianMetaNet
 # DATE:           30 March 2024; updated 10 April 2024
 # NOTES:          The outputs from these functions were imported into the Cytoscape GUI program to create visualizations.
 #                 The functions here that create visualizations using the ggraph package are too dense or don't allow labels in the center

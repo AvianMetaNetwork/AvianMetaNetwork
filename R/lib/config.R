@@ -1,10 +1,10 @@
 # lib/config.R  read in configuration specifically for file paths, used by all scripts
-# TITLE:          Avian Interaction Database Workflow Configuration
+# TITLE:          AvianMetaNet Workflow Configuration
 # AUTHORS:        Phoebe Zarnetske, Pat Bills, Kelly Kapsar
 # COLLABORATORS:  Vincent Miele, Stephane Dray
 # DATA INPUT:     file filepaths.R and/or config.yml in main folder of this repository
 # DATA OUTPUT:    sets variables used to construct file paths
-# PROJ7ECT:        Avian Interaction Database & Avian Meta-Network
+# PROJ7ECT:        AvianMetaNet & Avian Meta-Network
 # DATE:           July 2025
 # NOTES:
 

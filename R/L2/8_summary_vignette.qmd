@@ -1,0 +1,308 @@
+---
+title: "Summary Vignette"
+format: 
+  html: 
+    self-contained: true
+editor: visual
+---
+
+# Interaction Data Summary Statistics
+
+```{r, warnings=FALSE, message=FALSE}
+#| warning: false
+
+library(dplyr)
+library(stringr)
+set.seed(44)
+
+df <- read.csv(here::here("../AvianMetaNetwork-Working/L1/amn_cac.csv"))
+spp <- read.csv(here::here("./data/L1/species_checklists/spp_clem_in_amn_cac.csv"))
+
+
+#### TAXA COUNTS ####
+
+unique_taxa_list <- unique(c(df$taxa1_clements, df$taxa2_clements))
+
+num_total_taxa <- length(unique_taxa_list)
+
+total_cac_taxa <- sum(spp$canada_ak_conus)
+
+num_non_cac_taxa <- num_total_taxa - total_cac_taxa
+
+#### SPECIES COUNTS ####
+
+#Removing hybrids, genera, subspecies and unidentified
+total_spp <- length(spp$scientific.name[spp$category %in% c("species")])
+
+total_spp_cac <- sum(spp$canada_ak_conus[spp$category %in% c("species")])
+
+#### GENUS/FAMILY LEVEL COUNTS ####
+
+total_fam_cac <- length(unique(spp$family[spp$canada_ak_conus == TRUE]))
+
+total_fam_non_cac <-  length(unique(spp$family)) - total_fam_cac
+
+total_ord_cac <- length(unique(spp$order[spp$canada_ak_conus == TRUE]))
+
+total_ord_non_cac <-  length(unique(spp$order)) - total_ord_cac
+
+total_gen <- length(unique(spp$scientific.name[spp$category %in% c("species", "subspecies")] %>%
+                    word(1)))
+
+total_gen_cac <- length(unique(spp$scientific.name[spp$canada_ak_conus == TRUE & spp$category %in% c("species", "subspecies")] %>% word(1)))  
+
+total_gen_non_cac <- total_gen - total_gen_cac
+
+
+
+#### North American Only Interactions #### 
+spp_ls_cac <- spp$scientific.name[spp$canada_ak_conus == TRUE]
+
+amn_spp1_cac <- df[df$taxa1_clements %in% spp_ls_cac,]
+amn_spp_all_cac <- amn_spp1_cac[amn_spp1_cac$taxa2_clements %in% spp_ls_cac,]
+
+
+#### INTERACTIONS ####
+
+## All interactions 
+num_intxns <- nrow(df)
+
+unique_intxns <- df %>% 
+  dplyr::select(taxa1_clements, 
+                taxa2_clements, 
+                effect_tx1_on_tx2, 
+                effect_tx2_on_tx1, 
+                interaction) %>% 
+  filter(!duplicated(.)) %>%
+  mutate(
+    # Labels taxa pairs by alphabetical order 
+    taxa_lo = pmin(taxa1_clements, taxa2_clements),
+    taxa_hi = pmax(taxa1_clements, taxa2_clements),
+
+    # Checks whether order is swapped (non-alphabetical) 
+    swapped = taxa1_clements > taxa2_clements,
+
+    # normalize effects so they always mean:
+    # eff_lo_on_hi = effect of taxa_lo on taxa_hi
+    # eff_hi_on_lo = effect of taxa_hi on taxa_lo
+    eff_lo_on_hi = if_else(swapped, effect_tx2_on_tx1, effect_tx1_on_tx2),
+    eff_hi_on_lo = if_else(swapped, effect_tx1_on_tx2, effect_tx2_on_tx1)
+  )  %>%
+  distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
+
+## CAC only interactions 
+num_intxns_cac <- nrow(amn_spp_all_cac)
+
+unique_intxns_cac <- amn_spp_all_cac %>% 
+  dplyr::select(taxa1_clements, 
+                taxa2_clements, 
+                effect_tx1_on_tx2, 
+                effect_tx2_on_tx1, 
+                interaction) %>% 
+  filter(!duplicated(.)) %>%
+  mutate(
+    # Labels taxa pairs by alphabetical order 
+    taxa_lo = pmin(taxa1_clements, taxa2_clements),
+    taxa_hi = pmax(taxa1_clements, taxa2_clements),
+
+    # Checks whether order is swapped (non-alphabetical) 
+    swapped = taxa1_clements > taxa2_clements,
+
+    # normalize effects so they always mean:
+    # eff_lo_on_hi = effect of taxa_lo on taxa_hi
+    # eff_hi_on_lo = effect of taxa_hi on taxa_lo
+    eff_lo_on_hi = if_else(swapped, effect_tx2_on_tx1, effect_tx1_on_tx2),
+    eff_hi_on_lo = if_else(swapped, effect_tx1_on_tx2, effect_tx2_on_tx1)
+  )  %>%
+  distinct(taxa_lo, taxa_hi, interaction, eff_lo_on_hi, eff_hi_on_lo)
+
+pct_unique_in_cac <- round(length(unique_intxns_cac$interaction)/
+                             length(unique_intxns$interaction)*100,2)
+
+entry_changes_pct <- round(sum(!is.na(df$entry_changes))/length(df$entry_changes)*100,2)
+
+```
+
+### Sanity Checks
+
+-   Number of taxa in species list equals number of taxa in network: `r length(unique_taxa_list) == length(unique(spp$scientific.name))`
+
+-   Percent of interactions with entry changes: `r entry_changes_pct`%
+
+### Taxa-level summary
+
+-   Number of taxa (total): `r num_total_taxa`
+
+-   Number of focal taxa: `r total_cac_taxa`
+
+-   Number of additional non-focal taxa: `r num_non_cac_taxa`
+
+### Species-level summary
+
+-   Number of species (total): `r total_spp`
+
+-   Number of North American species: `r total_spp_cac`
+
+-   Number of additional species: `r total_spp - total_spp_cac`
+
+-   Percent of world's bird spp (out of 11,145 spp): `r round(total_spp/11145*100, 2)`%
+
+### Genus/Family/Order-level summary
+
+-   Number of North American orders: `r total_ord_cac`
+
+-   Number of additional orders: `r total_ord_non_cac`
+
+-   Number of North American families: `r total_fam_cac`
+
+-   Number of additional families: `r total_fam_non_cac`
+
+-   Number of North American genera:`r total_gen_cac`
+
+-   Number of additional genera: `r total_gen_non_cac`
+
+-   Number of total genera: `r total_gen`
+
+### Interactions summary
+
+-   Total number of interaction types: `r length(unique(df$interaction))`
+
+-   Number of documented pairwise interactions: `r num_intxns`
+
+-   Number of unique pairwise interactions: `r nrow(unique_intxns)`
+
+-   Number of unique pairwise interactions among focal taxa: `r nrow(unique_intxns_cac)`
+
+-   Percent of unique pairwise interactions among focal taxa: `r pct_unique_in_cac`%
+
+#### Unique taxa1/taxa2/interaction combinations by interaction type:
+
+```{r}
+source(here::here("_interaction_categories_and_colors.R"))
+
+unique_intxns %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
+```
+
+#### Total interactions by type (includes repeat documentation of same taxa1/taxa2/interaction type combinations):
+
+```{r}
+df %>% left_join(interaction_categories) %>% group_by(category) %>% summarize(n=n()) %>% arrange(-n)
+```
+
+### Species list summary
+
+-   Total number of species in the North American Avian Interaction Taxa List: `r length(unique(spp$scientific_name_clements2024))`
+
+# Interaction Data Exploratory Figures
+
+Source `_figure_processing.R` which contains the data processing and plotting functions. See `7_figure_processing_vignette.qmd` for further explanation of the data processing and plot functions!
+
+```{r, warning=FALSE, message=FALSE}
+source(here::here("R/L2/_figure_processing.R"))
+```
+
+### Interaction Distribution Figure
+
+```{r, fig.width=16, fig.height=10, out.width="100%"}
+#Defining the position of the brackets in the figure
+bracket_data <- type_summ_total %>%
+  group_by(category) %>% 
+  summarize( 
+    y_min = min(as.numeric(interaction)), #Vertical portion of brackets
+    y_max = max(as.numeric(interaction)),
+    n_types = n(),
+    total_n = sum(total),  
+    total_unique = sum(unique)
+  ) %>%
+  filter(n_types > 1) %>%  #No brackets are needed for categories with only 1 type!
+  mutate(
+    y_min = y_min - 0.4,  #Shortened vertical extent
+    y_max = y_max + 0.4,  
+    x_pos = max(type_summ$total) * 0.5,  #Position brackets to the right
+    x_end = max(type_summ$total) * 0.6,  #End of bracket
+    y_mid = (y_min + y_max) / 2,      #Midpoint for category label
+    category_label = paste0(category, ": ", total_n, " (", total_unique, ")")  
+  ) %>%
+  #Using color from first interaction for each category
+  left_join(
+    type_summ_total %>%
+      group_by(category) %>%
+      slice(1) %>%
+      select(category, bracket_color = color),
+    by = "category"
+  )
+
+ggplot(type_summ_total, aes(x = interaction, y = total, fill = interaction)) +
+  theme_light() +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = setNames(interaction_categories$color,
+                                      interaction_categories$interaction)) +
+  geom_text(aes(label = paste0(total, " (", unique, ")")), hjust = -0.2, size = 5.25) +
+  #Bracket: lower bar
+  geom_segment(data = bracket_data,
+               aes(x = y_min, xend = y_min, 
+                   y = x_pos, yend = x_end, color = bracket_color),
+               inherit.aes = FALSE, linewidth = 1.5) +
+  #Bracket: upper bar
+  geom_segment(data = bracket_data,
+               aes(x = y_max, xend = y_max, 
+                   y = x_pos, yend = x_end, color = bracket_color),
+               inherit.aes = FALSE, linewidth = 1.5) +
+  #Bracket: side bar
+  geom_segment(data = bracket_data,
+               aes(x = y_min, xend = y_max, 
+                   y = x_end, yend = x_end, color = bracket_color),
+               inherit.aes = FALSE, linewidth = 1.5) +
+  scale_color_identity() +  
+  #Category labels
+  geom_text(data = bracket_data,
+            aes(x = y_mid, y = x_end + 80, 
+                label = category_label),  #Use the new label
+            inherit.aes = FALSE, size = 6.25, hjust = 0) +
+  theme(axis.text.x = element_text(angle = 0, size = 16),  
+        axis.text.y = element_text(size = 18),              
+        legend.position = "none") +
+  xlab("") +
+  ylab("") +
+  coord_flip() +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.25)))
+
+```
+
+### Interaction Phylogeny Figure
+
+```{r, fig.width=18, fig.height=10, out.width="100%"}
+#| warning: false
+
+plot_phylo_combined(
+  tree = NA_tree,
+  data = inter_NA_working,
+  value_col = "n_int",
+  label_offset = 5,
+  label_size = 5.25,
+  tip_size = 3,
+  min_species = 25,
+  legend_title = "Number of interactions"
+)
+```
+
+### Interaction Network Figure
+
+```{r, fig.width=14, fig.height=6, out.width="100%"}
+set.seed(44)
+create_network(inter_NA_int, "Baeolophus inornatus", curve_edges = T, show_labels = F, cats = T)
+```
+
+```{r, message=F, fig.width=20, fig.height=15, out.width="100%"}
+#| warning: false
+
+set.seed(22)
+create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = F)
+
+```
+
+```{r, message=F, fig.width=20, fig.height=15, out.width="100%"}
+
+set.seed(22)
+create_combined_network(inter_NA_int, c("Baeolophus inornatus", "Dryobates nuttallii", "Glaucidium gnoma"), curve_edges = T, cats = T, legend_text_size = 35, legend_line_size = 5)
+```

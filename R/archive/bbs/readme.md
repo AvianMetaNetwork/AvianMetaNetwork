@@ -1,4 +1,4 @@
-BBS Archive scripts for the Avian Interaction Database
+BBS Archive scripts for the AvianMetaNet
 
 Author: Phoebe Zarnetske
 

@@ -13,8 +13,8 @@ library(stringr)
 library(clootl)
 
 splist <- read.csv("C:/R MSU/Avian-Interaction-Database/data/L1/species_checklists/spp_joint_cac_colsubset.csv") #NA species list
-inter <- read.csv("C:/R MSU/Avian-Interaction-Database-Working/L1/ain_all.csv") #Full data
-inter_NA <- read.csv("C:/R MSU/Avian-Interaction-Database-Working/L1/ain_cac.csv") #data with one or either species in NA
+inter <- read.csv("C:/R MSU/Avian-Interaction-Database-Working/L1/amn_all.csv") #Full data
+inter_NA <- read.csv("C:/R MSU/Avian-Interaction-Database-Working/L1/amn_cac.csv") #data with one or either species in NA
 inter_NA_only <- inter_NA %>% #data with BOTH species in NA -- interactions that occur in NA
   filter(species1_scientific %in% splist$scientific_name_clements2024,
          species2_scientific %in% splist$scientific_name_clements2024)

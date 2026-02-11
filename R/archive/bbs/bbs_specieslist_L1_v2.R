@@ -9,7 +9,7 @@
 #                 SpeciesList2.csv from Jeff Hostetler @ BBS contains combo AOUs
 #                 for subspecies.
 # DATA OUTPUT:    L1 data: bbs_specieslist_2024_L1.csv
-# PROJECT:        Avian Interaction Database & avian-meta-network
+# PROJECT:        AvianMetaNet & avian-meta-network
 # DATE:           17 January 2022 - 30 October 2024
 # NOTES:          Adds new column AOU.combo for use with BBS abundance index.
 #

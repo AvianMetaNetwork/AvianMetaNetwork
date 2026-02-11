@@ -2,7 +2,7 @@
 # TITLE:          Functions to handle taxonomic processing for L0 to L1 cleaning
 # AUTHORS:        Phoebe Zarnetske, Patrick Bills
 # COLLABORATORS:  Vincent Miele, Stephane Dray
-# PROJECT:        Avian Interaction Database & Avian Meta-Network
+# PROJECT:        AvianMetaNet & Avian Meta-Network
 # DATE:           20 Mar 2023 - August 2025
 # NOTES:
 #   Functions here are used in R/L0/L0_stitch.qmd notebook

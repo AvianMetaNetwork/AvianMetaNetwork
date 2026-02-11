@@ -4,7 +4,7 @@
 # COLLABORATORS:  Phoebe Zarnetske, Kelly Kapsar, Emily Parker
 # DATA INPUT:     Data entry CSV files in L0 folder
 # DATA OUTPUT:    L0 combined data: AvianInteractionData_L0.csv
-# PROJECT:        Avian Interaction Database
+# PROJECT:        AvianMetaNet
 # DATE:           July 2025
 # NOTES:          currently a proof of concept not used in workflow
 

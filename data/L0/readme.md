@@ -1,4 +1,4 @@
-## Avian Interaction Database Project
+## AvianMetaNet Project
 
 ### Level 0 metadata files.
 

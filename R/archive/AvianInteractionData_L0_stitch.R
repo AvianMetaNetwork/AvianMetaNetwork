@@ -3,7 +3,7 @@
 # COLLABORATORS:  Vincent Miele, Stephane Dray
 # DATA INPUT:     Data imported as csv https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database/blob/main/L0/species and ./species_in_review
 # DATA OUTPUT:    L1 data: AvianInteractionData_L0.csv
-# PROJECT:        Avian Interaction Database & Avian Meta-Network
+# PROJECT:        AvianMetaNet & Avian Meta-Network
 # DATE:           20 Mar 2023 - 9 Dec 2024 - 29 May 2025 (last run on this date)
 # NOTES:          Next script to run: /L1/AvianInteractionData_L1.R
 
