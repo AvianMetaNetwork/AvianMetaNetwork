@@ -58,6 +58,7 @@ L1 Canada, Alaska, CONUS species from L1 AvianMetaNet
 
 ```{r}
 AvianInteractionData_CanadaAKCONUS_L1_file <- "amn_cac.csv"
+EDI_file <- "AvianMetaNet_InteractionData_EDI.csv"
 AvianInteractionData_CanadaAKCONUS_breeding_file <- "amn_cac_breeding.csv"
 AvianInteractionData_L1_not_CanadaAKCONUS_file <- 
   "amn_notcac.csv"
@@ -373,6 +374,33 @@ unique_counts_multi.b <- purrr::map_dfr(
 
 ```
 
+Create subset file for archival with EDI that does not include internal columns:  
+
+```{r}
+
+intxns.db.subset.edi <- intxns.db.subset.new %>% 
+  dplyr::select(
+    -recorder, 
+    -uncertain_interaction,
+    -n_studies,
+    -name_changes,
+    -entry_file,
+    -source,
+    -other_species1
+  ) %>% 
+  relocate(
+    taxa1_common, 
+    taxa1_scientific,
+    taxa1_clements,
+    taxa2_common,
+    taxa2_scientific,
+    taxa2_clements,
+    interaction
+  )
+
+```
+
+
 Save the file with the file name defined in the OUTPUT section above
 this has the current date embedded in it
 
@@ -381,6 +409,11 @@ this has the current date embedded in it
 f <- file.path(file_paths$L1, AvianInteractionData_CanadaAKCONUS_L1_file )
 write_csv(intxns.db.subset.new, f)
 print(f)
+
+
+fedi <- file.path(file_paths$L1, EDI_file)
+write_csv(intxns.db.subset.edi, fedi)
+print(fedi)
 
 fb <- file.path(file_paths$L1, AvianInteractionData_CanadaAKCONUS_breeding_file )
 write_csv(intxns.db.subset.new.breeding, fb)
