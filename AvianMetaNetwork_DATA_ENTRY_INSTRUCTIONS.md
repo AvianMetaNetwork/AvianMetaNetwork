@@ -14,10 +14,10 @@ Data entry & checking on bird-bird interactions occurs within this
 L0 portion of our private, in-progress data repository : [Avian-Interaction-Data-Working](https://github.com/SpaCE-Lab-MSU/Avian-Interaction-Database-Working). 
 
 Only use GitHub or Google Sheets for data entry and editing of files.
-*Do not use Microsoft Excel* for data entry or any editing of files; 
+*Do not use Microsoft Excel* for data entry or any editing of files;
 it has text encoding that differs from GitHub and Google Sheets.
 
-### The Working repository L0 folder contains the following files:
+### The AvianMetaNetwork repository data/L0 folder contains the following files:
 
 ### [**amn_metadata_colnames_v0.csv**](amn_metadata_v0.csv) 
 Metadata for columns in original version of interaction data sheet. 
@@ -74,7 +74,7 @@ b) Go to **Birds of the World Online** (BOW, via the MSU Library electronic reso
 
 - In general, the best approach to entering the species' data is to open the BOW species account and just skim through it page by page (section by section, in order) for **capitalized species names (often Common Names)** and ***italicized species names (often Genus species)***; this should catch nearly all the entries and will add new ones we missed before. You may see other plain text terms like "passerines" or "corvids" and these refer to entire groups of species in an interaction - these are still important to record and should not be skipped.
 
-c) Enter interactions for the species you selected by designating the selected species in "species1_scientific" and "species1_common" in your file, and the species it interacts with in "species2_scientific" and "species2_common", based on evidence from Birds of the World Online. Refer to [**`amn_metadata_colnames_v1.csv`**](ain_metadata_colnames_v1.csv) for rules about how to enter each column, and the information below:
+c) Enter interactions for the species you selected by designating the selected species in "taxa1_scientific" and "taxa1_common" in your file, and the species it interacts with in "taxa2_scientific" and "taxa2_common", based on evidence from Birds of the World Online. Refer to [**`amn_metadata_colnames_v1.csv`**](amn_metadata_colnames_v1.csv) for rules about how to enter each column, and the information below:
 
 **Citations, Source URLs & Text Excerpts**
 - Add the BOW citation to the "citation" column. For BOW, this is found at the bottom of each BOW page (simply copy-paste it); it's the same citation for the entire account). For other non-BOW sources (see below for Web of Science / Google Scholar), use the MLA style citation.
@@ -85,7 +85,11 @@ c) Enter interactions for the species you selected by designating the selected s
 
 - Refer to the species1 account on Birds of the World Online. Note that the website contains a table of contents with different sections (Introduction, Systematics, Behavior, etc.). Please look through ALL SECTIONS to be sure we catch all interactions with other birds because other sections can contain them also.
 
-- When entering information into the **text_excerpt** column, you must copy-paste enough sentences that capture the context of the interaction AS WELL AS ALL THE INFORMATION APPEARING IN OTHER COLUMNS (e.g., time of year, breeding or migration, etc.). Many times this is copying an entire paragraph or more. First, copy-paste the Section and Heading of the paragraph (e.g., "Behavior: Agonistic Behavior"), then copy-paste the paragraph that includes the interaction. You may have several rows with the same **text_excerpt** and **source_URL** because there are many pairwise interactions from the same text passage. *If the passage of text copied in the **text_excerpt** cells has an old species name, don't change it there. The **text_excerpt** must be entered exactly as it appears in the original text*. Instead, indicate name changes in the **name_changes** column.
+- Enter the text excerpt containing information about the context of the interaction observation (e.g. time of year, year, location, etc.) into the **timing_location_excerpt** column. 
+
+- Enter the text excerpt containing information about the nature of the interaction (e.g. taxa involved, description of interaction) into the **interaction_excerpt** column.
+
+- The excerpts often consist of an entire paragraph or more. First, copy-paste the Section and Heading of the paragraph (e.g., "Behavior: Agonistic Behavior"), then copy-paste the paragraph that includes the interaction. You may have several rows with the same excerpts and **source_URL** because there are many pairwise interactions from the same text passage. The occurrence_excerpt and interaction_excerpts might also be identical if there is a passage that encompasses the context and nature of the interaction. If the passage of text copied in the excerpt cells has an old species name, don't change it there. The excerpts must be entered exactly as they appear in the original text. Instead, indicate name changes in the **name_changes** column.
 
 - Do not add multiple URLs to a single cell. Each row should reflect the unique information derived from a source and its URL, and text excerpt combination.
 
@@ -95,49 +99,51 @@ c) Enter interactions for the species you selected by designating the selected s
 
 - When copying URLs from sources gathered from Google Scholar or Web of Science (**Step 5e**), ensure that the link you provide is the same as the one referenced in the database search page. Scrolling through a PDF on certain libraries can add additional queries to the URL, creating a mismatch when referencing the source in the future. To ensure that you are copying the URL as presented on the database, right-click on the hyperlink and select "Copy link address" before pasting into the source_URL column.
 
-**Names**
-- On each section, skim for Italicized words - these are usually *Genus species* names. Occasionally species will be listed in just Capital Letters (e.g., Yellow Warbler). Determine if the description means that species1 is interacting (or has an inferred interaction) with species2. 
+**Names (taxa1_common, taxa2_common, taxa1_scientific, taxa2_scientific)**
+- On each section, skim for Italicized words - these are usually *Genus species* names. Occasionally species will be listed in just Capital Letters (e.g., Yellow Warbler). Determine if the description means that taxa1 is interacting (or has an inferred interaction) with taxa2. 
 
 - If a specific subspecies is mentioned in reference, then include in species name (*Genus species subspecies*). If not, use *Genus species*.
 
 - - IMPORTANT: For each species mentioned, enter into the spreadsheet the scientific and common names that are *as written* in the source you are reading. Sometimes this name differs from the current name for the species because of name changes. If you do determine that the name *as written* in the source is out of date, you can add a note in the "name_changes" column (e.g. "article uses scientific name Picoides pubescens for Downy Woodpecker; current BOW name is Dryobates pubescens").
   - Officially, we follow the Clement's Checklist, which is updated at least yearly, but this step is done in R code after the initial data entry. 
   
-- If the article does not mention a specific species but does reference a group (e.g. "corvids", "gulls", etc.), then enter species2 as an unidentified species. For the common name, use "unid." + group mentioned, and for scientific name, use the smallest taxonomic group that captures all members of that group. For example, "corvids" would be entered as common name "unid. corvid", and scientific name "Corvidae sp.". Ask a reviewer (Phoebe or Caroline) if you are unsure how to enter this.
+- If the article does not mention a specific species but does reference a group (e.g. "corvids", "gulls", etc.), then enter taxa2 as an unidentified species. For the common name, use "unid." + group mentioned, and for scientific name, use the smallest taxonomic group that captures all members of that group. For example, "corvids" would be entered as common name "unid. corvid", and scientific name "Corvidae sp.". Ask a reviewer (Phoebe, Caroline, Jenna, or Lucas) if you are unsure how to enter this.
 
-- If the article addresses a bird as *Genus subspecies* rather than *Genus species subspecies* (e.g. *Mimus orpheus* instead of *Mimus polyglottos orpheus*), enter into species1 and species2, and indicate a note about the likely species in the name changes column.
+- If the article addresses a bird as *Genus subspecies* rather than *Genus species subspecies* (e.g. *Mimus orpheus* instead of *Mimus polyglottos orpheus*), enter into taxa1 and taxa2, and indicate a note about the likely species in the name changes column.
 
 - If the article uses characters from scripts outside of the English alphabet (e.g. æ, Ø, or Þ), copy paste into the species column exactly as written and include a note about the likely species in the name changes column. When exporting to CSV, double-check that the character looks the same.
 
-**effect_sp1_on_sp2, effect_sp2_on_sp1, Interaction**
+**effect_tx1_on_tx2, effect_tx2_on_tx1, Interaction**
 - Refer to the unique types of interactions found here:
-[**AvianInteractionData_metadata_interactiondefinitions.csv**](AvianInteractionData_metadata_interactiondefinitions.csv). Enter in the appropriate interaction type, as well as the direction of the interaction specific to each species. Be careful to place the correct value in the effect columns.
+[**aux_interaction_defs.csv**](aux_interaction_defs.csv). 
 
-- A note about **"co-occur"**: Co-ocurrence is limited to species that are found in the same place at the same time. If a study was done in a certain place (over a certain time), then you can reasonably assume the birds were co-occuring. Or if a statement says, "species1 is often found with species2" and there is no information on how they interact exactly, "co-occur" is the interaction. Examples of when NOT TO ENTER "CO-OCCUR": if you find a checklist of birds in an area, or a description of birds found in an area (these are too vague). As always, if you have questions on interpreting, ask Caroline or Phoebe.  
+-Enter in the appropriate interaction type, as well as the direction of the interaction specific to each species. For the effects, you must enter either -1, 0, or 1, as entering another value will cause the sheet to error. Be careful to place the correct value in the effect columns. For the interaction types, there is a dropdown of options listing currently defined interaction types. Entering a value not on this list will pop up with a warning in that cell, which is usually caused by a typo. It is possible you will need to enter a value not on the list. For example, you may add the "-artificial" tag to an interaction, have "competition-" over a resource not defined in the interactions, or find a new interaction that has yet to be defined in the list. In this case, you may ignore the warning.
 
-**Interaction Strength**
-- For “weak” vs. “strong” interactions, this can be less clear. Here are some guidelines:
-Enter “weak” if the description is vague, mentions that it is a “possible” or "likely" (but not observed) interaction, rare interaction, or inferred interaction.
-Enter “strong” if the interaction was observed, or was strongly stated (i.e., "species 1 *often* found competing with species 2").
+- A note about **"co-occur"**: Co-ocurrence is limited to species that are found in the same place at the same time. If a study was done in a certain place (over a certain time), then you can reasonably assume the birds were co-occuring. Or if a statement says, "taxa1 is often found with taxa2" and there is no information on how they interact exactly, "co-occur" is the interaction. Examples of when NOT TO ENTER "CO-OCCUR": if you find a checklist of birds in an area, or a description of birds found in an area (these are too vague). As always, if you have questions on interpreting, ask Caroline, Phoebe, Lucas or Jenna.  
 
-**Species1_lifestage Species2_lifestage**
-- Species can vary in the life stages involved in the interaction. Enter the lifestage appropriate to the interaction, per species. It may differ or be the same. For example, with Brood Parasites, the interactions involved include BOTH adult and nestlings. *Egg* would be unborn individuals. *Nestlings* are individuals who have hatched and remain within a nest. *Fledglings* are young who have fledged but are not yet old enough to fend for themselves. *Juvenile* is a stage following fledgling but not yet fully mature *Adult*. If there are multiple lifestages for a given species, enter them in the same cell, separated by ";".
-  
-**Time of year**
-- Enter the time of year that the interaction occurs in. This should be month(s), seasons, or "year-round". If nothing is reported, go to the original source to determine the time of year. If you are unsure of what timeframe the interaction occurs in, check with a reviewer (Phoebe or Caroline). *Note: **hybrid** does not need a time of year entry*. 
+**interaction_strength**
 
-**Breeding Migration**
-- Enter the life history timing of the interaction (year-round, migration, breeding, non-breeding) or some combination separated by ";" (e.g., breeding; migration). For example, if the interaction occurs during the non-breeding season (typically winter), indicate "non-breeding". If the article mentions a month, you can check if it occurs during species1 breeding season using the phenology diagram (usually on the Introduction or Breeding page), or reading the Breeding page. The middle ring in the diagram in the breeding period. If you are unsure of what timeframe the interaction occurs in, check with a reviewer (Phoebe or Caroline). *Note: **hybrid** does not need a breeding or migration entry*. 
+- For “weak” vs. “strong” interactions, this can be less clear. Here are some guidelines: Enter “weak” if the description is vague, mentions that it is a “possible” or "likely" (but not observed) interaction, rare interaction, or inferred interaction. Enter “strong” if the interaction was observed, or was strongly stated (i.e., "species 1 often found competing with species 2").
+
+**taxa1_lifestage and taxa2_lifestage**
+- Taxa can vary in the life stages involved in the interaction. Enter the lifestage appropriate to the interaction, per taxa. It may differ or be the same. For example, with Brood Parasites, the interactions involved include BOTH adult and nestlings. *Egg* would be unborn individuals. *Nestlings* are individuals who have hatched and remain within a nest. *Fledglings* are young who have fledged but are not yet old enough to fend for themselves. *Juvenile* is a stage following fledgling but not yet fully mature *Adult*. These options are available from a dropdown, and will give a warning if another value is entered. If there are multiple lifestages for a given taxa, select both options.
+
+**tx1_life_history_season and tx2_life_history_season**
+- Enter the life history timing of the interaction (year-round, migration, breeding, non-breeding). For example, if the interaction occurs during the non-breeding season (typically winter), indicate "non-breeding". If the article mentions a month, you can check if it occurs during taxa1 breeding season using the phenology diagram (usually on the Introduction or Breeding page), or reading the Breeding page (the middle ring in the diagram in the breeding period). These options are available from a dropdown, and if the interaction occurs throughout multiple seasons, select multiple. If it occurs year-round, only select that option. Entering another value will return a warning. If you are unsure of what timeframe the interaction occurs in, check with a reviewer (Phoebe, Caroline, Jenna or Lucas). *Note: **hybrid** does not need a breeding or migration entry*. 
+
+**time_of_year and year**
+- Enter the time of year that the interaction occurs in. This should be month(s) or "year-round". If nothing is reported, go to the original source to determine the time of year. If you are unsure of what timeframe the interaction occurs in, check with a reviewer (Phoebe, Caroline, Jenna, or Lucas). *Note: **hybrid** does not need a time of year entry*. 
+- Enter the year that the interaction was observed in the study. *Note: this may differ from the year the study was published*.
 
 **Uncertain Interactions**
-- If there is any uncertainty about the interaction, enter the appropriate uncertain interaction keyword from [**`AvianInteractionData_metadata_uncertain.csv`**](AvianInteractionData_metadata_uncertain.csv). You may add additional information to the uncertain_interaction column, but make sure that the note includes an uncertain keyword that is spelled correctly (the R code will look for these keywords specifically in order to determine whether or not to keep the interaction in further analysis). If you are unsure which keyword to use, you can leave a comment and ping a reviewer, or make a note when you create an issue (Step 8).
+- If there is any uncertainty about the interaction, enter the appropriate uncertain interaction keyword from [**aux_metadata_uncertain.csv**](aux_metadata_uncertain.csv). You may add additional information to the uncertain_interaction column, but make sure that the note includes an uncertain keyword that is spelled correctly (the R code will look for these keywords specifically in order to determine whether or not to keep the interaction in further analysis). If you are unsure which keyword to use, you can leave a comment and ping a reviewer, or make a note when you create an issue (Step 8).
 
 - If there is an interaction that gives a list of potential, but uncertain, involved species, include rows for all species mentioned, rather than their shared genus or family. For example, when documenting "...who noted a pair refurbishing an old oriole nest, likely built by either Spot-breasted Oriole (Icterus pectoralis) or Altamira Oriole (Icterus gularis)," include rows for both the Spot-breasted Oriole and the Altamira Oriole.
 
 - If there is an interaction that you are unsure of how to classify (confusing wording or it mentions multiple species and you aren't sure which it applies to), try and find the original source. BOW articles commonly include sources after every sentence, either as a in-text citation or a highlighted number you can click to get more information. Copy the citation (title, author, and year are typically enough) and search for it using MSU Library database or Google Scholar to see if the original text provides any clarity on the interaction. If you can't find the original or it does not help clarify, you can ping a reviewer or make a note when you create an issue (Step 8).
 
 **Multi-species interactions**
-- If you find a description that lists > 2 species involved in an interaction (e.g., mixed flock, aggregate foraging, competing over same resource), then enter in all pairwise interactions into the same google sheet. Indicate in the **other_species1** column that the species1 of that row is different from the file name/article title.
+- If you find a description that lists > 2 species involved in an interaction (e.g., mixed flock, aggregate foraging, competing over same resource), then enter in all pairwise interactions into the same google sheet.
 
 **Artificial Interactions**
 - If you encounter a description of an interaction that was induced by human researchers (e.g., a bird responded to the playback of another species' call, or two species were recorded courting in captivity, or a bird ejected eggs of another species that were placed in its nest by humans), attach the "-artificial" modifier to the end of the interaction (e.g., courtship-artificial). Keep the values for symmetry and effect on each species the same as the interaction being modified.
@@ -146,7 +152,7 @@ Enter “strong” if the interaction was observed, or was strongly stated (i.e.
 - Bird names change through time, sometimes fairly often. If the row contains a species1 or species2 bird with any kind of name change (whether Scientific or Common or both), write a note in this column explaining the name change. If it is difficult to determine which species was involved in the interaction because of a name change, also indicate that in the **uncertain_interactions** column.
 
 **Abbreviations and Codes**
-- If you encounter a 4-letter banding abbreviation (e.g. GHOW) or other acronym or code for mentioning a bird, copy and paste the text excerpt where the abbreviation is defined (e.g., "Great-horned Owl (GHOW)...") into the **text_excerpt** column in every row where an interaction was derived from a text excerpt that includes an abbreviation.
+- If you encounter a 4-letter banding abbreviation (e.g. GHOW) or other acronym or code for mentioning a bird, copy and paste the text excerpt where the abbreviation is defined (e.g., "Great-horned Owl (GHOW)...") into the text_excerpt columns in every row where an interaction was derived from a text excerpt that includes an abbreviation.
 
 **Other**
 - Note that for species1, its interaction with species2 will become part of species2’s pairwise interactions. NOTE: if a duplicate entry occurs, it’s ok (we will edit in R). It takes too much time to avoid duplicates by manually searching for the species2 entries that already exist.
@@ -239,11 +245,11 @@ If you have an issue you want to make sure the reviewer sees, in the "assignees"
 
 All species files should be reviewed by a second person to look for errors and make sure there is consistent interpretation of the text. The reviewer will go into the original Google Sheets file, correct any errors, and add their name and date to the file. They will then reupload the new file into the species folder, and remove the old version. Reviewers, see below section for more details on checking process.
 
-## Step 10: View changes made by the reviewer (changes usually made by Emily or Phoebe)
+## Step 10: View changes made by the reviewer (changes usually made by Phoebe, Caroline, Jenna or Lucas)
 
 You will want to view any changes that were made by the reviewer to understand different interpretations and corrections. This will help with learning how to correctly enter the data in the first place, and also provide a way to discuss any discrepencies. To see what was changed between the species' CSV file placed into `/L0/species_in_review` folder and the fully reviewed version CSV placed into `/L0/species` folder, do the following: open the Google Sheet version of the species' file in the Google Shared Drive folder: [/avian_intxn_data/species_completed](https://drive.google.com/drive/u/0/folders/11NAIHD4Jfmd5qtQvKbYdiIXz7yTQu446). Open the species' Google Sheet, click on the edit history (usually an underlined phrase next to the "Help" menu stating, "Last edit was ...". This opens the edit history. Click on the "Version History" on the right to see what Emily or Phoebe changed. Changes show up in a color. Do not restore to a previous version! Once you're done viewing, click the ARROW pointing back to the current version and close the document. **They may also ping you in comments on documents, so be sure to check your email/Google Drive regularly.**
 
-## The below section is for Emily / Phoebe / India only and occurs after Step 9:
+## The below section is for Emily / Phoebe / Lucas / Jenna only and occurs after Step 9:
 
 When a file is ready to be reviewed:
 
@@ -284,7 +290,3 @@ c) Be careful when entering species splits into the file. We use `bbsbow_names.c
 ## Draft Flow Diagram
 
 ![avian-intxn-db-data-entry-flowchart.png](avian-intxn-db-data-entry-flowchart.png)
-
-
-
-
