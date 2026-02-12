@@ -1,5 +1,5 @@
 ---
-title: "The Avian Interaction Database"
+title: "The AvianMetaNetwork"
 subtitle: "A project from the [SpaCE Lab](https://www.communityecologylab.com/)"
 format: html
 editor: visual
